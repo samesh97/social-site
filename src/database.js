@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('sqlite::memory:', { logging: false });
+const sequelize = new Sequelize('oracle://system:12345@localhost:1521/XE', { logging: false });
 
 const connectToDB = async () => {
     try {

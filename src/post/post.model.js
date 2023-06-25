@@ -1,16 +1,15 @@
-const { DataTypes, UUIDV4 } = require('sequelize');
+const { DataTypes, UUIDV1 } = require('sequelize');
 const { sequelize } = require('../database');
 
-const Post = sequelize.define('post', {
+const Post = sequelize.define('Post', {
     id: {
-        type: DataTypes.UUIDV4,
         primaryKey: true,
-        defaultValue: UUIDV4
+        type: DataTypes.UUID,
+        defaultValue: UUIDV1
     },
     topic: DataTypes.STRING
 });
-
-Post.sync();
+Post.sync({ force: true });
 
 module.exports = { Post };
 
