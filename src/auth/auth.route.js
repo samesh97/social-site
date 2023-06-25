@@ -1,16 +1,20 @@
 const { Config } = require("../conf/config.model");
-const { User, User_Role } = require("../user/user.model");
+const { User } = require("../user/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Router } = require("express");
 const { Role } = require("../role/role.model");
 const { getCache, setCache } = require('../conf/redis.conf');
+
 const authRoute = Router();
 require('dotenv').config();
 
 const jwtSecret = process.env.JWT_SECRET;
+const jwtExpiresIn = process.env.JWT_EXPIRES_IN | 300;
+const tokenMapName = "auth-access-token-map";
 
-const authentication = async (req, res, next) => {
+const authentication = async (req, res, next) => 
+{
   if (await isByPassAuth(req)) 
   {
     return next();
@@ -23,8 +27,10 @@ const authentication = async (req, res, next) => {
   return res.status(401).json("Unauthorized. You do not have permissions to perform this action.");
 };
 
-const hasRole = (...roles) => {
-  return async (req, res, next) => {
+const hasRole = (...roles) => 
+{
+  return async (req, res, next) => 
+  {
     const userId = req.body.userInfo?.userId;
     if (userId) 
     {
@@ -42,7 +48,8 @@ const hasRole = (...roles) => {
   };
 };
 
-authRoute.post("/", async (req, res) => {
+authRoute.post("/", async (req, res) => 
+{
   //verify username, password
   let username = req.body?.username;
   let password = req.body?.password;
@@ -65,15 +72,16 @@ authRoute.post("/", async (req, res) => {
   }
 
   //create a jwt token and sign with userId
-  const accessToken = createJWT(user.id);
-  return res.status(200).json(
+  const accessToken = await createJWT(user.id);
+  return res.status(201).json(
   {
-    "access-token": accessToken,
+      "access-token": accessToken,
   });
 
 });
 
-const isByPassAuth = async (req) => {
+const isByPassAuth = async (req) => 
+{
   const url = req.url;
   const urlWithoutBackSlash = url.endsWith("/") ? url.substring(0, url.length - 1) : url;
 
@@ -84,42 +92,62 @@ const isByPassAuth = async (req) => {
   return (config?.value?.split(",").some( (value) => value === urlWithoutBackSlash));
 }
 
-const verifyAuthHeader = (req) => {
+const verifyAuthHeader = (req) => 
+{
   let authHeader = req.headers.authorization;
-  let isVerified = false;
   if (authHeader) 
   {
-    try 
+    const userId = verifyToken(authHeader);
+    if (userId) 
     {
-      const userId = jwt.verify(authHeader, jwtSecret);
-      if (userId) 
-      {
-        req.body.userInfo = { userId: userId };
-        isVerified = true;
-      }
-    } 
-    catch (error) 
-    {
-      console.error(error);
+      req.body.userInfo = { userId: userId };
+      return true;
     }
+   
   }
-  return isVerified;
+  return false;
 }
 
-const createJWT = (userId) => {
-  const token = jwt.sign(userId, jwtSecret);
-  addToTokenCache(token);
+const createJWT = async (userId) => 
+{
+
+  const cachedTokenMap = await getCache(tokenMapName);
+  const cachedToken = cachedTokenMap[userId];
+  if( cachedToken && verifyToken(cachedToken) )
+  {
+      return cachedToken;
+  }
+
+  const token = jwt.sign( { userId }, jwtSecret, { expiresIn: jwtExpiresIn });
+  addToTokenCache(userId, token);
   return token;
 }
-const addToTokenCache = async (token) => {
-  const tokenMapName = "auth-access-token-map";
+const addToTokenCache = async (userId, token) => 
+{
   let cache = await getCache(tokenMapName);
   if( !cache )
   {
-     cache = [];
+     cache = {};
   }
-  cache.push( token );
+  cache[userId] = token;
   setCache(tokenMapName, cache);
+}
+
+const verifyToken = (token) =>  
+{
+  try 
+  {
+      const { userId } = jwt.verify(token, jwtSecret);
+      if (userId) 
+      {
+          return userId;
+      }
+  } 
+  catch (error) 
+  {
+      console.error(error);
+  }
+  return undefined;
 }
 
 module.exports = { authentication, hasRole, authRoute };

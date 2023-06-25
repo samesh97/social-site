@@ -11,7 +11,7 @@ const Config = sequelize.define('Config', {
     value: DataTypes.STRING
 });
 const syncAndInsert = async () => {
-    await Config.sync({ force: true });
+    await Config.sync({ alter: true });
     await Config.create({
         name: 'REST_AUTH_BYPASS_URL',
         value: '/users,/auth'

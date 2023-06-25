@@ -17,7 +17,7 @@ const Roles = {
 }
 
 const sync = async () => {
-    await Role.sync( { force: true });
+    await Role.sync( { alter: true });
     const admin = await Role.findOrCreate
     (
         {

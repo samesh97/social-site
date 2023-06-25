@@ -9,7 +9,7 @@ const Post = sequelize.define('Post', {
     },
     topic: DataTypes.STRING
 });
-Post.sync({ force: true });
+Post.sync({ alter: true });
 
 module.exports = { Post };
 
