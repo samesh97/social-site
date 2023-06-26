@@ -5,6 +5,7 @@ const { authentication, authRoute } = require('./auth/auth.route');
 const { } = require('./database');
 const cors = require('cors');
 const { connectToRedis } = require('./conf/redis.conf');
+
 require('dotenv').config();
 
 const PORT = process.env.SERVER_PORT | 3000;

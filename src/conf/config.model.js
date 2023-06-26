@@ -14,7 +14,7 @@ const syncAndInsert = async () => {
     await Config.sync({ alter: true });
     await Config.create({
         name: 'REST_AUTH_BYPASS_URL',
-        value: '/users,/auth'
+        value: '/users,/auth,/auth/refresh'
     });
 }
 syncAndInsert();
