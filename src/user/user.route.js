@@ -5,22 +5,21 @@ const bcrypt = require('bcrypt');
 const { Role } = require('../role/role.model');
 const { sequelize } = require('../database');
 
-app.post('/', async (req, res) => {
+const hashPasswordSaltRound = process.env.HASH_PASSWORD_SALT_ROUNDS;
+
+app.post('/', async (req, res) => 
+{
     const { user } = req.body;
-    if(!user | !user.username | !user.firstName | !user.password | !user.roles | user.roles.length == 0) 
+    const validationError = await validateUserCreation(user);
+    if( validationError )
     {
-        return res.status(400).json("Bad Request");
+        return res.status(400).json(validationError);
     }
 
-    const dbUser = await User.findOne( { where: { username: user.username }});
-    if(dbUser)
-    {
-        return res.status(409).json("This username is already taken.");
-    }
     const transaction = await sequelize.transaction();
     try 
     {
-        const hashPassword = bcrypt.hashSync(user.password, 2); 
+        const hashPassword = bcrypt.hashSync(user.password, hashPasswordSaltRound); 
         let userObj = await User.create({
             firstName: user.firstName,
             username: user.username,
@@ -46,18 +45,29 @@ app.post('/', async (req, res) => {
         };
 
         transaction.commit();
-
-        const savedUser = await User.findByPk(userObj.id, 
-            { include: { model: Role, attributes: ["name"], through: { attributes: [] } }
-        });
-        return res.status(201).json(savedUser);
+        return res.status(201).json("User created.");
     } 
     catch( error ) 
     {
         transaction.rollback();
         console.log(error);
-        return res.status(500).json(`Could not create user!`);
+        return res.status(500).json(`Error while creating user.`);
     }
 });
+
+const validateUserCreation = async (user) => 
+{
+    if(!user | !user.username | !user.firstName | !user.password | !user.roles | user.roles.length == 0) 
+    {
+        return "Bad Request";
+    }
+
+    const dbUser = await User.findOne( { where: { username: user.username }});
+    if( dbUser )
+    {
+        return "This username is already taken.";
+    }
+    return null;
+}
 
 module.exports = app;

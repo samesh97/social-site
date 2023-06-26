@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('oracle://system:12345@localhost:1521/XE', { logging: false });
+const dbConStr = process.env.ORACLE_DB_CONNECTION_STR;
+const sequelize = new Sequelize(dbConStr, { logging: false });
 
 const connectToDB = async () => {
     try {
