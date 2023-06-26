@@ -1,6 +1,5 @@
 const express = require('express');
 const userRoute = require('./user/user.route');
-const postRoute = require('./post/post.route');
 const { authentication, authRoute } = require('./auth/auth.route');
 const { } = require('./database');
 const cors = require('cors');
@@ -25,7 +24,6 @@ app.use(authentication);
 
 app.use('/auth', authRoute);
 app.use('/users', userRoute);
-app.use('/posts', postRoute);
 
 app.listen(PORT, (req, res) => {
     console.log(`Server is up & running on port ${PORT}`);

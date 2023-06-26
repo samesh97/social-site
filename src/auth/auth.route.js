@@ -1,4 +1,4 @@
-const { Config } = require("../conf/config.model");
+const { Config, ConfigKey } = require("../conf/config.model");
 const { User } = require("../user/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -40,10 +40,11 @@ authRoute.post("/", async (req, res) =>
   }
 
   //create a jwt token and sign with userId
-  return createAccessRefreshTokenPayload(res, user.id);
+  return await createAccessRefreshTokenPayload(res, user.id);
 });
 
-authRoute.post('/refresh', async (req, res, next) => {
+authRoute.post('/refresh', async (req, res, next) => 
+{
     const refreshToken = req.body.refreshToken;
     if( !refreshToken )
     {
@@ -59,7 +60,7 @@ authRoute.post('/refresh', async (req, res, next) => {
     {
         return res.status(400).json("User with associated refresh token not found");
     }
-    return createAccessRefreshTokenPayload(res, userId);
+    return await createAccessRefreshTokenPayload(res, userId);
 });
 
 const createAccessRefreshTokenPayload = async (res, userId) => {
@@ -74,14 +75,9 @@ const createAccessRefreshTokenPayload = async (res, userId) => {
 
 const authentication = async (req, res, next) => 
 {
-  if (await isByPassAuth(req)) 
+  if ( await isByPassAuth(req) || verifyAuthHeader(req) ) 
   {
-    return next();
-  }
-
-  if(verifyAuthHeader(req))
-  {
-    return next();
+      return next();
   }
   return res.status(401).json("Unauthorized. You do not have permissions to perform this action.");
 };
@@ -113,10 +109,24 @@ const isByPassAuth = async (req) =>
   const urlWithoutBackSlash = url.endsWith("/") ? url.substring(0, url.length - 1) : url;
 
   const config = await Config.findOne({
-    where: { name: "REST_AUTH_BYPASS_URL" },
+    where: { name: ConfigKey.REST_AUTH_BYPASS_URL },
   });
 
-  return (config?.value?.split(",").some( (value) => value === urlWithoutBackSlash));
+  return (config?.value?.split(",").some( (value) => 
+  {
+      if ( value && value.endsWith("*") )
+      {
+          const configWithoutAsterisk = value.substring(0, value.length - 1);
+          let matchText = configWithoutAsterisk;
+          if( configWithoutAsterisk.endsWith("/") )
+          {
+              matchText = configWithoutAsterisk.substring(0, configWithoutAsterisk.length - 1);
+          }
+          return urlWithoutBackSlash.startsWith(matchText);
+          
+      }
+      return value === urlWithoutBackSlash;
+  }));
 }
 
 const verifyAuthHeader = (req) => 
@@ -138,10 +148,13 @@ const verifyAuthHeader = (req) =>
 const createAccessToken = async (userId) => 
 {
   const cachedTokenMap = await getCache(tokenMapName);
-  const cachedToken = cachedTokenMap[userId];
-  if( cachedToken && verifyToken(cachedToken) )
+  if( cachedTokenMap )
   {
-      return cachedToken;
+    const cachedToken = cachedTokenMap[userId];
+    if( cachedToken && verifyToken(cachedToken) )
+    {
+        return cachedToken;
+    }
   }
 
   const token = jwt.sign( { userId }, accessTokenSecret, { expiresIn: accessTokentExpiresIn });
