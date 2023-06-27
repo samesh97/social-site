@@ -61,18 +61,9 @@ authRoute.post('/refresh', async (req, res, next) =>
     {
         return res.status(400).json("User with associated refresh token not found");
     }
-    const refreshTokenMap = await getCache(refreshTokenMapName);
-    if ( refreshTokenMap && refreshTokenMap[object.userId] )
+    if ( await isRefreshTokenRevoked(refreshToken, object) )
     {
-        const cachedRefreshToken = refreshTokenMap[object.userId];
-        if( cachedRefreshToken != refreshToken )
-        {
-            const cachedRefreshTokenObject = verifyToken(cachedRefreshToken, refreshTokenSecret);
-            if( cachedRefreshTokenObject && cachedRefreshTokenObject.iat > object.iat )
-            {
-                return res.status(400).json("Refresh token is revoked.");
-            }
-        }
+        return res.status(400).json("Refresh token is revoked.");
     }
     return await createAccessRefreshTokenPayload(res, object.userId);
 });
@@ -89,7 +80,7 @@ const createAccessRefreshTokenPayload = async (res, userId) => {
 
 const authentication = async (req, res, next) => 
 {
-  if ( await isByPassAuth(req) || verifyAuthHeader(req) ) 
+  if ( await isByPassAuth(req) || await verifyAuthHeader(req) ) 
   {
       return next();
   }
@@ -143,7 +134,7 @@ const isByPassAuth = async (req) =>
   }));
 }
 
-const verifyAuthHeader = (req) => 
+const verifyAuthHeader = async (req) => 
 {
   let authHeader = req.headers.authorization;
   if (authHeader) 
@@ -151,6 +142,19 @@ const verifyAuthHeader = (req) =>
     const object = verifyToken(authHeader, accessTokenSecret);
     if ( object ) 
     {
+      const accessTokenMap = await getCache(accessTokenMapName);
+      if( accessTokenMap && accessTokenMap[object.userId])
+      {
+          const cachedAccessToken = accessTokenMap[object.userId];
+          if( cachedAccessToken != authHeader )
+          {
+            const cachedAccessTokenObject = verifyToken(cachedAccessToken, accessTokenSecret);
+            if( cachedAccessTokenObject && cachedAccessTokenObject.iat > object.iat )
+            {
+                return false;
+            }
+          }
+      }
       req.body.userInfo = { userId: object.userId };
       return true;
     }
@@ -161,16 +165,6 @@ const verifyAuthHeader = (req) =>
 
 const createAccessToken = async (userId) => 
 {
-  const cachedTokenMap = await getCache(accessTokenMapName);
-  if( cachedTokenMap )
-  {
-    const cachedToken = cachedTokenMap[userId];
-    if( cachedToken && verifyToken(cachedToken, accessTokenSecret) )
-    {
-        return cachedToken;
-    }
-  }
-
   const currentEpochTime = Date.now;
   const object = {
       userId,
@@ -218,6 +212,22 @@ const verifyToken = (token, secret) =>
       console.error(error);
   }
   return undefined;
+}
+const isRefreshTokenRevoked = async (refreshToken, object) => {
+  const refreshTokenMap = await getCache(refreshTokenMapName);
+  if ( refreshTokenMap && refreshTokenMap[object.userId] )
+  {
+      const cachedRefreshToken = refreshTokenMap[object.userId];
+      if( cachedRefreshToken != refreshToken )
+      {
+          const cachedRefreshTokenObject = verifyToken(cachedRefreshToken, refreshTokenSecret);
+          if( cachedRefreshTokenObject && cachedRefreshTokenObject.iat > object.iat )
+          {
+                return true;
+          }
+      }
+  }
+  return false;
 }
 
 module.exports = { authentication, hasRole, authRoute };
