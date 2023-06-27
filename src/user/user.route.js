@@ -3,7 +3,7 @@ const app = Router();
 const { User, User_Role } = require('../user/user.model');
 const bcrypt = require('bcrypt');
 const { Role } = require('../role/role.model');
-const { sequelize } = require('../database');
+const { sequelize } = require('../conf/database');
 
 const hashPasswordSaltRound = process.env.HASH_PASSWORD_SALT_ROUNDS;
 

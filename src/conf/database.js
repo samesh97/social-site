@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
 const dbConStr = process.env.ORACLE_DB_CONNECTION_STR;
 const sequelize = new Sequelize(dbConStr, { logging: false });

@@ -1,7 +1,7 @@
 const express = require('express');
 const userRoute = require('./user/user.route');
 const { authentication, authRoute } = require('./auth/auth.route');
-const { } = require('./database');
+const { } = require('./conf/database');
 const cors = require('cors');
 const { connectToRedis } = require('./conf/redis.conf');
 

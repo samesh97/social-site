@@ -1,5 +1,5 @@
 const { DataTypes, UUIDV1 } = require('sequelize');
-const  { sequelize } = require('../database');
+const  { sequelize } = require('./database');
 
 const ConfigKey = {
     REST_AUTH_BYPASS_URL: 'REST_AUTH_BYPASS_URL'

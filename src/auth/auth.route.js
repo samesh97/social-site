@@ -12,8 +12,9 @@ require('dotenv').config();
 const accessTokenSecret = process.env.JWT_ACCESS_TOKEN_SECRET;
 const accessTokentExpiresIn = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN | 300;
 const refreshTokenSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
-const refreshTokenExpiresIn = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN | '1d';
-const tokenMapName = "auth-access-token-map";
+const refreshTokenExpiresIn = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN | 7776000;
+const accessTokenMapName = "auth-access-token-map";
+const refreshTokenMapName = "auth-refresh-token-map";
 
 
 authRoute.post("/", async (req, res) => 
@@ -50,17 +51,30 @@ authRoute.post('/refresh', async (req, res, next) =>
     {
         return res.status(400).json("Refresh token not found");
     }
-    const userId = await verifyRefreshToken(refreshToken);
-    if( !userId )
+    const object = verifyToken(refreshToken, refreshTokenSecret);
+    if( !object )
     {
         return res.status(400).json("Invalid refresh token");
     }
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(object.userId);
     if( !user )
     {
         return res.status(400).json("User with associated refresh token not found");
     }
-    return await createAccessRefreshTokenPayload(res, userId);
+    const refreshTokenMap = await getCache(refreshTokenMapName);
+    if ( refreshTokenMap && refreshTokenMap[object.userId] )
+    {
+        const cachedRefreshToken = refreshTokenMap[object.userId];
+        if( cachedRefreshToken != refreshToken )
+        {
+            const cachedRefreshTokenObject = verifyToken(cachedRefreshToken, refreshTokenSecret);
+            if( cachedRefreshTokenObject && cachedRefreshTokenObject.iat > object.iat )
+            {
+                return res.status(400).json("Refresh token is revoked.");
+            }
+        }
+    }
+    return await createAccessRefreshTokenPayload(res, object.userId);
 });
 
 const createAccessRefreshTokenPayload = async (res, userId) => {
@@ -134,10 +148,10 @@ const verifyAuthHeader = (req) =>
   let authHeader = req.headers.authorization;
   if (authHeader) 
   {
-    const userId = verifyToken(authHeader);
-    if (userId) 
+    const object = verifyToken(authHeader, accessTokenSecret);
+    if ( object ) 
     {
-      req.body.userInfo = { userId: userId };
+      req.body.userInfo = { userId: object.userId };
       return true;
     }
    
@@ -147,27 +161,38 @@ const verifyAuthHeader = (req) =>
 
 const createAccessToken = async (userId) => 
 {
-  const cachedTokenMap = await getCache(tokenMapName);
+  const cachedTokenMap = await getCache(accessTokenMapName);
   if( cachedTokenMap )
   {
     const cachedToken = cachedTokenMap[userId];
-    if( cachedToken && verifyToken(cachedToken) )
+    if( cachedToken && verifyToken(cachedToken, accessTokenSecret) )
     {
         return cachedToken;
     }
   }
 
-  const token = jwt.sign( { userId }, accessTokenSecret, { expiresIn: accessTokentExpiresIn });
-  addToTokenCache(userId, token);
+  const currentEpochTime = Date.now;
+  const object = {
+      userId,
+      issuedAt: currentEpochTime
+  };
+  const token = jwt.sign( object, accessTokenSecret, { expiresIn: accessTokentExpiresIn });
+  addToTokenCache(userId, token, accessTokenMapName);
   return token;
 }
 const createRefreshToken = async (userId) =>
 {
-  const refreshToken = jwt.sign( { userId }, refreshTokenSecret, { expiresIn: refreshTokenExpiresIn });
+  const currentEpochTime = Date.now;
+  const object = {
+      userId,
+      issuedAt: currentEpochTime
+  };
+  const refreshToken = jwt.sign( object, refreshTokenSecret, { expiresIn: refreshTokenExpiresIn });
+  addToTokenCache(userId, refreshToken, refreshTokenMapName);
   return refreshToken;
 }
 
-const addToTokenCache = async (userId, token) => 
+const addToTokenCache = async (userId, token, tokenMapName) => 
 {
   let cache = await getCache(tokenMapName);
   if( !cache )
@@ -178,31 +203,14 @@ const addToTokenCache = async (userId, token) =>
   setCache(tokenMapName, cache);
 }
 
-const verifyToken = (token) =>  
+const verifyToken = (token, secret) =>  
 {
   try 
   {
-      const { userId } = jwt.verify(token, accessTokenSecret);
-      if (userId) 
+      const object = jwt.verify(token, secret);
+      if (object) 
       {
-          return userId;
-      }
-  } 
-  catch (error) 
-  {
-      console.error(error);
-  }
-  return undefined;
-}
-
-const verifyRefreshToken = (token) =>  
-{
-  try 
-  {
-      const { userId } = jwt.verify(token, refreshTokenSecret);
-      if (userId) 
-      {
-          return userId;
+          return object;
       }
   } 
   catch (error) 
