@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Router } = require("express");
 const { Role } = require("../role/role.model");
-const { getCache, setCache } = require('../conf/redis.conf');
+const { Token, TokenStatus, TokenType } = require("../token/token.model");
 
 const authRoute = Router();
 require('dotenv').config();
@@ -13,8 +13,6 @@ const accessTokenSecret = process.env.JWT_ACCESS_TOKEN_SECRET;
 const accessTokentExpiresIn = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN | 300;
 const refreshTokenSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
 const refreshTokenExpiresIn = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN | 7776000;
-const accessTokenMapName = "auth-access-token-map";
-const refreshTokenMapName = "auth-refresh-token-map";
 
 
 authRoute.post("/", async (req, res) => 
@@ -68,7 +66,8 @@ authRoute.post('/refresh', async (req, res, next) =>
     return await createAccessRefreshTokenPayload(res, object.userId);
 });
 
-const createAccessRefreshTokenPayload = async (res, userId) => {
+const createAccessRefreshTokenPayload = async (res, userId) => 
+{
   const accessToken = await createAccessToken(userId);
   const newRefreshToken = await createRefreshToken(userId);
 
@@ -142,14 +141,13 @@ const verifyAuthHeader = async (req) =>
     const object = verifyToken(authHeader, accessTokenSecret);
     if ( object ) 
     {
-      const accessTokenMap = await getCache(accessTokenMapName);
-      if( accessTokenMap && accessTokenMap[object.userId])
+      const dbToken = await getTokenFromDB( object.userId, TokenType.ACCESS_TOKEN );
+      if( dbToken )
       {
-          const cachedAccessToken = accessTokenMap[object.userId];
-          if( cachedAccessToken != authHeader )
+          if( dbToken != authHeader )
           {
-            const cachedAccessTokenObject = verifyToken(cachedAccessToken, accessTokenSecret);
-            if( cachedAccessTokenObject && cachedAccessTokenObject.iat > object.iat )
+            const dbTokenPayload = verifyToken(dbToken, accessTokenSecret);
+            if( dbTokenPayload && dbTokenPayload.iat > object.iat )
             {
                 return false;
             }
@@ -171,7 +169,7 @@ const createAccessToken = async (userId) =>
       issuedAt: currentEpochTime
   };
   const token = jwt.sign( object, accessTokenSecret, { expiresIn: accessTokentExpiresIn });
-  addToTokenCache(userId, token, accessTokenMapName);
+  await saveTokenInDB(userId, token, TokenType.ACCESS_TOKEN);
   return token;
 }
 const createRefreshToken = async (userId) =>
@@ -182,19 +180,8 @@ const createRefreshToken = async (userId) =>
       issuedAt: currentEpochTime
   };
   const refreshToken = jwt.sign( object, refreshTokenSecret, { expiresIn: refreshTokenExpiresIn });
-  addToTokenCache(userId, refreshToken, refreshTokenMapName);
+  await saveTokenInDB(userId, refreshToken, TokenType.REFRESH_TOKEN);
   return refreshToken;
-}
-
-const addToTokenCache = async (userId, token, tokenMapName) => 
-{
-  let cache = await getCache(tokenMapName);
-  if( !cache )
-  {
-     cache = {};
-  }
-  cache[userId] = token;
-  setCache(tokenMapName, cache);
 }
 
 const verifyToken = (token, secret) =>  
@@ -213,21 +200,70 @@ const verifyToken = (token, secret) =>
   }
   return undefined;
 }
-const isRefreshTokenRevoked = async (refreshToken, object) => {
-  const refreshTokenMap = await getCache(refreshTokenMapName);
-  if ( refreshTokenMap && refreshTokenMap[object.userId] )
+const isRefreshTokenRevoked = async (refreshToken, object) => 
+{
+  const dbRefreshToken = await getTokenFromDB(object.userId, TokenType.REFRESH_TOKEN);
+  if ( dbRefreshToken )
   {
-      const cachedRefreshToken = refreshTokenMap[object.userId];
-      if( cachedRefreshToken != refreshToken )
+      if( dbRefreshToken != refreshToken )
       {
-          const cachedRefreshTokenObject = verifyToken(cachedRefreshToken, refreshTokenSecret);
-          if( cachedRefreshTokenObject && cachedRefreshTokenObject.iat > object.iat )
+          const dbRefreshTokenPayload = verifyToken(dbRefreshToken, refreshTokenSecret);
+          if( dbRefreshTokenPayload && dbRefreshTokenPayload.iat > object.iat )
           {
-                return true;
+              return true;
           }
       }
   }
   return false;
+}
+
+const getTokenFromDB = async (userId, tokenType, tokenStatus = TokenStatus.WHITELISTED ) => 
+{
+    const token = await Token.findOne(
+    { 
+        where: 
+        { 
+          userId: userId, 
+          type: tokenType, 
+          status: tokenStatus 
+        },
+        attributes: ["token"]
+    });
+    return token ? token.token : undefined;
+}
+
+const saveTokenInDB = async (userId, token, tokenType, tokenStatus = TokenStatus.WHITELISTED ) =>
+{
+    const currentToken = await Token.findOne({
+      where:
+      {
+        userId: userId,
+        type: tokenType,
+        status: tokenStatus
+      }
+    });
+
+    if( currentToken )
+    {
+       await Token.update({
+        userId: userId,
+        type: tokenType,
+        status: tokenStatus,
+        token: token
+      }, 
+      { 
+        where: { id: currentToken.id }
+      });
+    }
+    else
+    {
+      await Token.create({
+        userId: userId,
+        type: tokenType,
+        status: tokenStatus,
+        token: token
+      });
+    }
 }
 
 module.exports = { authentication, hasRole, authRoute };
