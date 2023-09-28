@@ -1,5 +1,5 @@
 const { UUID, UUIDV1, DataTypes } = require('sequelize');
-const { sequelize } = require('../conf/database');
+const { sequelize } = require('../configurations/database.conf');
 
 
 const TokenType = {

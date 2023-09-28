@@ -1,31 +1,27 @@
 const express = require('express');
-const userRoute = require('./user/user.route');
-const { authentication, authRoute } = require('./auth/auth.route');
-const { } = require('./conf/database');
+const cookieParser = require("cookie-parser");
 const cors = require('cors');
-const { connectToRedis } = require('./conf/redis.conf');
 
-require('dotenv').config();
+const { userRoute } = require("./routes/user.route");
+const { postRoute } = require("./routes/post.route");
+const { authentication, authRoute } = require("./routes/auth.route");
+const { config } = require("./configurations/common.conf");
 
-const PORT = process.env.SERVER_PORT | 3000;
 const app = express();
-app.use( express.json() );
-app.use(
-  cors({
-    origin: ["http://localhost:4200/"],
-    methods: ["GET","PUT","POST","DELETE","UPDATE","PATCH"],
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-  })
-);
 
-//authenticate
-app.use(authentication);
+//middlewares
+app.use( express.json() );
+app.use( cookieParser() );
+app.use( cors( config.CORS_CONFIG ) );
+
+//auth route
+app.use( authentication );
 
 app.use('/auth', authRoute);
 app.use('/users', userRoute);
+app.use("/posts", postRoute);
 
-app.listen(PORT, (req, res) => {
-    console.log(`Server is up & running on port ${PORT}`);
-    connectToRedis();
+
+app.listen( config.SERVER_PORT, async () => {
+    console.log(`Server is up & running on port ${config.SERVER_PORT}`);
 });

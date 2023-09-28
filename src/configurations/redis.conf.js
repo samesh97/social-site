@@ -4,19 +4,19 @@ let isRedisConnected = false;
 let redisClient = undefined;
 
 const connectToRedis = async () => {
-    redisClient = createClient();
-    console.log("Connecting to Redis...");
+    // redisClient = createClient();
+    // console.log("Connecting to Redis...");
 
-    redisClient.on('ready', () => {
-        isRedisConnected = true;
-        console.log("Connected to Redis.");
-    });
-    redisClient.on('error', (err) => {
-        isRedisConnected = false;
-        console.error(`Error while connecting to Redis: ${err}`);
-    });
+    // redisClient.on('ready', () => {
+    //     isRedisConnected = true;
+    //     console.log("Connected to Redis.");
+    // });
+    // redisClient.on('error', (err) => {
+    //     isRedisConnected = false;
+    //     console.error(`Error while connecting to Redis: ${err}`);
+    // });
 
-    redisClient.connect();
+    // redisClient.connect();
 }
 
 const setCache = async (key, value) => {

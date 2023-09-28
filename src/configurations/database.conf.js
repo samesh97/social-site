@@ -1,15 +1,14 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const { config } = require('./common.conf');
 
-const dbConStr = process.env.ORACLE_DB_CONNECTION_STR;
-const sequelize = new Sequelize(dbConStr, { logging: false });
+const sequelize = new Sequelize( config.ORACLE_DB_CONNECTION_STR, { logging: false } );
 
 const connectToDB = async () => {
     try {
         sequelize.authenticate();
         console.log('Database connection is success');
     }
-    catch(error) {
+    catch( error ) {
         console.log(`Error occured while connecting to database ${error}`);
     }
 }
