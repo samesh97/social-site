@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const { userRoute } = require("./routes/user.route");
 const { postRoute } = require("./routes/post.route");
+const { reactionRoute } = require('./routes/reaction.route');
 const { authentication, authRoute } = require("./routes/auth.route");
 const { config } = require("./configurations/common.conf");
 
@@ -20,6 +21,7 @@ app.use( authentication );
 app.use('/auth', authRoute);
 app.use('/users', userRoute);
 app.use("/posts", postRoute);
+app.use("/reactions", reactionRoute);
 
 
 app.listen( config.SERVER_PORT, async () => {
