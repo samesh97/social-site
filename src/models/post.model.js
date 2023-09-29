@@ -15,21 +15,11 @@ const Post = sequelize.define("Post", {
   },
 });
 
-const Reaction = sequelize.define("Reaction", {
-  type: {
-    type: DataTypes.STRING,
-    defaultValue: "LIKE",
-  },
-});
-
 const sync = async () => {
   Post.belongsTo(User);
   User.hasMany(Post);
-  Post.hasMany(Reaction);
-  Reaction.belongsTo(User);
   await Post.sync({ alter: true });
-  await Reaction.sync({ alter: true });
 };
 sync();
 
-module.exports = { Post, Reaction };
+module.exports = { Post };

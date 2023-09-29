@@ -1,7 +1,9 @@
 const { Router } = require('express');
-const { Post, Reaction } = require('../models/post.model');
+const { Post } = require('../models/post.model');
+const { Reaction } = require('../models/reaction.model');
 const { User } = require('../models/user.model');
 const { config } = require('../configurations/common.conf');
+const { Comment } = require('../models/comment.model');
 const { Response, generateResponse} = require('../dtos/response.dto');
 const postRoute = Router();
 
@@ -26,7 +28,7 @@ postRoute.post('/', async (req, res) => {
 
 postRoute.get('/', async (req, res) => {
   const accessToken = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
-  const posts = await Post.findAll();
+  const posts = await Post.findAll({ include: [{ model: Reaction }, { model: Comment }] });
   return generateResponse(res, posts, 200);
 });
 
