@@ -1,30 +1,41 @@
-const { DataTypes, UUIDV1 } = require('sequelize');
-const { sequelize } = require('../configurations/database.conf');
-const { Role } = require('./role.model');
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../configurations/database.conf");
+const { Role } = require("./role.model");
 
-const User = sequelize.define('User', {
-    id: {
-        primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: UUIDV1
-    },
-    firstName: DataTypes.STRING,
-    username: {
-        type: DataTypes.STRING
-    },
-    password: DataTypes.STRING,
+const User = sequelize.define("User", {
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  isVerified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
-const User_Role = sequelize.define('User_Role',
-    {},
-    { timestamps: false }
-);
+const User_Role = sequelize.define("User_Role", {}, { timestamps: false });
 
 const sync = async () => {
-    User.belongsToMany(Role,  { through: User_Role });
-    Role.belongsToMany(User,  { through: User_Role });
-    await User.sync( { alter: true });
-    await User_Role.sync( { alter: true });
-}
+  User.belongsToMany(Role, { through: User_Role });
+  Role.belongsToMany(User, { through: User_Role });
+  await User.sync({ alter: true });
+  await User_Role.sync({ alter: true });
+};
 sync();
 module.exports = { User, User_Role };

@@ -4,7 +4,7 @@ const { Router } = require("express");
 
 const { User } = require("../models/user.model");
 const { Role } = require("../models/role.model");
-const { Response } = require("../dtos/response.dto");
+const { Response, generateResponse } = require("../dtos/response.dto");
 const { config } = require("../configurations/common.conf");
 const { Token, TokenStatus, TokenType } = require("../models/token.model");
 const { Config, ConfigKey } = require("../models/config.model");
@@ -12,26 +12,22 @@ const { Config, ConfigKey } = require("../models/config.model");
 const authRoute = Router();
 
 authRoute.post("/login", async (req, res) => {
-  //verify username, password
-  let username = req.body?.username;
+  //verify email, password
+  let email = req.body?.email;
   let password = req.body?.password;
-  if (!username || !password) {
+  if (!email || !password) {
     return generateResponse(res, "Bad Request.", 400);
   }
 
   //find user in database
-  const user = await User.findOne({ where: { username: username } });
+  const user = await User.findOne({ where: { email: email } });
   if (!user) {
     return generateResponse(res, "User not found.", 404);
   }
   //verify hashPassword & plain password
   let isHashValid = bcrypt.compareSync(password, user.password);
   if (!isHashValid) {
-    return generateResponse(
-      res,
-      "Invalid username, password combination.",
-      400
-    );
+    return generateResponse(res, "Invalid email, password combination.", 400);
   }
 
   await genAccessRefreshTokensAndSetAsCookies(res, user.id, true);
@@ -39,7 +35,7 @@ authRoute.post("/login", async (req, res) => {
 });
 
 authRoute.post("/refresh", async (req, res, next) => {
-  const refreshToken = req.cookies["x-refresh-token"];
+  const refreshToken = req.cookies[config.REFRESH_TOKEN_COOKIE_NAME];
   if (!refreshToken) {
     return generateResponse(res, "Refresh token not found", 404);
   }
@@ -64,7 +60,7 @@ authRoute.post("/refresh", async (req, res, next) => {
 });
 
 authRoute.post("/verify", (req, res) => {
-  const accessToken = req.cookies["x-access-token"];
+  const accessToken = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
   if (!accessToken) {
     return generateResponse(res, `Failed to verify.`, 400);
   }
@@ -82,21 +78,21 @@ const genAccessRefreshTokensAndSetAsCookies = async (
 ) => {
   //create a jwt token and sign with userId
   const accessToken = await createAccessToken(userId);
-  const newRefreshToken = await createRefreshToken(userId);
 
   const accessTokenExpiresInMiliseconds =
     config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES * 1000 * 60;
 
   //set server side cookies
-  res.cookie("x-access-token", accessToken, {
+  res.cookie(config.ACCESS_TOKEN_COOKIE_NAME, accessToken, {
     httpOnly: true,
     maxAge: accessTokenExpiresInMiliseconds,
   });
 
   if (isRefreshTokenGenerated) {
+    const newRefreshToken = await createRefreshToken(userId);
     const refreshTokenExpiresInMiliseconds =
       config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES * 1000 * 60;
-    res.cookie("x-refresh-token", newRefreshToken, {
+    res.cookie(config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, {
       httpOnly: true,
       maxAge: refreshTokenExpiresInMiliseconds,
     });
@@ -163,7 +159,7 @@ const isByPassAuth = async (req) => {
 };
 
 const verifyAuthHeader = async (req) => {
-  let authHeader = req.cookies["x-access-token"];
+  let authHeader = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
   if (authHeader) {
     const object = verifyToken(authHeader, config.JWT_ACCESS_TOKEN_SECRET);
     if (object) {
@@ -296,13 +292,6 @@ const saveTokenInDB = async (
       token: token,
     });
   }
-};
-
-generateResponse = (res, data, code) => {
-  const response = new Response();
-  response.data = data;
-  response.code = code;
-  return res.status(code).json(response);
 };
 
 module.exports = { authentication, hasRole, authRoute };
