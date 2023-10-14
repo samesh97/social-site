@@ -111,24 +111,33 @@ const authentication = async (req, res, next) => {
 };
 
 const hasRole = (...roles) => {
-  return async (req, res, next) => {
+  return async (req, res, next) =>
+  {
     const userId = req.body.userInfo?.userId;
-    if (userId) {
-      const dbUser = await User.findByPk(userId, {
+    if ( !userId )
+    {
+        return generateResponse(res, "No userId found", 400);
+    }
+    const dbUser = await User.findByPk(userId, {
         attributes: [],
         include: { model: Role, attributes: ["name"] },
-      });
+    });
 
-      const hasRole = dbUser.Roles.some((role) => roles.includes(role.name));
-      if (hasRole) {
-        return next();
-      }
+    if ( !dbUser )
+    {
+        return generateResponse(res, "No user found", 404);
     }
-    return generateResponse(
-      res,
-      "Forbidden. You do not have permissions to perform this action.",
-      403
-    );
+
+    const hasRole = dbUser.Roles.some( (role) => roles.includes(role.name) );
+    if ( !hasRole )
+    {
+       return generateResponse(
+         res,
+         "Forbidden. You do not have permissions to perform this action.",
+         403
+       );
+    }
+    return next();
   };
 };
 
