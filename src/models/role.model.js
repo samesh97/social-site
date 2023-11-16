@@ -19,7 +19,7 @@ const Roles = {
 };
 
 const sync = async () => {
-  await Role.sync({ alter: true });
+  await Role.sync();
   const admin = await Role.findOrCreate({
     where: {
       name: Roles.ADMIN,

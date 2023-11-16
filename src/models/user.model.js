@@ -34,8 +34,8 @@ const User_Role = sequelize.define("User_Role", {}, { timestamps: false });
 const sync = async () => {
   User.belongsToMany(Role, { through: User_Role });
   Role.belongsToMany(User, { through: User_Role });
-  await User.sync({ alter: true });
-  await User_Role.sync({ alter: true });
+  await User.sync();
+  await User_Role.sync();
 };
 sync();
 module.exports = { User, User_Role };

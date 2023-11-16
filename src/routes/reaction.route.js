@@ -19,7 +19,7 @@ reactionRoute.post('/', async (req, res) => {
     //react for the first time
     if ( !reaction )
     {
-        await Reaction.create({
+        Reaction.create({
           UserId: userId,
           PostId: postId,
           type: type,
@@ -29,14 +29,14 @@ reactionRoute.post('/', async (req, res) => {
     //change reaction type later on
     if (reaction.type != type)
     {
-        await reaction.update({
+        reaction.update({
           type: type
         });
     }
     else
     {
         //undo reaction
-        await reaction.destroy();
+        reaction.destroy();
     }
     return generateResponse(res, 'Reacted', 201);
 });

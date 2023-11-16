@@ -18,7 +18,7 @@ const Post = sequelize.define("Post", {
 const sync = async () => {
   Post.belongsTo(User);
   User.hasMany(Post);
-  await Post.sync({ alter: true });
+  await Post.sync();
 };
 sync();
 

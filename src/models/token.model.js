@@ -37,7 +37,7 @@ const Token = sequelize.define('Token', {
 });
 
 const sync = async () => {
-    Token.sync({ alter: true });
+    Token.sync();
 }
 sync();
 

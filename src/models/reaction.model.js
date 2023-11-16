@@ -14,15 +14,15 @@ const ReactonType = {
 const Reaction = sequelize.define("Reaction", {
   type: {
     type: DataTypes.STRING,
-    defaultValue: ReactonType.LIKE,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   }
 });
 
 const sync = async () => {
   Post.hasMany(Reaction);
   Reaction.belongsTo(User);
-  await Reaction.sync({ alter: true });
+  await Reaction.sync();
 };
 sync();
 

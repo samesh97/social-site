@@ -18,7 +18,7 @@ const Comment = sequelize.define("Comment", {
 const sync = async () => {
     Comment.belongsTo(User);
     Post.hasMany(Comment);
-    await Comment.sync({ alter: true });
+    await Comment.sync();
 };
 sync();
 
