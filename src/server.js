@@ -7,7 +7,7 @@ const { postRoute } = require("./routes/post.route");
 const { reactionRoute } = require('./routes/reaction.route');
 const { authRoute } = require("./routes/auth.route");
 const { authentication } = require("./utils/auth.util");
-const { config } = require("./configurations/common.conf");
+const { config } = require("./conf/common.conf");
 
 const app = express();
 

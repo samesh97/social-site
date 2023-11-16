@@ -1,5 +1,5 @@
 const { DataTypes, UUIDV1 } = require("sequelize");
-const { sequelize } = require("../configurations/database.conf");
+const { sequelize } = require("../conf/database.conf");
 const { User } = require("../models/user.model");
 
 const Post = sequelize.define("Post", {

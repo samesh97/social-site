@@ -3,17 +3,17 @@ const bcrypt = require("bcrypt");
 
 const { User, User_Role } = require("../models/user.model");
 const { Role, Roles } = require("../models/role.model");
-const { sequelize } = require("../configurations/database.conf");
-const { config } = require("../configurations/common.conf");
-const { isNullOrEmpty } = require("../utils/common.util");
+const { sequelize } = require("../conf/database.conf");
+const { isNullOrEmpty, response } = require("../utils/common.util");
 
 const userRoute = Router();
 
 userRoute.post("/", async (req, res) => {
   const user = req.body;
   const validationError = await validateUserCreation(user);
-  if (validationError) {
-    return res.status(400).json(validationError);
+  if (validationError)
+  {
+    return response(res, validationError, 400);
   }
 
   const transaction = await sequelize.transaction();
@@ -49,7 +49,7 @@ userRoute.post("/", async (req, res) => {
     });
 
     transaction.commit();
-    return res.status(201).json("User created.");
+    return response(res,"User created.", 201);
   } catch (error) {
     transaction.rollback();
     console.log(error);

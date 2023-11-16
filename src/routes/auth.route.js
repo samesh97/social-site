@@ -10,7 +10,7 @@ const
 
 const { User } = require("../models/user.model");
 const { response } = require("../utils/common.util");
-const { config } = require("../configurations/common.conf");
+const { config } = require("../conf/common.conf");
 const { isNullOrEmpty } = require("../utils/common.util");
 
 const authRoute = Router();
