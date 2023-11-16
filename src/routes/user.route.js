@@ -5,6 +5,7 @@ const { User, User_Role } = require("../models/user.model");
 const { Role, Roles } = require("../models/role.model");
 const { sequelize } = require("../configurations/database.conf");
 const { config } = require("../configurations/common.conf");
+const { isNullOrEmpty } = require("../utils/common.util");
 
 const userRoute = Router();
 
@@ -56,13 +57,17 @@ userRoute.post("/", async (req, res) => {
   }
 });
 
-const validateUserCreation = async (user) => {
-  if (!user | !user.email | !user.password | !user.firstName | !user.lastName) {
+const validateUserCreation = async (user) =>
+{
+  const { email, password, firstName, lastName } = user;
+  if (isNullOrEmpty( email, password, firstName, lastName ))
+  {
     return "Bad Request";
   }
 
   const dbUser = await User.findOne({ where: { email: user.email } });
-  if (dbUser) {
+  if (dbUser)
+  {
     return "Email is already taken.";
   }
   return null;

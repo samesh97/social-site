@@ -3,13 +3,14 @@ const bcrypt = require("bcrypt");
 
 const { User } = require("../models/user.model");
 const { Role } = require("../models/role.model");
-const { generateResponse } = require("../dtos/response.dto");
+const { response } = require("../dtos/response.dto");
 const { config } = require("../configurations/common.conf");
 const { Token, TokenStatus, TokenType } = require("../models/token.model");
 const { Config, ConfigKey } = require("../models/config.model");
-const { isNullOrEmpty } = require("../utils/common.util");
+const { isNullOrEmpty, minutesToMilliseconds } = require("../utils/common.util");
 
-const isPlainPasswordMatches = (palinText, hashedPassword) => {
+const isPlainPasswordMatches = (palinText, hashedPassword) =>
+{
   try
   {
     return bcrypt.compareSync(palinText, hashedPassword);
@@ -20,40 +21,36 @@ const isPlainPasswordMatches = (palinText, hashedPassword) => {
   }
 };
 
-const genAccessRefreshTokensAndSetAsCookies = async (
-  res,
-  userId,
-  isRefreshTokenGenerated = false
-) => {
-  //create a jwt token and sign with userId
-  const accessToken = await createAccessToken(userId);
+const genAccessRefreshTokensAndSetAsCookies = async (res, userId, genRefreshToken = false) =>
+{
+  const accessToken = await genAccessToken(userId);
+  const accessTokenExpiresIn = minutesToMilliseconds(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES);
 
-  const accessTokenExpiresInMiliseconds =
-    config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES * 1000 * 60;
+  setCookie(res, config.ACCESS_TOKEN_COOKIE_NAME, accessToken, accessTokenExpiresIn);
 
-  //set server side cookies
-  res.cookie(config.ACCESS_TOKEN_COOKIE_NAME, accessToken, {
-    httpOnly: true,
-    maxAge: accessTokenExpiresInMiliseconds,
-  });
-
-  if (isRefreshTokenGenerated) {
-    const newRefreshToken = await createRefreshToken(userId);
-    const refreshTokenExpiresInMiliseconds =
-      config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES * 1000 * 60;
-    res.cookie(config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, {
-      httpOnly: true,
-      maxAge: refreshTokenExpiresInMiliseconds,
-    });
+  if (genRefreshToken)
+  {
+    const newRefreshToken = await genRefreshToken(userId);
+    const refreshTokenExpiresIn = minutesToMilliseconds(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES);
+    setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
   }
 };
+
+const setCookie = (res, key, value, maxAge, httpOnly = true) => 
+{
+  res.cookie(key, value,
+  {
+    httpOnly: httpOnly,
+    maxAge: maxAge,
+  });
+}
 
 const hasRole = (...roles) => {
   return async (req, res, next) => {
     const userId = req.body.userInfo?.userId;
     if (isNullOrEmpty(userId) )
     {
-      return generateResponse(res, "No userId found", 400);
+      return response(res, "No userId found", 400);
     }
     const dbUser = await User.findByPk(userId, {
       attributes: [],
@@ -62,13 +59,13 @@ const hasRole = (...roles) => {
 
     if (isNullOrEmpty(dbUser))
     {
-      return generateResponse(res, "No user found", 404);
+      return response(res, "No user found", 404);
     }
 
     const hasRole = dbUser.Roles.some((role) => roles.includes(role.name));
     if (isNullOrEmpty(hasRole))
     {
-      return generateResponse(
+      return response(
         res,
         "Forbidden. You do not have permissions to perform this action.",
         403
@@ -78,7 +75,8 @@ const hasRole = (...roles) => {
   };
 };
 
-const isByPassAuth = async (req) => {
+const isByPassAuth = async (req) =>
+{
   const url = req.url;
   const urlWithoutBackSlash = url.endsWith("/")
     ? url.substring(0, url.length - 1)
@@ -131,7 +129,7 @@ const verifyAuthHeader = async (req) => {
   return false;
 };
 
-const createAccessToken = async (userId) => {
+const genAccessToken = async (userId) => {
   const currentEpochTime = Date.now;
   const object = {
     userId,
@@ -144,7 +142,7 @@ const createAccessToken = async (userId) => {
   await saveTokenInDB(userId, token, TokenType.ACCESS_TOKEN);
   return token;
 };
-const createRefreshToken = async (userId) => {
+const genRefreshToken = async (userId) => {
   const currentEpochTime = Date.now;
   const object = {
     userId,
@@ -240,15 +238,13 @@ const saveTokenInDB = async (
   }
 };
 
-const authentication = async (req, res, next) => {
-  if ((await isByPassAuth(req)) || (await verifyAuthHeader(req))) {
+const authentication = async (req, res, next) =>
+{
+  if ((await isByPassAuth(req)) || (await verifyAuthHeader(req)))
+  {
     return next();
   }
-  return generateResponse(
-    res,
-    "Unauthorized. You do not have permissions to perform this action.",
-    401
-  );
+  return response(res, "Unauthorized. You do not have permissions to perform this action.", 401);
 };
 
 module.exports = {

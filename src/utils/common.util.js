@@ -1,3 +1,5 @@
+const { Response } = require("../dtos/response.dto"); 
+
 const isNullOrEmpty = (...values) =>
 {
     for (value of values)
@@ -22,4 +24,19 @@ const isNotNullOrEmpty = (...values) =>
     return true;
 }
 
-module.exports = { isNullOrEmpty };
+const minutesToMilliseconds = (minutes) => 
+{
+    if (isNotNullOrEmpty(minutes))
+    {
+        return 0;
+    }
+    return minutes * 1000 * 60;
+}
+
+const response = (res, data, code) =>
+{
+    const response = new Response(data, code);
+    return res.status(code).json(response);
+};
+
+module.exports = { isNullOrEmpty, minutesToMilliseconds, response };

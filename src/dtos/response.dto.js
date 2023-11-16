@@ -1,11 +1,12 @@
-class Response {
-    data;
-    code;
+class Response
+{
+  data;
+  code;
+  
+  constructor(data, code)
+  {
+    this.data = data;
+    this.code = code;
+  }
 }
-generateResponse = (res, data, code) => {
-  const response = new Response();
-  response.data = data;
-  response.code = code;
-  return res.status(code).json(response);
-};
-module.exports = { Response, generateResponse };
+module.exports = { Response };
