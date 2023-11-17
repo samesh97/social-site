@@ -3,11 +3,11 @@ const bcrypt = require("bcrypt");
 
 const { User } = require("../models/user.model");
 const { Role } = require("../models/role.model");
-const { response } = require("../dtos/response.dto");
+const { response, setSessionInfo } = require("./common.util");
 const { config } = require("../conf/common.conf");
 const { Token, TokenStatus, TokenType } = require("../models/token.model");
 const { Config, ConfigKey } = require("../models/config.model");
-const { isNullOrEmpty, minutesToMilliseconds } = require("../utils/common.util");
+const { isNullOrEmpty, minutesToMilliseconds, sliceEnd, getConfig } = require("../utils/common.util");
 
 const isPlainPasswordMatches = (palinText, hashedPassword) =>
 {
@@ -21,14 +21,14 @@ const isPlainPasswordMatches = (palinText, hashedPassword) =>
   }
 };
 
-const genAccessRefreshTokensAndSetAsCookies = async (res, userId, genRefreshToken = false) =>
+const genAccessRefreshTokensAndSetAsCookies = async (res, userId, refreshToken = false) =>
 {
   const accessToken = await genAccessToken(userId);
   const accessTokenExpiresIn = minutesToMilliseconds(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES);
 
   setCookie(res, config.ACCESS_TOKEN_COOKIE_NAME, accessToken, accessTokenExpiresIn);
 
-  if (genRefreshToken)
+  if (refreshToken)
   {
     const newRefreshToken = await genRefreshToken(userId);
     const refreshTokenExpiresIn = minutesToMilliseconds(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES);
@@ -45,10 +45,12 @@ const setCookie = (res, key, value, maxAge, httpOnly = true) =>
   });
 }
 
-const hasRole = (...roles) => {
-  return async (req, res, next) => {
-    const userId = req.body.userInfo?.userId;
-    if (isNullOrEmpty(userId) )
+const hasRole = (...roles) =>
+{
+  return async (req, res, next) =>
+  {
+    const { userId } = req.body.userInfo;
+    if (isNullOrEmpty(userId))
     {
       return response(res, "No userId found", 400);
     }
@@ -62,14 +64,11 @@ const hasRole = (...roles) => {
       return response(res, "No user found", 404);
     }
 
+    //check if the user has any roles provided to access the specific method
     const hasRole = dbUser.Roles.some((role) => roles.includes(role.name));
     if (isNullOrEmpty(hasRole))
     {
-      return response(
-        res,
-        "Forbidden. You do not have permissions to perform this action.",
-        403
-      );
+      return response(res, "Forbidden. You do not have permissions to perform this action.", 403);
     }
     return next();
   };
@@ -77,56 +76,60 @@ const hasRole = (...roles) => {
 
 const isByPassAuth = async (req) =>
 {
-  const url = req.url;
-  const urlWithoutBackSlash = url.endsWith("/")
-    ? url.substring(0, url.length - 1)
-    : url;
+  const urlWithoutBackSlash = sliceEnd(req.url, "/");
 
-  const config = await Config.findOne({
-    where: { name: ConfigKey.REST_AUTH_BYPASS_URL },
-  });
+  const config = await getConfig(ConfigKey.REST_AUTH_BYPASS_URL);
+  if (isNullOrEmpty(config))
+  {
+    return false;  
+  }
 
-  return config?.value?.split(",").some((value) => {
-    if (value && value.endsWith("*")) {
-      const configWithoutAsterisk = value.substring(0, value.length - 1);
-      let matchText = configWithoutAsterisk;
-      if (configWithoutAsterisk.endsWith("/")) {
-        matchText = configWithoutAsterisk.substring(
-          0,
-          configWithoutAsterisk.length - 1
-        );
-      }
-      return urlWithoutBackSlash.startsWith(matchText);
+  const urls = config.split(",");
+
+  const isByPass = urls.some(url =>
+  {
+    if (isNullOrEmpty(url))
+    {
+      return false;  
     }
-    return value === urlWithoutBackSlash;
+    if (url.endsWith("*"))
+    {
+      url = sliceEnd(url, "*");
+      return urlWithoutBackSlash.startsWith(url);
+    }
+    return url === urlWithoutBackSlash;
   });
+  
+  return isByPass;
 };
 
-const verifyAuthHeader = async (req) => {
+const verifyAuthHeader = async (req) =>
+{
   let authHeader = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
-  if (authHeader) {
-    const object = verifyToken(authHeader, config.JWT_ACCESS_TOKEN_SECRET);
-    if (object) {
-      const dbToken = await getTokenFromDB(
-        object.userId,
-        TokenType.ACCESS_TOKEN
-      );
-      if (dbToken) {
-        if (dbToken != authHeader) {
-          const dbTokenPayload = verifyToken(
-            dbToken,
-            config.JWT_ACCESS_TOKEN_SECRET
-          );
-          if (dbTokenPayload && dbTokenPayload.iat > object.iat) {
-            return false;
-          }
-        }
-      }
-      req.body.userInfo = { userId: object.userId };
-      return true;
-    }
+
+  if (isNullOrEmpty(authHeader))
+  {
+    return false;  
   }
-  return false;
+  const object = verifyToken(authHeader, config.JWT_ACCESS_TOKEN_SECRET);
+  if (isNullOrEmpty(object))
+  {
+    return false;  
+  }
+
+  const dbToken = await getTokenFromDB(object.userId, TokenType.ACCESS_TOKEN);
+  if (isNullOrEmpty(dbToken))
+  {
+    return false;  
+  }
+  
+  if (dbToken != authHeader)
+  {
+    return false;  
+  }
+  
+  setSessionInfo(req, object);
+  return true;
 };
 
 const genAccessToken = async (userId) => {

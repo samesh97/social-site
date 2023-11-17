@@ -33,16 +33,17 @@ authRoute.post("/login", async (req, res) =>
     return response(res, "User not found.", 404);
   }
 
-  //check e-mail verification
-  if (!user.isVerified)
-  {
-    return response(res, "Email is not verified!", 400);
-  }
-
   //verify plain password with hashed password
-  if (!isPlainPasswordMatches(password, user.password)) {
+  if (!isPlainPasswordMatches(password, user.password))
+  {
     return response(res, "Invalid email, password combination.", 400);
   }
+
+    //check e-mail verification
+  // if (!user.isVerified)
+  // {
+  //   return response(res, "Email is not verified!", 400);
+  // }
 
   await genAccessRefreshTokensAndSetAsCookies(res, user.id, true);
   return response(res, "Login success.", 200);

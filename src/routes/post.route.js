@@ -4,18 +4,21 @@ const { Reaction } = require('../models/reaction.model');
 const { User } = require('../models/user.model');
 const { config } = require('../conf/common.conf');
 const { Comment } = require('../models/comment.model');
-const { response } = require("../utils/common.util");
+const { response, getSessionInfo, isNullOrEmpty } = require("../utils/common.util");
 const postRoute = Router();
 
-postRoute.post('/', async (req, res) => {
-  const { userId } = req.body.userInfo;
+postRoute.post('/', async (req, res) =>
+{
+  const { userId } = getSessionInfo(req);
   const { description } = req.body;
-  if ( !userId || !description )
+
+  if ( isNullOrEmpty(userId, description) )
   {
     return response(res, 'Bad Request!', 400);
   }
+
   const user = await User.findOne({ where: { id: userId } });
-  if (!user)
+  if (isNullOrEmpty(user))
   {
       return response(res, "Invalid User!", 404);
   }
@@ -23,7 +26,7 @@ postRoute.post('/', async (req, res) => {
     description: description,
     UserId: user.id,
   });
-  return response(res, post, 201);
+  return response(res, "Post created!", 201);
 });
 
 postRoute.get('/', async (req, res) => {

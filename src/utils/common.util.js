@@ -1,4 +1,5 @@
-const { Response } = require("../dtos/response.dto"); 
+const { Response } = require("../dtos/response.dto");
+const { Config, ConfigKey } = require("../models/config.model");
 
 const isNullOrEmpty = (...values) =>
 {
@@ -26,7 +27,7 @@ const isNotNullOrEmpty = (...values) =>
 
 const minutesToMilliseconds = (minutes) => 
 {
-    if (isNotNullOrEmpty(minutes))
+    if (isNullOrEmpty(minutes))
     {
         return 0;
     }
@@ -39,4 +40,29 @@ const response = (res, data, code) =>
     return res.status(code).json(response);
 };
 
-module.exports = { isNullOrEmpty, minutesToMilliseconds, response };
+const sliceEnd = (text, endChar) => 
+{
+    if (!text || !endChar)
+    {
+        return "";    
+    }
+    return text.endsWith(endChar) ? text.substring(0, text.length - 1): text;
+}
+
+const getConfig = async (name) =>
+{
+    const config = await Config.findOne({
+        where: { name: name },
+    });
+    return config?.value;
+}
+
+const getSessionInfo = (req) => 
+{
+    return req.body.session;
+}
+const setSessionInfo = (req, data) => 
+{
+    req.body.session = data;
+}
+module.exports = { isNullOrEmpty, minutesToMilliseconds, response, sliceEnd, getConfig, getSessionInfo, setSessionInfo };

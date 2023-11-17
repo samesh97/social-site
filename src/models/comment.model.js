@@ -12,12 +12,25 @@ const Comment = sequelize.define("Comment", {
     comment: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    userId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+    postId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        primaryKey: true
     }
 });
 
-const sync = async () => {
-    Comment.belongsTo(User);
-    Post.hasMany(Comment);
+const sync = async () =>
+{
+    // Comment.belongsTo(User);
+    // Comment.belongsTo(Post);
+    Post.hasMany(Comment, { foreignKey: { name: 'postId' }, sourceKey: ['id'] });
+    Comment.belongsTo(User, { foreignKey: { name: 'userId'}, sourceKey: ['id']});
     await Comment.sync();
 };
 sync();

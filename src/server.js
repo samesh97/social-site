@@ -8,6 +8,7 @@ const { reactionRoute } = require('./routes/reaction.route');
 const { authRoute } = require("./routes/auth.route");
 const { authentication } = require("./utils/auth.util");
 const { config } = require("./conf/common.conf");
+const { commentRoute } = require('./routes/comment.route');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/auth', authRoute);
 app.use('/users', userRoute);
 app.use("/posts", postRoute);
 app.use("/reactions", reactionRoute);
+app.use("/comments", commentRoute);
 
 
 app.listen(config.SERVER_PORT, async () =>

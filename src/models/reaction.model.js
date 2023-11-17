@@ -16,12 +16,22 @@ const Reaction = sequelize.define("Reaction", {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true
+  },
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    primaryKey: true
+  },
+  postId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    primaryKey: true
   }
 });
 
 const sync = async () => {
-  Post.hasMany(Reaction);
-  Reaction.belongsTo(User);
+  Post.hasMany(Reaction, { foreignKey: { name: 'postId' }, sourceKey: ['id'] });
+  Reaction.belongsTo(User, { foreignKey: { name: 'userId'}, sourceKey: ['id']});
   await Reaction.sync();
 };
 sync();

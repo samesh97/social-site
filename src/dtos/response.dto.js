@@ -1,7 +1,7 @@
 class Response
 {
-  data;
   code;
+  data;
   
   constructor(data, code)
   {
