@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { config } from '../../configuration/common.conf';
 import { Response } from 'src/app/model/response.model';
 
@@ -14,7 +13,9 @@ export class AuthService {
   private REFRESH_URL = `${config.SERVER_BASE_URL}/auth/refresh`;
   private LOGOUT_URL = `${config.SERVER_BASE_URL}/auth/logout`;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private loginStateSubject = new BehaviorSubject<boolean>(false);
+
+  constructor(private http: HttpClient) {}
 
   login = (email: string, password: string): Observable<Response> => {
     return this.http.post<Response>(
@@ -45,12 +46,16 @@ export class AuthService {
     );
   }
 
-  setLoggedIn = (value: boolean, url: string) => {
+  setLoggedIn = (value: boolean) => {
     localStorage.setItem('loginState', value.toString());
-    this.router.navigate([url]);
+    this.loginStateSubject.next(value);
   };
   hasLoggedIn = (): boolean => {
     const loginStatus = localStorage.getItem('loginState');
     return loginStatus ? loginStatus == 'true' : false;
   };
+  loginChangeListener = (): Observable<boolean> => 
+  {
+    return this.loginStateSubject;
+  }
 }

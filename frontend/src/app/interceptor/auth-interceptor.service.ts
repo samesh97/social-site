@@ -29,7 +29,7 @@ export class AuthInterceptorService implements HttpInterceptor {
           return throwError(data);
         }),
         catchError((err) => {
-          this.authService.setLoggedIn(false, '/login');
+          this.authService.setLoggedIn(false);
           return throwError(err);
         })
       );

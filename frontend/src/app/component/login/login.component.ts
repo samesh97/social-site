@@ -18,7 +18,7 @@ export class LoginComponent {
       .subscribe((data: Response) => {
         if (data.code == 200)
         {
-          this.authService.setLoggedIn(true, '/');
+          this.authService.setLoggedIn(true);
         }
     });
   };
