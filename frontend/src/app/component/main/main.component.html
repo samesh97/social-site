@@ -1,1 +1,18 @@
+<div *ngIf="isLoggedIn" class="navigation">
+    <div class="branding" (click)="navigateHome()">
+        <span>SOCIAL MEDIA</span>
+    </div>
+    <div class="nav-list">
+        <div class="search-container">
+            <input type="text" placeholder="Search..." [(ngModel)]="searchText">
+            <button (click)="search()">Search</button>
+            <app-profile-search [users]="searchUsers" (select)="viewProfile($event)"></app-profile-search>
+        </div>
+    </div>
+    <div class="profile">
+        <img src="assets/images/account.png" (click)="logout()">
+        <img src="assets/images/notifications.svg">
+    </div>
+</div>
+<div *ngIf="isLoggedIn" class="seperation"></div>
 <router-outlet></router-outlet>

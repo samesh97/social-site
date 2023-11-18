@@ -4,12 +4,12 @@ const { sequelize } = require("../conf/database.conf");
 const Friend = sequelize.define("Friend", {
   firstUser: {
     primaryKey: true,
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     allowNull: false,
   },
   secondUser: {
     primaryKey: true,
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     allowNull: false,
   },
 });

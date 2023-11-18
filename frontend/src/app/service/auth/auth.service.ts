@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { config } from '../../configuration/common.conf';
 import { Response } from 'src/app/model/response.model';
 
@@ -13,7 +13,7 @@ export class AuthService {
   private REFRESH_URL = `${config.SERVER_BASE_URL}/auth/refresh`;
   private LOGOUT_URL = `${config.SERVER_BASE_URL}/auth/logout`;
 
-  private loginStateSubject = new BehaviorSubject<boolean>(false);
+  private loginStateSubject = new ReplaySubject<boolean>(1);
 
   constructor(private http: HttpClient) {}
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-main',
@@ -8,7 +10,11 @@ import { AuthService } from 'src/app/service/auth/auth.service';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit{
-  public constructor(private authService: AuthService, private router: Router) { }
+  public searchText: string = "";
+  searchUsers: User[] = [];
+  isLoggedIn: boolean = false;
+  
+  public constructor(private authService: AuthService, private userService: UserService, private router: Router) { }
   
   ngOnInit(): void
   {
@@ -16,8 +22,11 @@ export class MainComponent implements OnInit{
   }
   loginState = () =>
   {
+    this.isLoggedIn = this.authService.hasLoggedIn();
     this.authService.loginChangeListener().subscribe(isLogin => {
-      if (isLogin)
+      this.isLoggedIn = isLogin;
+      console.log('Login state checked ' + isLogin);
+      if(isLogin)
       {
         this.router.navigate(['/']);
       }
@@ -26,5 +35,26 @@ export class MainComponent implements OnInit{
         this.router.navigate(['/login']);  
       }
     });  
+  }
+  search()
+  {
+    this.userService.search(this.searchText).subscribe(data => {
+      this.searchUsers = data.data;
+      console.log(data);
+    });
+  }
+  viewProfile = (id: string) =>
+  {
+    this.router.navigate(['/profile'], { queryParams: { id: id } });
+  }
+  logout = () =>
+  {
+    this.authService.logout().subscribe(data => {
+      this.authService.setLoggedIn(false);
+    });  
+  }
+  navigateHome = () =>
+  {
+    this.router.navigate(['/']);
   }
 }

@@ -20,10 +20,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreatePostDialogComponent } from './dialog/create-post-dialog/create-post-dialog.component';
 import { ProfileSearchComponent } from './component/profile-search/profile-search.component';
+import { ProfileViewComponent } from './component/profile-view/profile-view.component';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  { path: 'profile', component: ProfileViewComponent}
 ];
 
 @NgModule({
@@ -37,7 +39,8 @@ const routes: Routes = [
       CreatePostComponent,
       UserPostComponent,
       CreatePostDialogComponent,
-      ProfileSearchComponent
+      ProfileSearchComponent,
+      ProfileViewComponent
     ],
   imports:
     [

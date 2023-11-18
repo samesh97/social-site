@@ -18,7 +18,7 @@ const Reaction = sequelize.define("Reaction", {
     primaryKey: true
   },
   userId: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     allowNull: false,
     primaryKey: true
   },

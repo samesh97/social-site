@@ -13,6 +13,7 @@ export class LoginGuard {
   ): boolean
   {
     const status = this.authService.hasLoggedIn();
+    console.log(`LoginGuard -> ${status}`);
     if ( status ) {
       this.router.navigate(['/']);
     }

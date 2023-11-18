@@ -1,0 +1,14 @@
+<div class="main-container">
+    <div class="profile-details">
+        <img id="profile-pic" src="assets/images/pp.jpg">
+        <div class="profile-texts">
+          <div class="name-container">
+            <span id="first-name">{{user.firstName}}</span>
+            <span id="last-name">{{user.lastName}}</span>
+          </div>
+        </div>
+    </div>
+    <div *ngFor="let post of posts" class="posts">
+        <app-user-post [post]="post"></app-user-post>
+    </div>
+</div>

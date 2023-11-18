@@ -10,10 +10,15 @@ import { Response } from 'src/app/model/response.model';
 export class UserService
 {
   private SEARCH_URL = `${config.SERVER_BASE_URL}/users/search`;
+  private VIEW_PROFILE_URL = `${config.SERVER_BASE_URL}/users`;
   constructor(private http: HttpClient) { }
 
   search = (keyword: string): Observable<Response> =>
   {
     return this.http.get<Response>(`${this.SEARCH_URL}?keyword=${keyword}`, { withCredentials: true });
+  }
+  viewProfile = (id: string) => 
+  {
+    return this.http.get<Response>(`${this.VIEW_PROFILE_URL}/${id}`, { withCredentials: true });
   }
 }

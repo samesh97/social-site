@@ -19,7 +19,7 @@ const Token = sequelize.define('Token', {
         primaryKey: true
     },
     userId: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false
     },
     type: {

@@ -4,6 +4,8 @@ const { Op } = require("sequelize");
 const { User, User_Role } = require("../models/user.model");
 const { Role, Roles } = require("../models/role.model");
 const { sequelize } = require("../conf/database.conf");
+const { Post } = require("../models/post.model");
+const { Comment } = require("../models/comment.model");
 const { isNullOrEmpty, response, textTohash, getSessionInfo } = require("../utils/common.util");
 
 const userRoute = Router();
@@ -16,8 +18,7 @@ userRoute.post("/", async (req, res) =>
   {
     return response(res, validationError, 400);
   }
-
-  const hashedEmail = textTohash(user.email, 10);
+  
   const hashedPassword = textTohash(user.password, 10);
   
   try
@@ -25,7 +26,6 @@ userRoute.post("/", async (req, res) =>
     const userRole = await Role.findOne({ where: { name: Roles.USER } });
     await User.create(
       {
-        id: hashedEmail,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -71,6 +71,18 @@ userRoute.get("/search", async (req, res) =>
   });
   
   return response(res, users, 200);
+});
+
+userRoute.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  if (isNullOrEmpty(id))
+  {
+    return response(res, "No profile id found", 400);  
+  }
+
+  const user = await User.findOne({ where: { id: id }, attributes: ['id', 'firstName', 'lastName'] , include: [{ model: Post, attributes: ['id', 'description'], include: [{ model: Comment }, { model: User, attributes: ['firstName', 'lastName']}]}, ]});
+  return response(res, user, 200);
+
 });
 
 const validateUserCreation = async (user) =>
