@@ -4,11 +4,12 @@ const bcrypt = require("bcrypt");
 const { User, User_Role } = require("../models/user.model");
 const { Role, Roles } = require("../models/role.model");
 const { sequelize } = require("../conf/database.conf");
-const { isNullOrEmpty, response } = require("../utils/common.util");
+const { isNullOrEmpty, response, textTohash } = require("../utils/common.util");
 
 const userRoute = Router();
 
-userRoute.post("/", async (req, res) => {
+userRoute.post("/", async (req, res) =>
+{
   const user = req.body;
   const validationError = await validateUserCreation(user);
   if (validationError)
@@ -16,42 +17,26 @@ userRoute.post("/", async (req, res) => {
     return response(res, validationError, 400);
   }
 
-  const transaction = await sequelize.transaction();
-  try {
-    const hashedEmail = bcrypt.hashSync(
-      user.email,
-      10
-    );
-    const hashedPassword = bcrypt.hashSync(
-      user.password,
-      10
-    );
-    let userObj = await User.create(
+  const hashedEmail = textTohash(user.email, 10);
+  const hashedPassword = textTohash(user.password, 10);
+  
+  try
+  {
+    const userRole = await Role.findOne({ where: { name: Roles.USER } });
+    await User.create(
       {
         id: hashedEmail,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
         password: hashedPassword,
-      },
-      {
-        transaction: transaction,
+        roleId: userRole.id
       }
     );
-
-    const userRole = await Role.findOne({ where: { name: Roles.USER } });
-    await User_Role.findOrCreate({
-      where: {
-        UserId: hashedEmail,
-        RoleId: userRole.id,
-      },
-      transaction: transaction,
-    });
-
-    transaction.commit();
     return response(res,"User created.", 201);
-  } catch (error) {
-    transaction.rollback();
+  }
+  catch (error)
+  {
     console.log(error);
     return res.status(500).json(`Error while creating user.`);
   }

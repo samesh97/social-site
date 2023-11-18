@@ -1,5 +1,6 @@
 const { Response } = require("../dtos/response.dto");
 const { Config, ConfigKey } = require("../models/config.model");
+const bcrypt = require("bcrypt");
 
 const isNullOrEmpty = (...values) =>
 {
@@ -59,10 +60,23 @@ const getConfig = async (name) =>
 
 const getSessionInfo = (req) => 
 {
-    return req.body.session;
+    const data = req.body.session;
+    return data ? data : {};
 }
 const setSessionInfo = (req, data) => 
 {
     req.body.session = data;
 }
-module.exports = { isNullOrEmpty, minutesToMilliseconds, response, sliceEnd, getConfig, getSessionInfo, setSessionInfo };
+
+const textTohash = (text, saltRounds) => 
+{
+    try
+    {
+        return bcrypt.hashSync(text, 10);
+    }
+    catch (error)
+    {
+        return undefined;
+    }
+}
+module.exports = { isNullOrEmpty, minutesToMilliseconds, response, sliceEnd, getConfig, getSessionInfo, setSessionInfo, textTohash };

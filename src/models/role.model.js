@@ -4,13 +4,15 @@ const { sequelize } = require("../conf/database.conf");
 const Role = sequelize.define("Role",
   {
     id: {
-      primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: UUIDV1,
+      primaryKey: true
     },
-    name: DataTypes.STRING,
-  },
-  { timestamps: false }
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  }
 );
 
 const Roles = {
@@ -18,19 +20,21 @@ const Roles = {
   USER: "USER",
 };
 
-const sync = async () => {
+const sync = async () =>
+{
   await Role.sync();
-  const admin = await Role.findOrCreate({
+  await Role.findOrCreate({
     where: {
       name: Roles.ADMIN,
     },
   });
-  const user = await Role.findOrCreate({
+  await Role.findOrCreate({
     where: {
       name: Roles.USER,
     },
   });
 };
+
 sync();
 
 module.exports = { Role, Roles };

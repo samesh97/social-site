@@ -6,12 +6,14 @@ const
   verifyToken,
   isRefreshTokenRevoked,
   genAccessRefreshTokensAndSetAsCookies,
+  getCookie,
 } = require("../utils/auth.util");
 
 const { User } = require("../models/user.model");
-const { response } = require("../utils/common.util");
+const { response, getSessionInfo } = require("../utils/common.util");
 const { config } = require("../conf/common.conf");
 const { isNullOrEmpty } = require("../utils/common.util");
+const { Token, TokenStatus } = require("../models/token.model");
 
 const authRoute = Router();
 
@@ -75,9 +77,9 @@ authRoute.post("/refresh", async (req, res) =>
   return response(res, "Token refreshed.", 200);
 });
 
-authRoute.post("/verify", (req, res) =>
+authRoute.post("/verify", async (req, res) =>
 {
-  const accessToken = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
+  const accessToken = getCookie(req, config.ACCESS_TOKEN_COOKIE_NAME);
   if (isNullOrEmpty(accessToken))
   {
     return response(res, `Failed to verify.`, 400);
@@ -88,6 +90,25 @@ authRoute.post("/verify", (req, res) =>
     return response(res, `Failed to verify.`, 400);
   }
   return response(res, `Verified.`, 200);
+});
+
+authRoute.post("/logout", async (req, res) =>
+{
+  const accessToken = getCookie(req, config.ACCESS_TOKEN_COOKIE_NAME);
+
+  if (isNullOrEmpty(accessToken))
+  {
+    return response(res, "No session info found", 400);  
+  }
+
+  const result = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);
+  if (isNullOrEmpty(result))
+  {
+    return response(res, `Failed to verify.`, 400);
+  }
+
+  await Token.destroy({ where: { userId: result.userId, status: TokenStatus.WHITELISTED } });
+  return response(res, "Logout success", 200);
 });
 
 module.exports = { authRoute };

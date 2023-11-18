@@ -5,6 +5,8 @@ const { User } = require('../models/user.model');
 const { config } = require('../conf/common.conf');
 const { Comment } = require('../models/comment.model');
 const { response, getSessionInfo, isNullOrEmpty } = require("../utils/common.util");
+const { hasRole } = require('../utils/auth.util');
+const { Roles } = require('../models/role.model');
 const postRoute = Router();
 
 postRoute.post('/', async (req, res) =>
@@ -29,7 +31,8 @@ postRoute.post('/', async (req, res) =>
   return response(res, "Post created!", 201);
 });
 
-postRoute.get('/', async (req, res) => {
+postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
+{
   const accessToken = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
   const posts = await Post.findAll({ include: [{ model: Reaction }, { model: Comment }] });
   return response(res, posts, 200);

@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const { User } = require("../models/user.model");
 const { Role } = require("../models/role.model");
-const { response, setSessionInfo } = require("./common.util");
+const { response, setSessionInfo, getSessionInfo } = require("./common.util");
 const { config } = require("../conf/common.conf");
 const { Token, TokenStatus, TokenType } = require("../models/token.model");
 const { Config, ConfigKey } = require("../models/config.model");
@@ -49,11 +49,12 @@ const hasRole = (...roles) =>
 {
   return async (req, res, next) =>
   {
-    const { userId } = req.body.userInfo;
+    const { userId } = getSessionInfo(req);
     if (isNullOrEmpty(userId))
     {
-      return response(res, "No userId found", 400);
+      return response(res, "No session info found.", 400);
     }
+
     const dbUser = await User.findByPk(userId, {
       attributes: [],
       include: { model: Role, attributes: ["name"] },
@@ -64,9 +65,14 @@ const hasRole = (...roles) =>
       return response(res, "No user found", 404);
     }
 
-    //check if the user has any roles provided to access the specific method
-    const hasRole = dbUser.Roles.some((role) => roles.includes(role.name));
-    if (isNullOrEmpty(hasRole))
+    const dbUserRole = dbUser.Role.name;
+    if (isNullOrEmpty(dbUserRole))
+    {
+      return response(res, "No role round.", 403);  
+    }
+      
+    const hasRole = roles.some(role => role == dbUserRole);
+    if (!hasRole)
     {
       return response(res, "Forbidden. You do not have permissions to perform this action.", 403);
     }
@@ -250,6 +256,11 @@ const authentication = async (req, res, next) =>
   return response(res, "Unauthorized. You do not have permissions to perform this action.", 401);
 };
 
+const getCookie = (req, name) =>
+{
+  return req.cookies[name];
+}
+
 module.exports = {
   isPlainPasswordMatches,
   genAccessRefreshTokensAndSetAsCookies,
@@ -259,4 +270,5 @@ module.exports = {
   authentication,
   verifyToken,
   isRefreshTokenRevoked,
+  getCookie
 };

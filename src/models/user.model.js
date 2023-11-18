@@ -26,16 +26,15 @@ const User = sequelize.define("User", {
   isVerified: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
-  },
+  }
 });
 
-const User_Role = sequelize.define("User_Role", {}, { timestamps: false });
-
-const sync = async () => {
-  User.belongsToMany(Role, { through: User_Role });
-  Role.belongsToMany(User, { through: User_Role });
+const sync = async () =>
+{
+  User.belongsTo(Role, { foreignKey: { name: 'roleId' }, sourceKey: ['id'] });
   await User.sync();
-  await User_Role.sync();
 };
+
 sync();
-module.exports = { User, User_Role };
+
+module.exports = { User };
