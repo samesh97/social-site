@@ -3,15 +3,17 @@ import { PostService } from 'src/app/service/post/post.service';
 import { Response } from 'src/app/model/response.model';
 import { Post } from 'src/app/model/post.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.css'],
 })
-export class TimelineComponent implements OnInit {
-
-  constructor(private postService: PostService, private authService: AuthService) { }
+export class TimelineComponent implements OnInit
+{
+  public searchText: string = "";
+  constructor(private postService: PostService, private authService: AuthService, private userService: UserService) { }
   posts: Post[] = [];
 
   ngOnInit(): void
@@ -29,5 +31,11 @@ export class TimelineComponent implements OnInit {
     this.authService.logout().subscribe(data => {
       this.authService.setLoggedIn(false);
     });  
+  }
+  search()
+  {
+    this.userService.search(this.searchText).subscribe(data => {
+      console.log(data);
+    });
   }
 }

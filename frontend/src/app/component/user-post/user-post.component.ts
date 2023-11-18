@@ -10,6 +10,7 @@ import { PostService } from 'src/app/service/post/post.service';
   styleUrls: ['./user-post.component.css'],
 })
 export class UserPostComponent {
+
   @Input() post: Post = new Post();
 
   public commentText: string = "";

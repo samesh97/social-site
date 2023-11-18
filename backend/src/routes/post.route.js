@@ -34,7 +34,7 @@ postRoute.post('/', async (req, res) =>
 postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
 {
   const accessToken = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
-  const posts = await Post.findAll({ include: [{ model: Reaction }, { model: Comment }] });
+  const posts = await Post.findAll({ include: [{ model: Reaction }, { model: Comment }, { model: User, attributes: ['firstName', 'lastName']}], });
   return response(res, posts, 200);
 });
 

@@ -39,3 +39,15 @@
     font-weight: bold;
     cursor: pointer;
 }
+.no-account-text
+{
+    font-size: 13px;
+}
+.no-account-text span
+{
+    cursor: pointer;
+}
+.no-account-text span:hover
+{
+    color: blue;
+}
