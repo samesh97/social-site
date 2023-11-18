@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="first-row">
+        <img src="assets/images/pp.jpg">
+        <div class="name-container">
+            <span id="name">Samesh Alahakoon</span>
+            <span id="time">1h ago</span>
+        </div>
+    </div>
+    <div class="second-row">
+        <span>{{post.description}}</span>
+    </div>
+    <div class="third-row">
+        <img src="assets/images/like_button.png" (click)="react('LIKE')">
+        <img src="assets/images/comment_button.png">
+        <img src="assets/images/share_button.png">
+    </div>
+    <div class="comment-section">
+        <input type="text" placeholder="Enter your comment" [(ngModel)]="commentText">
+        <img src="assets/images/send.png" (click)="comment()"/>
+    </div>
+    <div class="comments">
+        <div *ngFor="let comment of post.Comments" class="comment">
+            <span>{{comment.comment}}</span>
+        </div>
+    </div>
+</div>

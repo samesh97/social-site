@@ -1,0 +1,77 @@
+.container {
+    width: 600px;
+    height: auto;
+    background-color: #f1f1f1;
+    margin: 10px;
+    border-radius: 4px;
+}
+.first-row {
+    display: flex;
+    padding: 20px;
+}
+.first-row img {
+    width: 40px;
+    clip-path: circle();
+}
+#name {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}
+.name-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    justify-content: center;
+}
+.second-row {
+    width: auto;
+    margin: 0 20px;
+}
+#time {
+    color: #5e5757;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 13px;
+}
+.third-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 20px 0;
+}
+.third-row img {
+    width: 20px;
+    cursor: pointer;
+}
+.comment-section
+{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    position: relative;
+
+}
+.comment-section input
+{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #f1f1f1;
+    padding: 0 15px;
+    outline: none;
+    border-radius: 5px;
+}
+.comment-section img
+{
+    position: absolute;
+    right: 15px;
+    height: 25px;
+    cursor: pointer;
+}
+.comments
+{
+    width: 100%;
+    padding: 10px;
+}

@@ -1,0 +1,6 @@
+<div class="heading">
+    <span>Suggestions</span>
+</div>
+<div class="suggestions" *ngFor="let suggestion of suggestions">
+    <app-friend-request-item [friend]="suggestion"></app-friend-request-item>
+</div>

@@ -1,0 +1,29 @@
+<div class="navigation">
+    <div class="branding">
+        <span>SOCIAL MEDIA</span>
+    </div>
+    <div class="nav-list">
+        <div class="search-container">
+            <input type="text" placeholder="Search...">
+            <button>Search</button>
+        </div>
+    </div>
+    <div class="profile">
+        <img src="assets/images/account.png">
+        <img src="assets/images/notifications.svg">
+    </div>
+</div>
+<div class="main-container">
+     <div class="suggestion-container">
+        <app-friend-request></app-friend-request>
+    </div>
+    <div class="post-container">
+        <app-create-post></app-create-post>
+        <div class="timeline-post-container" *ngFor="let post of posts">
+            <app-user-post [post]="post"></app-user-post>
+        </div>
+    </div>
+     <div class="active-container">
+
+    </div>
+</div>

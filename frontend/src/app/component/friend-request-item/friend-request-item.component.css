@@ -1,0 +1,37 @@
+.request-container {
+    width: auto;
+    height: auto;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.first-line {
+    display: flex;
+    align-items: center;
+}
+.first-line img {
+    width: 40px;
+    margin: 8px;
+}
+.first-line span {
+    text-transform: capitalize;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+}
+.name-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+.add-friend {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.mutual-text {
+    color: rgb(138, 133, 133);
+}
