@@ -18,9 +18,14 @@
         <input type="text" placeholder="Enter your comment" [(ngModel)]="commentText">
         <img src="assets/images/send.png" (click)="comment()"/>
     </div>
+    <span *ngIf="post.Comments.length > 0" id="comments-text">Comments</span>
     <div class="comments">
         <div *ngFor="let comment of post.Comments" class="comment">
-            <span>{{comment.comment}}</span>
+            <img src="assets/images/pp.jpg">
+            <div class="comment-text">
+                <span id="full-name">Samesh Alahakoon</span>
+                <span id="comment-text">{{comment.comment}}</span>
+            </div>
         </div>
     </div>
 </div>
