@@ -19,6 +19,7 @@ import { PostService } from './service/post/post.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreatePostDialogComponent } from './dialog/create-post-dialog/create-post-dialog.component';
+import { ProfileSearchComponent } from './component/profile-search/profile-search.component';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
@@ -35,7 +36,8 @@ const routes: Routes = [
       FriendRequestItemComponent,
       CreatePostComponent,
       UserPostComponent,
-      CreatePostDialogComponent
+      CreatePostDialogComponent,
+      ProfileSearchComponent
     ],
   imports:
     [

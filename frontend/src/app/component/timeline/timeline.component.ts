@@ -4,6 +4,7 @@ import { Response } from 'src/app/model/response.model';
 import { Post } from 'src/app/model/post.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { UserService } from 'src/app/service/user/user.service';
+import { User } from 'src/app/model/user.model';
 
 @Component({
   selector: 'app-timeline',
@@ -15,6 +16,7 @@ export class TimelineComponent implements OnInit
   public searchText: string = "";
   constructor(private postService: PostService, private authService: AuthService, private userService: UserService) { }
   posts: Post[] = [];
+  searchUsers: User[] = [];
 
   ngOnInit(): void
   {
@@ -35,7 +37,12 @@ export class TimelineComponent implements OnInit
   search()
   {
     this.userService.search(this.searchText).subscribe(data => {
+      this.searchUsers = data.data;
       console.log(data);
     });
+  }
+  viewProfile = (id: string) =>
+  {
+    
   }
 }

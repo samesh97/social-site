@@ -57,10 +57,17 @@ userRoute.get("/search", async (req, res) =>
 
   const users = await User.findAll({
     where: {
-      firstName: {
-        [Op.like]: keyword
-      }
-    }
+      [Op.or]:
+      [
+        {
+          firstName: { [Op.startsWith]: [keyword] }
+        },
+        {
+          lastName: { [Op.startsWith]: [keyword] }  
+        }
+      ]
+    },
+    attributes: ['id', 'firstName', 'lastName']
   });
   
   return response(res, users, 200);
