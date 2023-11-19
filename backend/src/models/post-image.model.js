@@ -10,7 +10,7 @@ const PostImage = sequelize.define("PostImage", {
         defaultValue: UUIDV1
     },
     imageUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1000),
         allowNull: false
     }
 });

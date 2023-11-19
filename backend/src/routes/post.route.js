@@ -5,15 +5,27 @@ const { User } = require('../models/user.model');
 const { config } = require('../conf/common.conf');
 const { Comment } = require('../models/comment.model');
 const { response, getSessionInfo, isNullOrEmpty } = require("../utils/common.util");
-const { hasRole } = require('../utils/auth.util');
+const { hasRole, authentication } = require('../utils/auth.util');
 const { Roles } = require('../models/role.model');
+const multer  = require('multer')
+const upload = multer({ storage: multer.memoryStorage() });
+const { uploadMultipleFile } = require('../conf/firebase.conf');
+const { PostImage } = require('../models/post-image.model');
+
 const postRoute = Router();
 
-postRoute.post('/', async (req, res) =>
+postRoute.post('/', upload.array('post-images', 6), authentication, async (req, res) =>
 {
   const { userId } = getSessionInfo(req);
   const { description } = req.body;
 
+  let imageList = await uploadMultipleFile(req, 'posts');
+  imageList = imageList.map(item => {
+    return {
+      imageUrl: item
+    }
+  });
+  
   if ( isNullOrEmpty(userId, description) )
   {
     return response(res, 'Bad Request!', 400);
@@ -27,14 +39,24 @@ postRoute.post('/', async (req, res) =>
   const post = await Post.create({
     description: description,
     UserId: user.id,
-  });
-  return response(res, "Post created!", 201);
+    PostImages: imageList
+  }, { include: PostImage });
+  
+  return response(res, "Post created", 201);
 });
 
 postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
 {
   const accessToken = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
-  const posts = await Post.findAll({ include: [{ model: Reaction }, { model: Comment, include:[{ model: User, attributes: ['id','firstName', 'lastName', 'profileUrl']}] }, { model: User, attributes: ['id','firstName', 'lastName', 'profileUrl']}], });
+  const posts = await Post.findAll(
+    {
+      include: [
+        { model: Reaction },
+        { model: Comment, include: [{ model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] }] },
+        { model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] },
+        { model: PostImage, attributes: ['id', 'imageUrl']}
+      ],
+    });
   return response(res, posts, 200);
 });
 

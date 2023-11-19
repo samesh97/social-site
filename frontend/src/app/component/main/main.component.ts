@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
+import { ProgressService } from 'src/app/service/progress/progress.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
@@ -13,12 +14,19 @@ export class MainComponent implements OnInit{
   public searchText: string = "";
   searchUsers: User[] = [];
   isLoggedIn: boolean = false;
+  showProgress: boolean = false;
   
-  public constructor(private authService: AuthService, private userService: UserService, private journeyManager: JourneyManagerService) { }
+  public constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private journeyManager: JourneyManagerService,
+    private progressService: ProgressService
+  ) { }
   
   ngOnInit(): void
   {
     this.loginState();
+    this.progressStatus();
   }
   loginState = () =>
   {
@@ -56,5 +64,11 @@ export class MainComponent implements OnInit{
   navigateHome = () =>
   {
     this.journeyManager.loadHome();
+  }
+  progressStatus = () => 
+  {
+    this.progressService.getSubject().subscribe(state => {
+      this.showProgress = state;
+    });  
   }
 }

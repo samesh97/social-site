@@ -105,12 +105,13 @@ const isByPassAuth = async (req) =>
     }
     return url === urlWithoutBackSlash;
   });
-  
+  console.log("Bypassing authentication " + isByPass);
   return isByPass;
 };
 
 const verifyAuthHeader = async (req) =>
 {
+  console.log("Executing the verifyAuthHeader...")
   let authHeader = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
 
   if (isNullOrEmpty(authHeader))
@@ -134,6 +135,7 @@ const verifyAuthHeader = async (req) =>
     return false;  
   }
   
+  console.log("Setting user session..");
   setSessionInfo(req, object);
   return true;
 };
@@ -249,6 +251,7 @@ const saveTokenInDB = async (
 
 const authentication = async (req, res, next) =>
 {
+  console.log("Executing authentication.")
   if ((await isByPassAuth(req)) || (await verifyAuthHeader(req)))
   {
     return next();

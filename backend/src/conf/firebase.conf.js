@@ -20,4 +20,23 @@ uploadFile = async (req, filePath) =>
     return downloadURL;
 }
 
-module.exports = { uploadFile };
+uploadMultipleFile = async (req, filePath) =>
+{
+    const list = [];
+    for (let file of req.files)
+    {
+        const epoch = Date.now();
+        const fileName = file.originalname + epoch;
+        const storageRef = ref(storage, `${filePath}/${fileName}`);
+        const metadata = {
+            contentType: file.mimetype,
+        };
+        const snapshot = await uploadBytesResumable(storageRef, file.buffer, metadata);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        list.push(downloadURL);
+    }
+    return list;
+   
+}
+
+module.exports = { uploadFile, uploadMultipleFile };

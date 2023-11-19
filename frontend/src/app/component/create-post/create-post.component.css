@@ -17,7 +17,7 @@
     clip-path: circle();
     z-index: -1;
 }
-.first-row input {
+#search-input {
     padding: 10px 20px;
     outline: none;
     border: none;

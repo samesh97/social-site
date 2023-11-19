@@ -9,7 +9,7 @@ const Post = sequelize.define("Post", {
     defaultValue: UUIDV1,
   },
   description: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(2000),
     allowNull: true,
     defaultValue: "",
   },

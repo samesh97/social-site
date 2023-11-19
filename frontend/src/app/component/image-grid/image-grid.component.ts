@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { PostImage } from 'src/app/model/post-image.model';
 
 @Component({
   selector: 'app-image-grid',
@@ -7,5 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ImageGridComponent {
 
-  @Input() images: any[] = [1, 2,3,4,5,6];
+  @Input() postImages: PostImage[] = [];
 }

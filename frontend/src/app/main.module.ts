@@ -24,6 +24,9 @@ import { ProfileViewComponent } from './component/profile-view/profile-view.comp
 import { RegisterComponent } from './component/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ImageGridComponent } from './component/image-grid/image-grid.component';
+import { ProgressBarComponent } from './component/progress-bar/progress-bar.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
@@ -46,7 +49,8 @@ const routes: Routes = [
       ProfileSearchComponent,
       ProfileViewComponent,
       RegisterComponent,
-      ImageGridComponent
+      ImageGridComponent,
+      ProgressBarComponent,
     ],
   imports:
     [
@@ -58,7 +62,9 @@ const routes: Routes = [
       FormsModule,
       NoopAnimationsModule,
       MatDialogModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      MatProgressSpinnerModule,
+      BrowserAnimationsModule
     ],
   bootstrap: [ MainComponent ],
   providers: [

@@ -10,7 +10,7 @@ const Comment = sequelize.define("Comment", {
         defaultValue: UUIDV1
     },
     comment: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1000),
         allowNull: false
     },
     userId: {

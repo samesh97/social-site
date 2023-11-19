@@ -8,6 +8,7 @@ const isNullOrEmpty = (...values) =>
     {
         if (!value)
         {
+            console.log("Values is null or empty -> " + value);
             return true;    
         }
     }

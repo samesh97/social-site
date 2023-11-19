@@ -20,7 +20,7 @@ export class PostService {
   loadPosts = (): Observable<Response> => {
     return this.http.get<Response>(this.POST_URL, { withCredentials: true });
   };
-  createPost = (post: Post) => {
+  createPost = (post: FormData) => {
     return this.http.post<Response>(this.POST_URL, post, {
       withCredentials: true,
     });

@@ -8,7 +8,7 @@
     </div>
     <div class="second-row">
         <span id="description">{{post.description}}</span>
-        <app-image-grid></app-image-grid>
+        <app-image-grid [postImages]="post.PostImages"></app-image-grid>
     </div>
     <div class="third-row">
         <img src="assets/images/like_button.png" (click)="react('LIKE')">
