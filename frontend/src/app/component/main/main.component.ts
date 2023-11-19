@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
+import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class MainComponent implements OnInit{
   searchUsers: User[] = [];
   isLoggedIn: boolean = false;
   
-  public constructor(private authService: AuthService, private userService: UserService, private router: Router) { }
+  public constructor(private authService: AuthService, private userService: UserService, private journeyManager: JourneyManagerService) { }
   
   ngOnInit(): void
   {
@@ -28,11 +28,11 @@ export class MainComponent implements OnInit{
       console.log('Login state checked ' + isLogin);
       if(isLogin)
       {
-        this.router.navigate(['/']);
+        this.journeyManager.loadHome();
       }
       else
       {
-        this.router.navigate(['/login']);  
+        this.journeyManager.loadLogin();
       }
     });  
   }
@@ -45,7 +45,7 @@ export class MainComponent implements OnInit{
   }
   viewProfile = (id: string) =>
   {
-    this.router.navigate(['/profile'], { queryParams: { id: id } });
+    this.journeyManager.loadProfileView(id);
   }
   logout = () =>
   {
@@ -55,6 +55,6 @@ export class MainComponent implements OnInit{
   }
   navigateHome = () =>
   {
-    this.router.navigate(['/']);
+    this.journeyManager.loadHome();
   }
 }

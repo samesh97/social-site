@@ -1,17 +1,21 @@
 const { Router } = require("express");
 const { Op } = require("sequelize");
+const multer  = require('multer')
+const upload = multer({ storage: multer.memoryStorage() });
+const { uploadFile } = require('../conf/firebase.conf');
 
-const { User, User_Role } = require("../models/user.model");
+const { User } = require("../models/user.model");
 const { Role, Roles } = require("../models/role.model");
-const { sequelize } = require("../conf/database.conf");
 const { Post } = require("../models/post.model");
 const { Comment } = require("../models/comment.model");
 const { isNullOrEmpty, response, textTohash, getSessionInfo } = require("../utils/common.util");
 
 const userRoute = Router();
 
-userRoute.post("/", async (req, res) =>
+userRoute.post("/", upload.single('profilePic'), async (req, res) =>
 {
+  const downloadURL = await uploadFile(req, 'profile-pic');
+  
   const user = req.body;
   const validationError = await validateUserCreation(user);
   if (validationError)
@@ -30,7 +34,8 @@ userRoute.post("/", async (req, res) =>
         firstName: user.firstName,
         lastName: user.lastName,
         password: hashedPassword,
-        roleId: userRole.id
+        roleId: userRole.id,
+        profileUrl: downloadURL
       }
     );
     return response(res,"User created.", 201);

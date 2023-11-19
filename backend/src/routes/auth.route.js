@@ -98,7 +98,7 @@ authRoute.post("/logout", async (req, res) =>
 
   if (isNullOrEmpty(accessToken))
   {
-    return response(res, "No session info found", 400);  
+    return response(res, "No session info found", 401);  
   }
 
   const result = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);

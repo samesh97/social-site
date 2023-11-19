@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Comment } from 'src/app/model/comment.model';
 import { Post } from 'src/app/model/post.model';
 import { Reaction } from 'src/app/model/reaction.model';
+import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 import { PostService } from 'src/app/service/post/post.service';
 
 @Component({
@@ -14,8 +15,9 @@ export class UserPostComponent {
   @Input() post: Post = new Post();
 
   public commentText: string = "";
+  public isCommentable: boolean = true;
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private journeyManager: JourneyManagerService) { }
 
   react = (type: string) => {
     const reaction = new Reaction();
@@ -38,5 +40,13 @@ export class UserPostComponent {
       .subscribe(data => {
         this.commentText = "";
     });
+  }
+  showOrHideCommentInput = () =>
+  {
+    this.isCommentable = !this.isCommentable;  
+  }
+  nameClicked = () =>
+  {
+    this.journeyManager.loadProfileView(this.post.User.id);
   }
 }

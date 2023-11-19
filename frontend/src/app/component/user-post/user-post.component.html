@@ -1,8 +1,8 @@
 <div class="container">
     <div class="first-row">
-        <img src="assets/images/pp.jpg">
+        <img src="{{post.User.profileUrl}}">
         <div class="name-container">
-            <span id="name">{{post.User.firstName + ' ' + post.User.lastName}}</span>
+            <span id="name" (click)="nameClicked()">{{post.User.firstName + ' ' + post.User.lastName}}</span>
             <span id="time">1h ago</span>
         </div>
     </div>
@@ -11,19 +11,19 @@
     </div>
     <div class="third-row">
         <img src="assets/images/like_button.png" (click)="react('LIKE')">
-        <img src="assets/images/comment_button.png">
+        <img src="assets/images/comment_button.png" (click)="showOrHideCommentInput()">
         <img src="assets/images/share_button.png">
     </div>
-    <div class="comment-section">
+    <div *ngIf="isCommentable" class="comment-section">
         <input type="text" placeholder="Enter your comment" [(ngModel)]="commentText">
         <img src="assets/images/send.png" (click)="comment()"/>
     </div>
     <span *ngIf="post.Comments.length > 0" id="comments-text">Comments</span>
     <div class="comments">
         <div *ngFor="let comment of post.Comments" class="comment">
-            <img src="assets/images/pp.jpg">
+            <img src="{{comment.User.profileUrl}}">
             <div class="comment-text">
-                <span id="full-name">Samesh Alahakoon</span>
+                <span id="full-name">{{comment.User.firstName + ' ' + comment.User.lastName}}</span>
                 <span id="comment-text">{{comment.comment}}</span>
             </div>
         </div>

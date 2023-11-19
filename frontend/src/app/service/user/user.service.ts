@@ -10,7 +10,7 @@ import { Response } from 'src/app/model/response.model';
 export class UserService
 {
   private SEARCH_URL = `${config.SERVER_BASE_URL}/users/search`;
-  private VIEW_PROFILE_URL = `${config.SERVER_BASE_URL}/users`;
+  private PROFILE_URL = `${config.SERVER_BASE_URL}/users`;
   constructor(private http: HttpClient) { }
 
   search = (keyword: string): Observable<Response> =>
@@ -19,6 +19,10 @@ export class UserService
   }
   viewProfile = (id: string) => 
   {
-    return this.http.get<Response>(`${this.VIEW_PROFILE_URL}/${id}`, { withCredentials: true });
+    return this.http.get<Response>(`${this.PROFILE_URL}/${id}`, { withCredentials: true });
+  }
+  register = (formData: FormData): Observable<Response> => 
+  {
+    return this.http.post<Response>(this.PROFILE_URL, formData, { withCredentials: true });
   }
 }

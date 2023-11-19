@@ -27,6 +27,10 @@ const User = sequelize.define("User", {
   isVerified: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
+  },
+  profileUrl: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 });
 

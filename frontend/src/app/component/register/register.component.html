@@ -1,0 +1,12 @@
+<div class="register-main">
+    <form [formGroup]="registerFormGroup" class="register-form" (submit)="formSubmitted()">
+        <img src="assets/images/account.png">
+        <input type="email" formControlName="email" placeholder="Your email"/>
+        <input type="text" formControlName="firstName" placeholder="Your fistname"/>
+        <input type="text" formControlName="lastName" placeholder="Your lastname"/>
+        <input type="password" formControlName="password" placeholder="Your password"/>
+        <input type="password" formControlName="confirmPassword" placeholder="Confirm password"/>
+        <input type="file" placeholder="Select profile picture" accept="image/jpg, image/png" (change)="imageSelected($event)">
+        <input id="register-btn" type="submit" value="Register"/>
+    </form>
+</div>

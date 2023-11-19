@@ -21,11 +21,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CreatePostDialogComponent } from './dialog/create-post-dialog/create-post-dialog.component';
 import { ProfileSearchComponent } from './component/profile-search/profile-search.component';
 import { ProfileViewComponent } from './component/profile-view/profile-view.component';
+import { RegisterComponent } from './component/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-  { path: 'profile', component: ProfileViewComponent}
+  { path: 'profile', component: ProfileViewComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard]}
 ];
 
 @NgModule({
@@ -40,7 +43,8 @@ const routes: Routes = [
       UserPostComponent,
       CreatePostDialogComponent,
       ProfileSearchComponent,
-      ProfileViewComponent
+      ProfileViewComponent,
+      RegisterComponent
     ],
   imports:
     [
@@ -51,7 +55,8 @@ const routes: Routes = [
       RouterModule,
       FormsModule,
       NoopAnimationsModule,
-      MatDialogModule
+      MatDialogModule,
+      ReactiveFormsModule
     ],
   bootstrap: [ MainComponent ],
   providers: [

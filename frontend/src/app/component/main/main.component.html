@@ -4,7 +4,7 @@
     </div>
     <div class="nav-list">
         <div class="search-container">
-            <input type="text" placeholder="Search..." [(ngModel)]="searchText">
+            <input type="text" placeholder="Search..." [(ngModel)]="searchText" (blur)="search()">
             <button (click)="search()">Search</button>
             <app-profile-search [users]="searchUsers" (select)="viewProfile($event)"></app-profile-search>
         </div>
