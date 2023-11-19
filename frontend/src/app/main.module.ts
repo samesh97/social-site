@@ -23,6 +23,7 @@ import { ProfileSearchComponent } from './component/profile-search/profile-searc
 import { ProfileViewComponent } from './component/profile-view/profile-view.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ImageGridComponent } from './component/image-grid/image-grid.component';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
@@ -44,7 +45,8 @@ const routes: Routes = [
       CreatePostDialogComponent,
       ProfileSearchComponent,
       ProfileViewComponent,
-      RegisterComponent
+      RegisterComponent,
+      ImageGridComponent
     ],
   imports:
     [
