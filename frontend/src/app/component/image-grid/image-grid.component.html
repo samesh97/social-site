@@ -1,5 +1,5 @@
 <div class="main-container">
-    <div class="image-container">
-        <img *ngFor="let image of postImages" src="{{image.imageUrl}}">
+    <div class="image-container" title="{{postImages.length}}">
+        <img *ngFor="let image of postImages" src="{{image.imageUrl}}" alt="{{postImages.length}}" >
     </div>
 </div>

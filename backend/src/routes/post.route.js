@@ -56,6 +56,10 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
         { model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] },
         { model: PostImage, attributes: ['id', 'imageUrl']}
       ],
+      order:
+      [
+        ['id', 'DESC']
+      ]
     });
   return response(res, posts, 200);
 });
@@ -66,7 +70,18 @@ postRoute.get('/:id', async (req, res) => {
   {
     return response(res, 'User not found!', 404);
   }
-  const posts = await Post.findAll({ where: { id: userId } });
+  const posts = await Post.findAll({
+    where: { id: userId },
+    include: [
+    { model: Reaction },
+    { model: Comment, include: [{ model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] }] },
+    { model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] },
+    { model: PostImage, attributes: ['id', 'imageUrl']}
+  ],
+  order:
+  [
+    ['id', 'DESC']
+  ] });
   return response(res, posts, 200);
 });
 
