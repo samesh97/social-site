@@ -10,11 +10,13 @@ import { UserService } from 'src/app/service/user/user.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit{
+export class MainComponent implements OnInit
+{
   public searchText: string = "";
   searchUsers: User[] = [];
   isLoggedIn: boolean = false;
   showProgress: boolean = false;
+  currentUser: User = new User();
   
   public constructor(
     private authService: AuthService,
@@ -31,6 +33,7 @@ export class MainComponent implements OnInit{
   loginState = () =>
   {
     this.isLoggedIn = this.authService.hasLoggedIn();
+    this.currentUser = this.authService.getUserInfo();
     this.authService.loginChangeListener().subscribe(isLogin => {
       this.isLoggedIn = isLogin;
       console.log('Login state checked ' + isLogin);
@@ -42,6 +45,7 @@ export class MainComponent implements OnInit{
       {
         this.journeyManager.loadLogin();
       }
+      this.currentUser = this.authService.getUserInfo();
     });  
   }
   search()

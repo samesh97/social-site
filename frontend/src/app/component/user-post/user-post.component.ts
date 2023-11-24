@@ -14,37 +14,8 @@ export class UserPostComponent {
 
   @Input() post: Post = new Post();
 
-  public commentText: string = "";
-  public isCommentable: boolean = true;
+  constructor(private journeyManager: JourneyManagerService) { }
 
-  constructor(private postService: PostService, private journeyManager: JourneyManagerService) { }
-
-  react = (type: string) => {
-    const reaction = new Reaction();
-    reaction.type = type;
-    reaction.postId = this.post.id;
-    this.postService.react(reaction).subscribe(data => {
-      console.log(data);
-    })
-  }
-  comment()
-  {
-    if (this.commentText == "")
-    {
-      return;
-    }
-    const comment = new Comment();
-    comment.comment = this.commentText;
-    comment.postId = this.post.id;
-    this.postService.comment(comment)
-      .subscribe(data => {
-        this.commentText = "";
-    });
-  }
-  showOrHideCommentInput = () =>
-  {
-    this.isCommentable = !this.isCommentable;  
-  }
   nameClicked = () =>
   {
     this.journeyManager.loadProfileView(this.post.User.id);

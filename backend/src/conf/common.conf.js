@@ -28,7 +28,12 @@ const config = {
     messagingSenderId: process.env.FIREBASE_MSG_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASURE_ID
-  }
+  },
+  FRIEND_SCORE: {
+    like: 2,
+    comment: 5
+  },
+  REST_AUTH_BYPASS_URL: process.env.REST_AUTH_BYPASS_URL || '/users,/auth/*'
 };
    
 module.exports = { config };

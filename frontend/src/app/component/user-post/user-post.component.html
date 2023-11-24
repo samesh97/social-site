@@ -1,32 +1,14 @@
 <div class="container">
-    <div class="first-row">
+    <div class="container-profile">
         <img src="{{post.User.profileUrl}}">
         <div class="name-container">
             <span id="name" (click)="nameClicked()">{{post.User.firstName + ' ' + post.User.lastName}}</span>
             <span id="time">1h ago</span>
         </div>
     </div>
-    <div class="second-row">
-        <span id="description">{{post.description}}</span>
+    <div class="container-description">
+        <p id="description">{{post.description}}</p>
         <app-image-grid [postImages]="post.PostImages"></app-image-grid>
     </div>
-    <div class="third-row">
-        <img src="assets/images/like_button.png" (click)="react('LIKE')">
-        <img src="assets/images/comment_button.png" (click)="showOrHideCommentInput()">
-        <img src="assets/images/share_button.png">
-    </div>
-    <div *ngIf="isCommentable" class="comment-section">
-        <input type="text" placeholder="Enter your comment" [(ngModel)]="commentText">
-        <img src="assets/images/send.png" (click)="comment()"/>
-    </div>
-    <span *ngIf="post.Comments.length > 0" id="comments-text">Comments</span>
-    <div class="comments">
-        <div *ngFor="let comment of post.Comments" class="comment">
-            <img src="{{comment.User.profileUrl}}">
-            <div class="comment-text">
-                <span id="full-name">{{comment.User.firstName + ' ' + comment.User.lastName}}</span>
-                <span id="comment-text">{{comment.comment}}</span>
-            </div>
-        </div>
-    </div>
+    <app-user-post-interaction [post]="post"></app-user-post-interaction>
 </div>

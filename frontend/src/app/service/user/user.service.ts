@@ -11,6 +11,7 @@ export class UserService
 {
   private SEARCH_URL = `${config.SERVER_BASE_URL}/users/search`;
   private PROFILE_URL = `${config.SERVER_BASE_URL}/users`;
+  private FRIEND_URL = `${config.SERVER_BASE_URL}/friends`;
   constructor(private http: HttpClient) { }
 
   search = (keyword: string): Observable<Response> =>
@@ -24,5 +25,9 @@ export class UserService
   register = (formData: FormData): Observable<Response> => 
   {
     return this.http.post<Response>(this.PROFILE_URL, formData, { withCredentials: true });
+  }
+  addFriend = (firstUserId: string, secondUserId: string) =>
+  {
+    return this.http.post<Response>(this.FRIEND_URL, { firstUserId, secondUserId }, { withCredentials: true });
   }
 }

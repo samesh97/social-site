@@ -9,6 +9,8 @@ const { authRoute } = require("./routes/auth.route");
 const { authentication } = require("./utils/auth.util");
 const { config } = require("./conf/common.conf");
 const { commentRoute } = require('./routes/comment.route');
+const { getLogger } = require('./conf/logger.conf');
+const { friendRoute } = require('./routes/friend.route');
 
 const app = express();
 
@@ -25,9 +27,10 @@ app.use('/users', userRoute);
 app.use("/posts", postRoute);
 app.use("/reactions", reactionRoute);
 app.use("/comments", commentRoute);
+app.use("/friends", friendRoute);
 
 
 app.listen(config.SERVER_PORT, async () =>
 {
-    console.log(`Server is up & running on port ${config.SERVER_PORT}`);
+    getLogger().info(`Server is up & running on port ${config.SERVER_PORT}`);
 });

@@ -30,9 +30,7 @@
 .profile img {
     width: 35px;
     cursor: pointer;
-}
-.search-container {
-
+    clip-path: circle();
 }
 .search-container input {
     padding: 10px 10px;

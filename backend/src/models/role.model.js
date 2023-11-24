@@ -1,5 +1,6 @@
 const { DataTypes, UUIDV1 } = require("sequelize");
 const { sequelize } = require("../conf/database.conf");
+const { getCurrentDateTime } = require("../utils/common.util");
 
 const Role = sequelize.define("Role",
   {
@@ -11,6 +12,14 @@ const Role = sequelize.define("Role",
     name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false
     }
   }
 );
@@ -27,11 +36,15 @@ const sync = async () =>
     where: {
       name: Roles.ADMIN,
     },
+    createdAt: getCurrentDateTime(),
+    updatedAt: getCurrentDateTime()
   });
   await Role.findOrCreate({
     where: {
       name: Roles.USER,
     },
+    createdAt: getCurrentDateTime(),
+    updatedAt: getCurrentDateTime()
   });
 };
 

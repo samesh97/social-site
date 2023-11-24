@@ -20,6 +20,7 @@ export class LoginComponent {
       .subscribe((data: Response) => {
         if (data.code == 200)
         {
+          this.authService.setUserInfo(data);
           this.authService.setLoggedIn(true);
         }
     });

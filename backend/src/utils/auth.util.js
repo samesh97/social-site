@@ -65,10 +65,15 @@ const hasRole = (...roles) =>
       return response(res, "No user found", 404);
     }
 
+    if (isNullOrEmpty(dbUser.Role))
+    {
+      return response(res, "No role found.", 403);  
+    }
+
     const dbUserRole = dbUser.Role.name;
     if (isNullOrEmpty(dbUserRole))
     {
-      return response(res, "No role round.", 403);  
+      return response(res, "No role name found.", 403);  
     }
       
     const hasRole = roles.some(role => role == dbUserRole);

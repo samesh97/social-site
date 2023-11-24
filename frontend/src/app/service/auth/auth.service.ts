@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { config } from '../../configuration/common.conf';
 import { Response } from 'src/app/model/response.model';
 
@@ -48,6 +48,10 @@ export class AuthService {
 
   setLoggedIn = (value: boolean) => {
     localStorage.setItem('loginState', value.toString());
+    if (!value)
+    {
+      this.setUserInfo(new Response());  
+    }
     this.loginStateSubject.next(value);
   };
   hasLoggedIn = (): boolean => {
@@ -57,5 +61,20 @@ export class AuthService {
   loginChangeListener = (): Observable<boolean> => 
   {
     return this.loginStateSubject;
+  }
+  setUserInfo = (res: Response) =>
+  {
+    if (res == null || res.data == null )
+    {
+      localStorage.removeItem('userInfo');
+      return;
+    }
+    const data = JSON.stringify(res.data);
+    localStorage.setItem('userInfo', data);
+  }
+  getUserInfo = () =>
+  {
+    const data = localStorage.getItem('userInfo');
+    return JSON.parse(data ? data : "");
   }
 }

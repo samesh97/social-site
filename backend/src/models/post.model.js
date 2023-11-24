@@ -13,6 +13,14 @@ const Post = sequelize.define("Post", {
     allowNull: true,
     defaultValue: "",
   },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+  }
 });
 
 const sync = async () => {

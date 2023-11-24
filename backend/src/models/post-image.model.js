@@ -12,6 +12,14 @@ const PostImage = sequelize.define("PostImage", {
     imageUrl: {
         type: DataTypes.STRING(1000),
         allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false
     }
 });
 

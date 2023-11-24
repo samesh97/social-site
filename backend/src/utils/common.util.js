@@ -1,5 +1,6 @@
+const { getLogger } = require("../conf/logger.conf");
 const { Response } = require("../dtos/response.dto");
-const { Config, ConfigKey } = require("../models/config.model");
+const { Config } = require("../models/config.model");
 const bcrypt = require("bcrypt");
 
 const isNullOrEmpty = (...values) =>
@@ -8,7 +9,7 @@ const isNullOrEmpty = (...values) =>
     {
         if (!value)
         {
-            console.log("Values is null or empty -> " + value);
+            getLogger().error("Values is null or empty");
             return true;    
         }
     }
@@ -80,4 +81,58 @@ const textTohash = (text, saltRounds) =>
         return undefined;
     }
 }
-module.exports = { isNullOrEmpty, minutesToMilliseconds, response, sliceEnd, getConfig, getSessionInfo, setSessionInfo, textTohash };
+const getCurrentDateTime = () =>
+{
+    const date = new Date();
+    return date.toISOString();
+}
+const getPostScore = (currentScore, postedDate) =>
+{
+    const currentDate = new Date(getCurrentDateTime());
+    const postedDateObj = new Date(postedDate);
+    const diff = currentDate - postedDateObj;
+
+    const minutes = diff / (1000 * 60);
+    const maxScore = 500;
+    const minScore = -500;
+    let timeScore = maxScore - minutes;
+    if (minScore > timeScore)
+    {
+        timeScore = 0;    
+    }
+    console.log(`Calculated post score -> ${currentScore + timeScore}`)
+    return currentScore + timeScore;
+}
+const getFriendScore = (currentScore, friendship) =>
+{
+    const currentDate = new Date(getCurrentDateTime());
+    const addedDate = new Date(friendship);
+    const diff = currentDate - addedDate;
+
+    const days = diff / (1000 * 60 * 60 * 24);
+
+    const maxScore = 500;
+    const minScore = -500;
+
+    let friendshipScore = maxScore - days;
+    if (minScore > friendshipScore)
+    {
+        friendshipScore = 0;    
+    }
+
+    console.log(`Friendship score -> ${currentScore + friendshipScore}` );
+    return currentScore + friendshipScore;
+}
+module.exports = {
+    isNullOrEmpty,
+    minutesToMilliseconds,
+    response,
+    sliceEnd,
+    getConfig,
+    getSessionInfo,
+    setSessionInfo,
+    textTohash,
+    getCurrentDateTime,
+    getPostScore,
+    getFriendScore
+};

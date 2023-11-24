@@ -1,6 +1,6 @@
 <div class="main-container">
     <div *ngFor="let user of users" class="user-container" (click)="selected(user.id)">
-        <img id="profile-pic" src="assets/images/pp.jpg">
+        <img id="profile-pic" src="{{user.profileUrl}}">
         <span id="name">{{user.firstName + ' ' + user.lastName}}</span>
     </div>
 </div>

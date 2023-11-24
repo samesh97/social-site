@@ -1,11 +1,13 @@
 <div class="main-container">
     <div class="profile-details">
-        <img id="profile-pic" src="assets/images/pp.jpg">
+      <img id="cover-image" src="assets/images/cover-image.jpg">
+        <img id="profile-pic" src="{{user.profileUrl}}">
         <div class="profile-texts">
           <div class="name-container">
             <span id="first-name">{{user.firstName}}</span>
             <span id="last-name">{{user.lastName}}</span>
           </div>
+          <button id="add-frnd-btn" (click)="addFriend()">Add Friend</button>
         </div>
     </div>
     <div *ngFor="let post of posts" class="posts">

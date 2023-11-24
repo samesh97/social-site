@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/model/post.model';
 import { Response } from 'src/app/model/response.model';
+import { User } from 'src/app/model/user.model';
+import { AuthService } from 'src/app/service/auth/auth.service';
 import { PostService } from 'src/app/service/post/post.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
 
@@ -9,14 +11,21 @@ import { ProgressService } from 'src/app/service/progress/progress.service';
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
 })
-export class CreatePostComponent
+export class CreatePostComponent implements OnInit
 {
   post = new Post();
   images: any[] = [];
+  currentUser: User = new User();
   constructor(
     private postService: PostService,
-    private progressService: ProgressService
+    private progressService: ProgressService,
+    private authService: AuthService
   ) { }
+
+
+  ngOnInit(): void {
+    this.currentUser = this.authService.getUserInfo();
+  }
 
   createPost = () =>
   {

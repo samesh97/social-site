@@ -26,6 +26,14 @@ const Reaction = sequelize.define("Reaction", {
     type: DataTypes.UUID,
     allowNull: false,
     primaryKey: true
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false
   }
 });
 

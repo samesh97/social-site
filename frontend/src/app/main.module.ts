@@ -27,6 +27,7 @@ import { ImageGridComponent } from './component/image-grid/image-grid.component'
 import { ProgressBarComponent } from './component/progress-bar/progress-bar.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserPostInteractionComponent } from './component/user-post-interaction/user-post-interaction.component';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
@@ -51,6 +52,7 @@ const routes: Routes = [
       RegisterComponent,
       ImageGridComponent,
       ProgressBarComponent,
+      UserPostInteractionComponent,
     ],
   imports:
     [
