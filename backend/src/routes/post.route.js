@@ -89,7 +89,6 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
       return friend.firstUserId == userId ? friend.secondUserId : friend.firstUserId
     });
 
-
     const posts = await Post.findAll(
       {
         where: {
@@ -97,13 +96,9 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
         },
         include: [
           { model: Reaction },
-          { model: Comment, include: [{ model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] }] },
+          { model: Comment, order: [['createdAt', 'DESC']], include: [{ model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] }] },
           { model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] },
           { model: PostImage, attributes: ['id', 'imageUrl']}
-        ],
-        order:
-        [
-          ['createdAt', 'DESC']
         ]
       });
     

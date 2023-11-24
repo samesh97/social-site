@@ -7,4 +7,6 @@ export class Comment
     userId: string = "";
     postId: string = "";
     User: User = new User();
+    createdAt: string = "";
+    updatedAt: string = "";
 }

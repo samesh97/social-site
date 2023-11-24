@@ -28,6 +28,7 @@ import { ProgressBarComponent } from './component/progress-bar/progress-bar.comp
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserPostInteractionComponent } from './component/user-post-interaction/user-post-interaction.component';
+import { LocalDatePipe } from './pipe/local-date.pipe';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
@@ -53,6 +54,7 @@ const routes: Routes = [
       ImageGridComponent,
       ProgressBarComponent,
       UserPostInteractionComponent,
+      LocalDatePipe,
     ],
   imports:
     [

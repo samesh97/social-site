@@ -3,7 +3,7 @@
         <img src="{{post.User.profileUrl}}">
         <div class="name-container">
             <span id="name" (click)="nameClicked()">{{post.User.firstName + ' ' + post.User.lastName}}</span>
-            <span id="time">1h ago</span>
+            <span id="time">{{post.createdAt | localDate}}</span>
         </div>
     </div>
     <div class="container-description">
