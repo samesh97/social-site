@@ -26,8 +26,8 @@ export class UserService
   {
     return this.http.post<Response>(this.PROFILE_URL, formData, { withCredentials: true });
   }
-  addFriend = (firstUserId: string, secondUserId: string) =>
+  addFriend = (userId: string) =>
   {
-    return this.http.post<Response>(this.FRIEND_URL, { firstUserId, secondUserId }, { withCredentials: true });
+    return this.http.post<Response>(this.FRIEND_URL, { user: userId }, { withCredentials: true });
   }
 }

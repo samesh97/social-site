@@ -3,15 +3,19 @@ const { sequelize } = require("../conf/database.conf");
 const { User } = require("../models/user.model");
 
 const Friend = sequelize.define("Friend", {
-  firstUserId: {
+  requestedUser: {
     primaryKey: true,
     type: DataTypes.UUID,
     allowNull: false,
   },
-  secondUserId: {
+  acceptedUser: {
     primaryKey: true,
     type: DataTypes.UUID,
     allowNull: false,
+  },
+  isAccepted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   },
   score: {
     type: DataTypes.NUMBER,
@@ -29,8 +33,8 @@ const Friend = sequelize.define("Friend", {
 
 const sync = async () =>
 {
-  User.hasMany(Friend, { foreignKey: { name: 'firstUserId' }, sourceKey: ['id'] });
-  User.hasMany(Friend, { foreignKey: { name: 'secondUserId'}, sourceKey: ['id']});
+  User.hasMany(Friend, { foreignKey: { name: 'requestedUser' }, sourceKey: ['id'] });
+  User.hasMany(Friend, { foreignKey: { name: 'acceptedUser'}, sourceKey: ['id']});
   await Friend.sync();
 };
 

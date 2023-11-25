@@ -1,17 +1,14 @@
 const { Router } = require("express");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const multer  = require('multer')
 const upload = multer({ storage: multer.memoryStorage() });
 const { uploadFile } = require('../conf/firebase.conf');
 
 const { User } = require("../models/user.model");
 const { Role, Roles } = require("../models/role.model");
-const { Post } = require("../models/post.model");
-const { Comment } = require("../models/comment.model");
-const { Reaction } = require("../models/reaction.model");
-const { PostImage } = require("../models/post-image.model");
 const { isNullOrEmpty, response, textTohash, getSessionInfo, getCurrentDateTime } = require("../utils/common.util");
 const { getLogger } = require("../conf/logger.conf");
+const { getUserWithPosts, getUserFriends } = require("../utils/db-query.util");
 
 const userRoute = Router();
 
@@ -103,18 +100,13 @@ userRoute.get("/:id", async (req, res) =>
       return response(res, "No profile id found", 400);  
     }
   
-    const user = await User.findOne(
-      {
-      where: { id: id },
-        attributes: ['id', 'firstName', 'lastName', 'profileUrl'],
-        include: [
-          { model: Post, attributes: ['id', 'description'], include: [
-            { model: Reaction },
-            { model: Comment, include: [{ model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] }] },
-            { model: User, attributes: ['id', 'firstName', 'lastName', 'profileUrl'] },
-            { model: PostImage, attributes: ['id', 'imageUrl']}
-          ] },]
-    });
+    const user = await getUserWithPosts(id);
+    if (user)
+    {
+      const friends = await getUserFriends(id, false, true);
+      user.dataValues.Friends = friends; 
+    }
+    
     return response(res, user, 200);
   }
   catch (error)

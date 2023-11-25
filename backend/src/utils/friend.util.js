@@ -9,8 +9,8 @@ const changeScore = async (userId, score) =>
     const user = await Friend.findOne({
         where: {
             [Op.or]: [
-                { firstUserId: userId },
-                { secondUserId: userId }
+                { requestedUser: userId },
+                { acceptedUser: userId }
             ]
         }
     });

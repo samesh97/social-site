@@ -15,7 +15,16 @@ export class ProfileViewComponent implements OnInit
   private profileId: string = "";
   public posts: Post[] = [];
   public user: User = new User();
-  public constructor(private activatedRoute: ActivatedRoute, private userService: UserService, private authSerice: AuthService) { }
+  private currentUser: User = new User();
+
+  public friendActionBtnStatusIndex = 4;
+  public friendActionBtnStatus = ['Add friend','Unfriend','Accept','Remove','Loading'];
+
+  public constructor(
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService,
+    private authSerice: AuthService
+  ){ }
   
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -28,13 +37,40 @@ export class ProfileViewComponent implements OnInit
     this.userService.viewProfile(this.profileId).subscribe(data => {
       this.posts = data.data.Posts;
       this.user = data.data;
+      this.setCurrentUser();
     });
   }
-  addFriend = () =>
+  performBtnClick = () =>
   {
-    this.userService.addFriend(this.user.id, this.authSerice.getUserInfo().id)
+    this.userService.addFriend(this.user.id)
       .subscribe(data => {
-        console.log(data);
-    })
+        this.loadProfile();
+      });
+  }
+  setCurrentUser = () =>
+  {
+    this.currentUser = this.authSerice.getUserInfo();
+    this.setFriendBtnStatus();
+  }
+  setFriendBtnStatus = () =>
+  {
+    const friend = this.user.Friends.filter(frd => frd.requestedUser == this.currentUser.id || frd.acceptedUser == this.currentUser.id)[0];
+    if (!friend)
+    {
+      this.friendActionBtnStatusIndex = 0;
+    }
+    else if (friend.isAccepted)
+    {
+      this.friendActionBtnStatusIndex = 1;
+      return;
+    }
+    else if (friend.acceptedUser == this.currentUser.id)
+    {
+      this.friendActionBtnStatusIndex = 2;
+    }
+    else if (friend.requestedUser == this.currentUser.id)
+    {
+      this.friendActionBtnStatusIndex = 3;
+    }
   }
 }
