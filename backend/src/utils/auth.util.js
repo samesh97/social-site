@@ -8,6 +8,7 @@ const { config } = require("../conf/common.conf");
 const { Token, TokenStatus, TokenType } = require("../models/token.model");
 const { Config, ConfigKey } = require("../models/config.model");
 const { isNullOrEmpty, minutesToMilliseconds, sliceEnd, getConfig } = require("../utils/common.util");
+const { getLogger } = require("../conf/logger.conf");
 
 const isPlainPasswordMatches = (palinText, hashedPassword) =>
 {
@@ -110,13 +111,13 @@ const isByPassAuth = async (req) =>
     }
     return url === urlWithoutBackSlash;
   });
-  console.log("Bypassing authentication " + isByPass);
+  getLogger().info("Bypassing authentication " + isByPass);
   return isByPass;
 };
 
 const verifyAuthHeader = async (req) =>
 {
-  console.log("Executing the verifyAuthHeader...")
+  getLogger().info("Executing the verifyAuthHeader...");
   let authHeader = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
 
   if (isNullOrEmpty(authHeader))
@@ -140,7 +141,7 @@ const verifyAuthHeader = async (req) =>
     return false;  
   }
   
-  console.log("Setting user session..");
+  getLogger().info("Setting user session..");
   setSessionInfo(req, object);
   return true;
 };
@@ -256,7 +257,7 @@ const saveTokenInDB = async (
 
 const authentication = async (req, res, next) =>
 {
-  console.log("Executing authentication.")
+  getLogger().info("Executing authentication.");
   if ((await isByPassAuth(req)) || (await verifyAuthHeader(req)))
   {
     return next();

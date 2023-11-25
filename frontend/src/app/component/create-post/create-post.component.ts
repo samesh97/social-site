@@ -37,8 +37,6 @@ export class CreatePostComponent implements OnInit
       formData.append("post-images", image);    
     }
   
-
-    console.log(this.images);
     this.postService.createPost(formData)
       .subscribe((data: Response) => {
         this.progressService.hide();
@@ -48,7 +46,6 @@ export class CreatePostComponent implements OnInit
   {
     if (event.target.files && event.target.files[0])
     {
-      console.log("A file is pushed")
       this.images.push(event.target.files[0]);  
     }
   }

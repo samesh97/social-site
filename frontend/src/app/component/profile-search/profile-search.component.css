@@ -8,7 +8,7 @@
 }
 .user-container
 {
-    background-color: #f1f1f1;
+    background-color: var(--supporting-color);
     height: 45px;
     display: flex;
     align-items: center;

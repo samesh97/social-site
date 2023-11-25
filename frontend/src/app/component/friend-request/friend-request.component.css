@@ -13,7 +13,7 @@
     width: auto;
     margin-left: 20px;
     font-weight: bold;
-    background-color: #f1f1f1;
+    background-color: var(--supporting-color);
     padding: 5px 10px;
     border-radius: 2px;
     color: black;

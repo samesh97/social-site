@@ -11,7 +11,7 @@ const userAttributes = ['id', 'firstName', 'lastName', 'profileUrl'];
 const postAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const commentAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const postImageAttributes = ['id', 'imageUrl'];
-const friendAttributes = ['requestedUser', 'acceptedUser', 'isAccepted'];
+const friendAttributes = ['requestedUser', 'acceptedUser', 'isAccepted','score','createdAt','updatedAt'];
 
 
 const getUser = async (userId) =>

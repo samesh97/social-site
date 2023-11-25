@@ -33,7 +33,6 @@ authRoute.post("/login", async (req, res) =>
 
     //find user in database
     const user = await User.findOne({ where: { email: email } });
-    console.log(user);
     if (isNullOrEmpty(user))
     {
       return response(res, "User not found.", 404);

@@ -100,7 +100,7 @@ const getPostScore = (currentScore, postedDate) =>
     {
         timeScore = 0;    
     }
-    console.log(`Calculated post score -> ${currentScore + timeScore}`)
+    getLogger().info(`Calculated post score -> ${currentScore + timeScore}`);
     return currentScore + timeScore;
 }
 const getFriendScore = (currentScore, friendship) =>
@@ -120,7 +120,7 @@ const getFriendScore = (currentScore, friendship) =>
         friendshipScore = 0;    
     }
 
-    console.log(`Friendship score -> ${currentScore + friendshipScore}` );
+    getLogger().info(`Calculated friendship score -> ${currentScore + friendshipScore}`);
     return currentScore + friendshipScore;
 }
 module.exports = {

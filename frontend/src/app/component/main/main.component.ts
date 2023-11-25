@@ -52,7 +52,6 @@ export class MainComponent implements OnInit
   {
     this.userService.search(this.searchText).subscribe(data => {
       this.searchUsers = data.data;
-      console.log(data);
     });
   }
   viewProfile = (id: string) =>

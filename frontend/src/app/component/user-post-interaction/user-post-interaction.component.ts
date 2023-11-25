@@ -40,8 +40,6 @@ export class UserPostInteractionComponent {
     const reaction = new Reaction();
     reaction.type = type;
     reaction.postId = this.post.id;
-    this.postService.react(reaction).subscribe(data => {
-      console.log(data);
-    })
+    this.postService.react(reaction).subscribe(data => {})
   }
 }
