@@ -1,9 +1,9 @@
-const { Router } = require("express");
-const { isNullOrEmpty, response, getCurrentDateTime, getSessionInfo } = require("../utils/common.util");
-const { User } = require("../models/user.model");
-const { Friend } = require("../models/friend.model");
-const { getLogger } = require("../conf/logger.conf");
-const { getFriendship } = require("../utils/db-query.util");
+import { Router } from "express";
+import { isNullOrEmpty, response, getCurrentDateTime, getSessionInfo } from "../utils/common.util";
+import { User } from "../models/user.model";
+import { Friend } from "../models/friend.model";
+import { getLogger } from "../conf/logger.conf";
+import { getFriendship } from "../utils/db-query.util";
 
 const friendRoute = Router();
 
@@ -65,4 +65,6 @@ friendRoute.post('/', async (req, res) =>
     }
 });
 
-module.exports = { friendRoute };
+export {
+    friendRoute
+}

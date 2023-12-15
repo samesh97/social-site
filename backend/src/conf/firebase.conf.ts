@@ -1,13 +1,13 @@
-const { initializeApp } = require('firebase/app');
-const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage");
-const { config } = require('./common.conf');
+import { initializeApp } from 'firebase/app';
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { config } from './common.conf';
   
 // Initialize Firebase
 initializeApp(config.FIREBASE_CONFIG);
 
 const storage = getStorage();
 
-uploadFile = async (req, filePath) =>
+const uploadFile = async (req, filePath) =>
 {
     const epoch = Date.now();
     const fileName = req.file.originalname + epoch;
@@ -20,7 +20,7 @@ uploadFile = async (req, filePath) =>
     return downloadURL;
 }
 
-uploadMultipleFile = async (req, filePath) =>
+const uploadMultipleFile = async (req, filePath) =>
 {
     const list = [];
     for (let file of req.files)
@@ -39,4 +39,4 @@ uploadMultipleFile = async (req, filePath) =>
    
 }
 
-module.exports = { uploadFile, uploadMultipleFile };
+export { uploadFile, uploadMultipleFile };

@@ -1,8 +1,10 @@
 const logger = require('pino')();
 
-getLogger = () =>
+const getLogger: any = () =>
 {
     return logger;
 }
 
-module.exports = { getLogger };
+export {
+    getLogger
+}

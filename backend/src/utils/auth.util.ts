@@ -1,14 +1,14 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-const { User } = require("../models/user.model");
-const { Role } = require("../models/role.model");
-const { response, setSessionInfo, getSessionInfo } = require("./common.util");
-const { config } = require("../conf/common.conf");
-const { Token, TokenStatus, TokenType } = require("../models/token.model");
-const { Config, ConfigKey } = require("../models/config.model");
-const { isNullOrEmpty, minutesToMilliseconds, sliceEnd, getConfig } = require("../utils/common.util");
-const { getLogger } = require("../conf/logger.conf");
+import { User } from "../models/user.model";
+import { Role } from "../models/role.model";
+import { response, setSessionInfo, getSessionInfo } from "./common.util";
+import { config } from "../conf/common.conf";
+import { Token, TokenStatus, TokenType } from "../models/token.model";
+import { Config, ConfigKey } from "../models/config.model";
+import { isNullOrEmpty, minutesToMilliseconds, sliceEnd, getConfig } from "./common.util";
+import { getLogger } from "../conf/logger.conf";
 
 const isPlainPasswordMatches = (palinText, hashedPassword) =>
 {
@@ -34,6 +34,8 @@ const genAccessRefreshTokensAndSetAsCookies = async (res, userId, refreshToken =
     const newRefreshToken = await genRefreshToken(userId);
     const refreshTokenExpiresIn = minutesToMilliseconds(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES);
     setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
+
+    setCookie(res, config.CSRF_TOKEN_COOKIE_NAME, 12345, refreshTokenExpiresIn);
   }
 };
 
@@ -56,7 +58,7 @@ const hasRole = (...roles) =>
       return response(res, "No session info found.", 400);
     }
 
-    const dbUser = await User.findByPk(userId, {
+    const dbUser: any = await User.findByPk(userId, {
       attributes: [],
       include: { model: Role, attributes: ["name"] },
     });
@@ -140,6 +142,13 @@ const verifyAuthHeader = async (req) =>
   {
     return false;  
   }
+
+  //checking csrf token
+  // const csrfToken = req.headers[config.CSRF_TOKEN_COOKIE_NAME];
+  // if (isNullOrEmpty(csrfToken))
+  // {
+  //   return false;  
+  // }
   
   getLogger().info("Setting user session..");
   setSessionInfo(req, object);
@@ -270,7 +279,7 @@ const getCookie = (req, name) =>
   return req.cookies[name];
 }
 
-module.exports = {
+export  {
   isPlainPasswordMatches,
   genAccessRefreshTokensAndSetAsCookies,
   hasRole,

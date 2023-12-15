@@ -1,11 +1,11 @@
-const { Op, Sequelize } = require("sequelize");
+import { Op, Sequelize } from "sequelize";
 
-const { User } = require('../models/user.model');
-const { Post } = require('../models/post.model');
-const { Reaction } = require('../models/reaction.model');
-const { PostImage } = require('../models/post-image.model');
-const { Comment } = require('../models/comment.model');
-const { Friend } = require('../models/friend.model');
+import { User } from '../models/user.model';
+import { Post } from '../models/post.model';
+import { Reaction } from '../models/reaction.model';
+import { PostImage } from '../models/post-image.model';
+import { Comment } from '../models/comment.model';
+import { Friend } from '../models/friend.model';
 
 const userAttributes = ['id', 'firstName', 'lastName', 'profileUrl'];
 const postAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
@@ -118,7 +118,7 @@ const getFriendsPosts = async (friendsIds) => {
     });
 }
 
-module.exports = {
+export {
     getUser,
     getUserWithPosts,
     getUserFriends,

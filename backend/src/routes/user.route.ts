@@ -1,18 +1,20 @@
-const { Router } = require("express");
-const { Op, Sequelize } = require("sequelize");
-const multer  = require('multer')
+import { Router, Request, Response } from "express";
+import { UserDto } from "../dtos/user.dto";
+
+import { Op } from "sequelize";
+import multer from 'multer';
+import { uploadFile } from '../conf/firebase.conf';
+import { User } from "../models/user.model";
+import { Role, Roles } from "../models/role.model";
+import { isNullOrEmpty, response, textTohash, getSessionInfo, getCurrentDateTime } from "../utils/common.util";
+import { getLogger } from "../conf/logger.conf";
+import { getUserWithPosts, getUserFriends } from "../utils/db-query.util";
+
 const upload = multer({ storage: multer.memoryStorage() });
-const { uploadFile } = require('../conf/firebase.conf');
 
-const { User } = require("../models/user.model");
-const { Role, Roles } = require("../models/role.model");
-const { isNullOrEmpty, response, textTohash, getSessionInfo, getCurrentDateTime } = require("../utils/common.util");
-const { getLogger } = require("../conf/logger.conf");
-const { getUserWithPosts, getUserFriends } = require("../utils/db-query.util");
+const userRoute: Router  = Router();
 
-const userRoute = Router();
-
-userRoute.post("/", upload.single('profilePic'), async (req, res) =>
+userRoute.post("/", upload.single('profilePic'), async (req: Request, res: Response) =>
 {
   try
   {
@@ -51,7 +53,7 @@ userRoute.post("/", upload.single('profilePic'), async (req, res) =>
   }
 });
 
-userRoute.get("/search", async (req, res) =>
+userRoute.get("/search", async (req: Request, res: Response) =>
 {
   try
   {
@@ -90,7 +92,7 @@ userRoute.get("/search", async (req, res) =>
   }
 });
 
-userRoute.get("/:id", async (req, res) =>
+userRoute.get("/:id", async (req: Request, res: Response) =>
 {
   try
   {
@@ -116,7 +118,7 @@ userRoute.get("/:id", async (req, res) =>
   }
 });
 
-const validateUserCreation = async (user) =>
+const validateUserCreation = async (user: UserDto) =>
 {
   const { email, password, firstName, lastName } = user;
   if (isNullOrEmpty( email, password, firstName, lastName ))
@@ -132,4 +134,7 @@ const validateUserCreation = async (user) =>
   return null;
 };
 
-module.exports = { userRoute };
+export {
+  userRoute
+}
+

@@ -1,15 +1,16 @@
-const { Router } = require('express');
-const { Post } = require('../models/post.model');
-const { User } = require('../models/user.model');
-const { response, getSessionInfo, isNullOrEmpty, getCurrentDateTime, getPostScore, getFriendScore } = require("../utils/common.util");
-const { hasRole, authentication } = require('../utils/auth.util');
-const { Roles } = require('../models/role.model');
-const multer  = require('multer')
+import { Router } from 'express';
+import { Post } from '../models/post.model';
+import { User } from '../models/user.model';
+import { response, getSessionInfo, isNullOrEmpty, getCurrentDateTime, getPostScore, getFriendScore } from "../utils/common.util";
+import { hasRole, authentication } from '../utils/auth.util';
+import { Roles } from '../models/role.model';
+import multer from 'multer';
+import { uploadMultipleFile } from '../conf/firebase.conf';
+import { PostImage } from '../models/post-image.model';
+import { getLogger } from '../conf/logger.conf';
+import { getUserFriends, getFriendsPosts } from '../utils/db-query.util';
+
 const upload = multer({ storage: multer.memoryStorage() });
-const { uploadMultipleFile } = require('../conf/firebase.conf');
-const { PostImage } = require('../models/post-image.model');
-const { getLogger } = require('../conf/logger.conf');
-const { getUserFriends, getFriendsPosts } = require('../utils/db-query.util');
 
 const postRoute = Router();
 
@@ -36,7 +37,7 @@ postRoute.post('/', upload.array('post-images', 6), authentication, async (req, 
       return response(res, 'Bad Request!', 400);
     }
   
-    const user = await User.findOne({ where: { id: userId } });
+    const user: any = await User.findOne({ where: { id: userId } });
     if (isNullOrEmpty(user))
     {
         return response(res, "Invalid User!", 404);
@@ -71,16 +72,16 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
 
     const friends = await getUserFriends(userId, true);
 
-    const frienUserIds = friends.map(friend => {
+    const frienUserIds = friends.map((friend: any) => {
       return friend.requestedUser == userId ? friend.acceptedUser : friend.requestedUser
     });
 
-    const posts = await getFriendsPosts(frienUserIds);    
+    const posts: any = await getFriendsPosts(frienUserIds);    
     
-    const postsWithScore = posts.map(post =>
+    const postsWithScore = posts.map((post: any) =>
     {
       const postUserId = post.User.id;
-      const friendship = friends.filter(item => item.acceptedUser == postUserId || item.requestedUser == postUserId)[0];
+      const friendship: any = friends.filter((item: any) => item.acceptedUser == postUserId || item.requestedUser == postUserId)[0];
       const score = getFriendScore(friendship.score, friendship.createdAt);
       post.score = getPostScore(score, post.createdAt);
       return post;
@@ -96,4 +97,6 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
   }
 });
 
-module.exports = { postRoute };
+export {
+  postRoute
+}

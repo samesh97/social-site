@@ -1,34 +1,25 @@
-const { getLogger } = require("../conf/logger.conf");
-const { Response } = require("../dtos/response.dto");
-const { Config } = require("../models/config.model");
-const bcrypt = require("bcrypt");
+import { getLogger } from "../conf/logger.conf";
+import { Response } from "../dtos/response.dto";
+import { Config } from "../models/config.model";
+import bcrypt from "bcrypt";
 
-const isNullOrEmpty = (...values) =>
+const isNullOrEmpty = (...values: any []) =>
 {
-    for (value of values)
+    const result = values.some(value => value == undefined || value == null);
+    if (result)
     {
-        if (!value)
-        {
-            getLogger().error("Values is null or empty");
-            return true;    
-        }
+        getLogger().error("Values is null or empty");
     }
-    return false;
+    return result;
 }
 
-const isNotNullOrEmpty = (...values) => 
+const isNotNullOrEmpty = (...values: any[]) => 
 {
-    for (value of values)
-    {
-        if (!value)
-        {
-            return false;
-        }
-    }
-    return true;
+    const result = values.some(value => value != undefined && value != null);
+    return result;
 }
 
-const minutesToMilliseconds = (minutes) => 
+const minutesToMilliseconds = (minutes: number) => 
 {
     if (isNullOrEmpty(minutes))
     {
@@ -37,9 +28,11 @@ const minutesToMilliseconds = (minutes) =>
     return minutes * 1000 * 60;
 }
 
-const response = (res, data, code) =>
+const response = (res, data: any, code: number) =>
 {
-    const response = new Response(data, code);
+    const response = new Response();
+    response.code = code;
+    response.data = data;
     return res.status(code).json(response);
 };
 
@@ -54,7 +47,7 @@ const sliceEnd = (text, endChar) =>
 
 const getConfig = async (name) =>
 {
-    const config = await Config.findOne({
+    const config: any = await Config.findOne({
         where: { name: name },
     });
     return config?.value;
@@ -86,44 +79,34 @@ const getCurrentDateTime = () =>
     const date = new Date();
     return date.toISOString();
 }
-const getPostScore = (currentScore, postedDate) =>
+const getPostScore = (currentScore: number, postedDate: Date) =>
 {
-    const currentDate = new Date(getCurrentDateTime());
-    const postedDateObj = new Date(postedDate);
-    const diff = currentDate - postedDateObj;
+    const currentDate: Date = new Date(getCurrentDateTime());
+    const postedDateObj: Date = new Date(postedDate);
+    const diff = currentDate.getTime() - postedDateObj.getTime();
 
     const minutes = diff / (1000 * 60);
     const maxScore = 500;
-    const minScore = -500;
     let timeScore = maxScore - minutes;
-    if (minScore > timeScore)
-    {
-        timeScore = 0;    
-    }
     getLogger().info(`Calculated post score -> ${currentScore + timeScore}`);
     return currentScore + timeScore;
 }
-const getFriendScore = (currentScore, friendship) =>
+const getFriendScore = (currentScore: number, friendship) =>
 {
     const currentDate = new Date(getCurrentDateTime());
     const addedDate = new Date(friendship);
-    const diff = currentDate - addedDate;
+    const diff = currentDate.getTime() - addedDate.getTime();
 
     const days = diff / (1000 * 60 * 60 * 24);
 
     const maxScore = 500;
-    const minScore = -500;
 
     let friendshipScore = maxScore - days;
-    if (minScore > friendshipScore)
-    {
-        friendshipScore = 0;    
-    }
-
+ 
     getLogger().info(`Calculated friendship score -> ${currentScore + friendshipScore}`);
     return currentScore + friendshipScore;
 }
-module.exports = {
+export  {
     isNullOrEmpty,
     minutesToMilliseconds,
     response,

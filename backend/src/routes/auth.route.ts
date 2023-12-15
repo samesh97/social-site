@@ -1,24 +1,24 @@
-const { Router } = require("express");
+import { Request, Response, Router } from "express";
 
-const
+import
 {
   isPlainPasswordMatches,
   verifyToken,
   isRefreshTokenRevoked,
   genAccessRefreshTokensAndSetAsCookies,
   getCookie,
-} = require("../utils/auth.util");
+} from "../utils/auth.util";
 
-const { User } = require("../models/user.model");
-const { response, getSessionInfo } = require("../utils/common.util");
-const { config } = require("../conf/common.conf");
-const { isNullOrEmpty } = require("../utils/common.util");
-const { Token, TokenStatus } = require("../models/token.model");
-const { getLogger } = require("../conf/logger.conf");
+import { User } from "../models/user.model";
+import { response, getSessionInfo } from "../utils/common.util";
+import { config } from "../conf/common.conf";
+import { isNullOrEmpty } from "../utils/common.util";
+import { Token, TokenStatus } from "../models/token.model";
+import { getLogger } from "../conf/logger.conf";
 
 const authRoute = Router();
 
-authRoute.post("/login", async (req, res) =>
+authRoute.post("/login", async (req: Request, res: Response) =>
 {
   try
   {
@@ -69,21 +69,21 @@ authRoute.post("/refresh", async (req, res) =>
     const refreshToken = req.cookies[config.REFRESH_TOKEN_COOKIE_NAME];
     if (isNullOrEmpty(refreshToken))
     {
-      return response(res, "Refresh token not found", 404);
+      return response(res, "Refresh token not found", 401);
     }
     const object = verifyToken(refreshToken, config.JWT_REFRESH_TOKEN_SECRET);
     if (isNullOrEmpty(object))
     {
-      return response(res, "Invalid refresh token", 400);
+      return response(res, "Invalid refresh token", 401);
     }
     const user = await User.findByPk(object.userId);
     if (isNullOrEmpty(user))
     {
-      return response(res,"User with associated refresh token not found",404);
+      return response(res,"User with associated refresh token not found",401);
     }
     if (await isRefreshTokenRevoked(refreshToken, object))
     {
-      return response(res, "Refresh token is revoked.", 400);
+      return response(res, "Refresh token is revoked.", 401);
     }
 
     await genAccessRefreshTokensAndSetAsCookies(res, user.id);
@@ -100,17 +100,34 @@ authRoute.post("/verify", async (req, res) =>
 {
   try
   {
+    const { userId } = getSessionInfo(req); 
     const accessToken = getCookie(req, config.ACCESS_TOKEN_COOKIE_NAME);
-    if (isNullOrEmpty(accessToken))
+    const refreshToken = getCookie(req, config.REFRESH_TOKEN_COOKIE_NAME);
+    if (isNullOrEmpty(accessToken) && isNullOrEmpty(refreshToken))
     {
-      return response(res, `Failed to verify.`, 400);
+      return response(res, `Failed to verify.`, 401);
     }
     const result = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);
     if (isNullOrEmpty(result))
     {
-      return response(res, `Failed to verify.`, 400);
+      const refreshTokenContent = verifyToken(refreshToken, config.JWT_REFRESH_TOKEN_SECRET);
+      if (isNullOrEmpty(refreshTokenContent))
+      {
+        return response(res, `Failed to verify.`, 401);
+      }
+      
     }
-    return response(res, `Verified.`, 200);
+
+    const user = await User.findByPk(userId);
+    const returnUser = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      profileUrl: user.profileUrl
+    }
+
+    return response(res, returnUser, 200);
   }
   catch (error)
   {
@@ -145,4 +162,6 @@ authRoute.post("/logout", async (req, res) =>
   }
 });
 
-module.exports = { authRoute };
+export {
+  authRoute
+}

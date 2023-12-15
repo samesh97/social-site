@@ -1,10 +1,10 @@
-const { Router } = require('express');
-const { User } = require("../models/user.model");
-const { Reaction } = require('../models/reaction.model');
-const { response, getSessionInfo, isNullOrEmpty, getCurrentDateTime } = require("../utils/common.util");
-const { changeScore } = require('../utils/friend.util');
-const { config } = require('../conf/common.conf');
-const { getLogger } = require('../conf/logger.conf');
+import { Router } from 'express';
+import { User } from "../models/user.model";
+import { Reaction } from '../models/reaction.model';
+import { response, getSessionInfo, isNullOrEmpty, getCurrentDateTime } from "../utils/common.util";
+import { changeScore } from '../utils/friend.util';
+import { config } from '../conf/common.conf';
+import { getLogger } from '../conf/logger.conf';
 const reactionRoute = Router();
 
 reactionRoute.post('/', async (req, res) =>
@@ -58,4 +58,6 @@ reactionRoute.post('/', async (req, res) =>
   }
 });
 
-module.exports = { reactionRoute };
+export {
+  reactionRoute
+}

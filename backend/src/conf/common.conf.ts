@@ -1,7 +1,7 @@
-const dotEnv = require("dotenv");
+import dotEnv from "dotenv";
 dotEnv.config();
 
-const config = {
+const config: any = {
   SERVER_PORT: process.env.SERVER_PORT || 5000,
   JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET,
   JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES:
@@ -20,6 +20,7 @@ const config = {
   },
   REFRESH_TOKEN_COOKIE_NAME: "x-refresh-token",
   ACCESS_TOKEN_COOKIE_NAME: "x-access-token",
+  CSRF_TOKEN_COOKIE_NAME: process.env.CSRF_TOKEN_COOKIE_NAME || 'csrf-token',
   FIREBASE_CONFIG: {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOM,
@@ -33,7 +34,8 @@ const config = {
     like: 2,
     comment: 5
   },
-  REST_AUTH_BYPASS_URL: process.env.REST_AUTH_BYPASS_URL || '/users,/auth/*'
+  REST_AUTH_BYPASS_URL: process.env.REST_AUTH_BYPASS_URL || '/users,/auth/login,/auth/refresh',
+  DATABASE_MODE: {  }
 };
    
-module.exports = { config };
+export { config }

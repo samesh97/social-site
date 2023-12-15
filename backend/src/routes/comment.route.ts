@@ -1,9 +1,9 @@
-const { Router } = require("express");
-const { Comment } = require("../models/comment.model");
-const { response, isNullOrEmpty, getSessionInfo, getCurrentDateTime } = require("../utils/common.util");
-const { changeScore } = require("../utils/friend.util");
-const { config } = require("../conf/common.conf");
-const { getLogger } = require("../conf/logger.conf");
+import { Router } from "express";
+import { Comment } from "../models/comment.model";
+import { response, isNullOrEmpty, getSessionInfo, getCurrentDateTime } from "../utils/common.util";
+import { changeScore } from "../utils/friend.util";
+import { config } from "../conf/common.conf";
+import { getLogger } from "../conf/logger.conf";
 
 const commentRoute = Router();
 
@@ -40,5 +40,6 @@ commentRoute.post("/", async (req, res) =>
     }
 });
 
-
-module.exports = { commentRoute };
+export {
+    commentRoute
+}

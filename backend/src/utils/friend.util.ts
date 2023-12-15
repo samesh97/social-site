@@ -1,7 +1,7 @@
-const { Friend } = require("../models/friend.model");
-const { Op } = require('sequelize');
-const { isNullOrEmpty } = require('./common.util');
-const { getLogger } = require("../conf/logger.conf");
+import { Friend } from '../models/friend.model';
+import { Op } from 'sequelize';
+import { isNullOrEmpty } from './common.util';
+import { getLogger } from "../conf/logger.conf";
 
 
 const changeScore = async (userId, score) =>
@@ -24,4 +24,4 @@ const changeScore = async (userId, score) =>
     getLogger().info("Score added!");
 }
 
-module.exports = { changeScore };
+export { changeScore };

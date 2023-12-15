@@ -1,6 +1,6 @@
-const { Sequelize } = require('sequelize');
-const { config } = require('./common.conf');
-const { getLogger } = require('./logger.conf');
+import { Sequelize } from 'sequelize';
+import { config } from './common.conf';
+import { getLogger } from './logger.conf';
 
 //database wide options
 var opts = {
@@ -25,4 +25,7 @@ const connectToDB = async () => {
     }
 }
 connectToDB();
-module.exports = { sequelize };
+
+export {
+    sequelize
+}
