@@ -8,8 +8,8 @@ import { config } from "../conf/common.conf";
 
 class Friend extends Model
 {
-  declare requestedUser: string;
-  declare acceptedUser: string;
+  declare requestedUserId: string;
+  declare acceptedUserId: string;
   declare isAccepted: boolean;
   declare score: number;
   declare createdAt: Date;
@@ -19,12 +19,12 @@ class Friend extends Model
 
 Friend.init(
 {
-  requestedUser: {
+  requestedUserId: {
     primaryKey: true,
     type: DataTypes.UUID,
     allowNull: false,
   },
-  acceptedUser: {
+  acceptedUserId: {
     primaryKey: true,
     type: DataTypes.UUID,
     allowNull: false,
@@ -56,8 +56,10 @@ const setAssociations = async () =>
 {
   try
     {
-      User.hasMany(Friend, { foreignKey: { name: 'requestedUser' }, sourceKey: 'id' });
-      User.hasMany(Friend, { foreignKey: { name: 'acceptedUser'}, sourceKey: 'id'});
+      User.hasMany(Friend, { foreignKey: { name: 'requestedUserId' }, sourceKey: 'id' });
+      User.hasMany(Friend, { foreignKey: { name: 'acceptedUserId' }, sourceKey: 'id' });
+      Friend.belongsTo(User, {as: 'requestedUser', foreignKey: 'requestedUserId'});
+      Friend.belongsTo(User, {as: 'acceptedUser', foreignKey: 'acceptedUserId'});
       await Friend.sync(config.DATABASE_MODE);
     }
     catch (e)

@@ -21,10 +21,10 @@ postRoute.post('/', upload.array('post-images', 6), authentication, async (req, 
     const { userId } = getSessionInfo(req);
     const { description } = req.body;
   
-    let imageList = await uploadMultipleFile(req, 'posts');
+    let imageList: any = await uploadMultipleFile(req, 'posts');
 
     const time = getCurrentDateTime();
-    imageList = imageList.map(item => {
+    imageList = imageList.map((item: any) => {
       return {
         imageUrl: item,
         createdAt: time,
@@ -73,7 +73,7 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
     const friends = await getUserFriends(userId, true);
 
     const frienUserIds = friends.map((friend: any) => {
-      return friend.requestedUser == userId ? friend.acceptedUser : friend.requestedUser
+      return friend.requestedUserId == userId ? friend.acceptedUserId : friend.requestedUserId
     });
 
     const posts: any = await getFriendsPosts(frienUserIds);    
@@ -81,13 +81,13 @@ postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
     const postsWithScore = posts.map((post: any) =>
     {
       const postUserId = post.User.id;
-      const friendship: any = friends.filter((item: any) => item.acceptedUser == postUserId || item.requestedUser == postUserId)[0];
+      const friendship: any = friends.filter((item: any) => item.acceptedUserId == postUserId || item.requestedUserId == postUserId)[0];
       const score = getFriendScore(friendship.score, friendship.createdAt);
       post.score = getPostScore(score, post.createdAt);
       return post;
     });
 
-    const orderedPosts = postsWithScore.sort((a, b) => b.score - a.score);
+    const orderedPosts = postsWithScore.sort((a: any, b: any) => b.score - a.score);
     return response(res, orderedPosts, 200);
   }
   catch (error)

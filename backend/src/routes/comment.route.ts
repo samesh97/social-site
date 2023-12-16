@@ -1,9 +1,11 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { Comment } from "../models/comment.model";
 import { response, isNullOrEmpty, getSessionInfo, getCurrentDateTime } from "../utils/common.util";
 import { changeScore } from "../utils/friend.util";
 import { config } from "../conf/common.conf";
 import { getLogger } from "../conf/logger.conf";
+import { User } from "../models/user.model";
+import { getPostComments } from "../utils/db-query.util";
 
 const commentRoute = Router();
 
@@ -38,6 +40,17 @@ commentRoute.post("/", async (req, res) =>
         getLogger().error(error);
         return response(res, "Error!", 500);
     }
+});
+
+commentRoute.get("/:postId", async (req: Request, res: Response) =>
+{
+    const postId = req.params.postId;
+    if (isNullOrEmpty(postId))
+    {
+        return response(res, "No post id found", 400);    
+    }
+    const comments = await getPostComments(postId);
+    return response(res, comments, 200);
 });
 
 export {

@@ -40,14 +40,14 @@ reactionRoute.post('/', async (req, res) =>
           return response(res, "Reacted", 201);
     }
     //change reaction type later on
-    if (reaction.type != type)
+    if (reaction?.type != type)
     {
-        reaction.update({type: type, updatedAt: time});
+        reaction?.update({type: type, updatedAt: time});
     }
     else
     {
         //remove reaction
-        reaction.destroy();
+        reaction?.destroy();
     }
     return response(res, 'Reacted', 200);
   }

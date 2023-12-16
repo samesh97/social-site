@@ -7,7 +7,7 @@ initializeApp(config.FIREBASE_CONFIG);
 
 const storage = getStorage();
 
-const uploadFile = async (req, filePath) =>
+const uploadFile = async (req: any, filePath: any) =>
 {
     const epoch = Date.now();
     const fileName = req.file.originalname + epoch;
@@ -20,7 +20,7 @@ const uploadFile = async (req, filePath) =>
     return downloadURL;
 }
 
-const uploadMultipleFile = async (req, filePath) =>
+const uploadMultipleFile = async (req: any, filePath: any) =>
 {
     const list = [];
     for (let file of req.files)

@@ -9,8 +9,9 @@ import { Token, TokenStatus, TokenType } from "../models/token.model";
 import { Config, ConfigKey } from "../models/config.model";
 import { isNullOrEmpty, minutesToMilliseconds, sliceEnd, getConfig } from "./common.util";
 import { getLogger } from "../conf/logger.conf";
+import { NextFunction, Request, Response } from "express";
 
-const isPlainPasswordMatches = (palinText, hashedPassword) =>
+const isPlainPasswordMatches = (palinText: string, hashedPassword: string) =>
 {
   try
   {
@@ -22,7 +23,7 @@ const isPlainPasswordMatches = (palinText, hashedPassword) =>
   }
 };
 
-const genAccessRefreshTokensAndSetAsCookies = async (res, userId, refreshToken = false) =>
+const genAccessRefreshTokensAndSetAsCookies = async (res: Response, userId: string, refreshToken: boolean = false) =>
 {
   const accessToken = await genAccessToken(userId);
   const accessTokenExpiresIn = minutesToMilliseconds(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES);
@@ -35,11 +36,11 @@ const genAccessRefreshTokensAndSetAsCookies = async (res, userId, refreshToken =
     const refreshTokenExpiresIn = minutesToMilliseconds(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES);
     setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
 
-    setCookie(res, config.CSRF_TOKEN_COOKIE_NAME, 12345, refreshTokenExpiresIn);
+    setCookie(res, config.CSRF_TOKEN_COOKIE_NAME, "12345", refreshTokenExpiresIn);
   }
 };
 
-const setCookie = (res, key, value, maxAge, httpOnly = true) => 
+const setCookie = (res: Response, key: string, value: string, maxAge: number, httpOnly = true) => 
 {
   res.cookie(key, value,
   {
@@ -48,9 +49,9 @@ const setCookie = (res, key, value, maxAge, httpOnly = true) =>
   });
 }
 
-const hasRole = (...roles) =>
+const hasRole = (...roles: string[]) =>
 {
-  return async (req, res, next) =>
+  return async (req: Request, res: Response, next: NextFunction) =>
   {
     const { userId } = getSessionInfo(req);
     if (isNullOrEmpty(userId))
@@ -88,7 +89,7 @@ const hasRole = (...roles) =>
   };
 };
 
-const isByPassAuth = async (req) =>
+const isByPassAuth = async (req: Request) =>
 {
   const urlWithoutBackSlash = sliceEnd(req.url, "/");
 
@@ -100,7 +101,7 @@ const isByPassAuth = async (req) =>
 
   const urls = config.split(",");
 
-  const isByPass = urls.some(url =>
+  const isByPass = urls.some((url: string) =>
   {
     if (isNullOrEmpty(url))
     {
@@ -117,7 +118,7 @@ const isByPassAuth = async (req) =>
   return isByPass;
 };
 
-const verifyAuthHeader = async (req) =>
+const verifyAuthHeader = async (req: Request) =>
 {
   getLogger().info("Executing the verifyAuthHeader...");
   let authHeader = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
@@ -126,7 +127,7 @@ const verifyAuthHeader = async (req) =>
   {
     return false;  
   }
-  const object = verifyToken(authHeader, config.JWT_ACCESS_TOKEN_SECRET);
+  const object: any = verifyToken(authHeader, config.JWT_ACCESS_TOKEN_SECRET);
   if (isNullOrEmpty(object))
   {
     return false;  
@@ -155,7 +156,7 @@ const verifyAuthHeader = async (req) =>
   return true;
 };
 
-const genAccessToken = async (userId) => {
+const genAccessToken = async (userId: string) => {
   const currentEpochTime = Date.now;
   const object = {
     userId,
@@ -168,7 +169,7 @@ const genAccessToken = async (userId) => {
   await saveTokenInDB(userId, token, TokenType.ACCESS_TOKEN);
   return token;
 };
-const genRefreshToken = async (userId) => {
+const genRefreshToken = async (userId: string) => {
   const currentEpochTime = Date.now;
   const object = {
     userId,
@@ -182,7 +183,7 @@ const genRefreshToken = async (userId) => {
   return refreshToken;
 };
 
-const verifyToken = (token, secret) => {
+const verifyToken = (token: string, secret: string) => {
   try {
     const object = jwt.verify(token, secret);
     if (object) {
@@ -193,14 +194,14 @@ const verifyToken = (token, secret) => {
   }
   return undefined;
 };
-const isRefreshTokenRevoked = async (refreshToken, object) => {
+const isRefreshTokenRevoked = async (refreshToken: string, object: any) => {
   const dbRefreshToken = await getTokenFromDB(
     object.userId,
     TokenType.REFRESH_TOKEN
   );
   if (dbRefreshToken) {
     if (dbRefreshToken != refreshToken) {
-      const dbRefreshTokenPayload = verifyToken(
+      const dbRefreshTokenPayload: any = verifyToken(
         dbRefreshToken,
         config.JWT_REFRESH_TOKEN_SECRET
       );
@@ -213,8 +214,8 @@ const isRefreshTokenRevoked = async (refreshToken, object) => {
 };
 
 const getTokenFromDB = async (
-  userId,
-  tokenType,
+  userId: string,
+  tokenType: any,
   tokenStatus = TokenStatus.WHITELISTED
 ) => {
   const token = await Token.findOne({
@@ -229,9 +230,9 @@ const getTokenFromDB = async (
 };
 
 const saveTokenInDB = async (
-  userId,
-  token,
-  tokenType,
+  userId: string,
+  token: string,
+  tokenType: any,
   tokenStatus = TokenStatus.WHITELISTED
 ) => {
   const currentToken = await Token.findOne({
@@ -264,7 +265,7 @@ const saveTokenInDB = async (
   }
 };
 
-const authentication = async (req, res, next) =>
+const authentication = async (req: Request, res: Response, next: NextFunction) =>
 {
   getLogger().info("Executing authentication.");
   if ((await isByPassAuth(req)) || (await verifyAuthHeader(req)))
@@ -274,7 +275,7 @@ const authentication = async (req, res, next) =>
   return response(res, "Unauthorized. You do not have permissions to perform this action.", 401);
 };
 
-const getCookie = (req, name) =>
+const getCookie = (req: Request, name: string) =>
 {
   return req.cookies[name];
 }

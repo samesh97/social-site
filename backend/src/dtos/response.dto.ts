@@ -1,5 +1,5 @@
 export class Response
 {
-  code: number;
+  code: number = 0;
   data: any;
 }

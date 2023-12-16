@@ -11,17 +11,17 @@ const userAttributes = ['id', 'firstName', 'lastName', 'profileUrl'];
 const postAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const commentAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const postImageAttributes = ['id', 'imageUrl'];
-const friendAttributes = ['requestedUser', 'acceptedUser', 'isAccepted','score','createdAt','updatedAt'];
+const friendAttributes = ['requestedUserId', 'acceptedUserId', 'isAccepted', 'score', 'createdAt', 'updatedAt'];
 
 
-const getUser = async (userId) =>
+const getUser = async (userId: string) =>
 {
     return await User.findOne({
         where: { id: userId },
         attributes: userAttributes
     });
 }
-const getUserWithPosts = async (userId) =>
+const getUserWithPosts = async (userId: string) =>
 {
     return await User.findOne({
         where: { id: userId },
@@ -56,11 +56,15 @@ const getUserWithPosts = async (userId) =>
                     }
                   ]
               }
-            ]
+        ],
+        order: [
+          [ Post, 'createdAt', 'DESC' ],
+          [ Post, Comment, 'createdAt', 'DESC' ]
+        ]
       });
 }
 
-const getUserFriends = async (userId, ...accepted) =>
+const getUserFriends = async (userId: string, ...accepted: boolean []) =>
 {
     return await Friend.findAll({
       attributes: friendAttributes,
@@ -69,11 +73,11 @@ const getUserFriends = async (userId, ...accepted) =>
           [Op.or]:
           [
               {
-                requestedUser: userId,
+                requestedUserId: userId,
                 isAccepted: accepted
               },
               {
-                acceptedUser: userId,
+                acceptedUserId: userId,
                 isAccepted: accepted
               }
           ]
@@ -81,7 +85,7 @@ const getUserFriends = async (userId, ...accepted) =>
       });
 }
 
-const getFriendship = async (userId1, userId2) =>
+const getFriendship = async (userId1: string, userId2: string) =>
 {
     return await Friend.findOne({
       attributes: friendAttributes,
@@ -89,17 +93,17 @@ const getFriendship = async (userId1, userId2) =>
           [Op.and]:
             [
               {
-                requestedUser: [userId1, userId2],
+                requestedUserId: [userId1, userId2],
               },
               {
-                acceptedUser: [userId1, userId2]
+                acceptedUserId: [userId1, userId2]
               }
             ],
         }
       });
 }
 
-const getFriendsPosts = async (friendsIds) => {
+const getFriendsPosts = async (friendsIds: string []) => {
   if (friendsIds.length == 0)
   {
     return []; 
@@ -110,12 +114,90 @@ const getFriendsPosts = async (friendsIds) => {
         UserId: [...friendsIds]
       },
       include: [
-        { model: Reaction },
-        { model: Comment, include: [{ model: User, attributes: userAttributes }] },
-        { model: User, attributes: userAttributes },
-        { model: PostImage, attributes: postImageAttributes}
+        {
+          model: Reaction
+        },
+        {
+          model: Comment,
+          include:
+            [
+              {
+                model: User,
+                attributes: userAttributes
+              }
+            ]
+        },
+        {
+          model: User,
+          attributes: userAttributes
+        },
+        {
+          model: PostImage,
+          attributes: postImageAttributes
+        }
+      ],
+      order: [
+        [ Comment, 'createdAt', 'DESC']
       ]
     });
+}
+
+const getPostComments = async (postId: string) => {
+  return await Comment.findAll({
+    where: {
+        postId
+    },
+    include:
+      [
+        {
+          model: User,
+          attributes: userAttributes
+        }
+      ],
+    order: [
+      ['createdAt', 'DESC']
+    ]
+  });
+}
+
+const getFriendRequests = async (userId: string) => 
+{
+  return await Friend.findAll({
+    where: {
+      acceptedUserId: userId,
+      isAccepted: false,
+    },
+    attributes: friendAttributes,
+    include: [
+      {
+        model: User,
+        as: 'requestedUser',
+        attributes: userAttributes
+      },
+      {
+        model: User,
+        as: 'acceptedUser',
+        attributes: userAttributes
+      }
+    ]
+  });
+}
+
+const searchUser = async (keyword: string) => {
+  return await User.findAll({
+    where: {
+      [Op.or]:
+      [
+        {
+          firstName: { [Op.startsWith]: [keyword] }
+        },
+        {
+          lastName: { [Op.startsWith]: [keyword] }  
+        }
+      ]
+    },
+    attributes: userAttributes
+  });
 }
 
 export {
@@ -123,5 +205,8 @@ export {
     getUserWithPosts,
     getUserFriends,
     getFriendsPosts,
-    getFriendship
+    getFriendship,
+    getPostComments,
+    getFriendRequests,
+    searchUser
 };

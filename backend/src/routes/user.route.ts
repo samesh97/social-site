@@ -1,14 +1,13 @@
 import { Router, Request, Response } from "express";
 import { UserDto } from "../dtos/user.dto";
 
-import { Op } from "sequelize";
 import multer from 'multer';
 import { uploadFile } from '../conf/firebase.conf';
 import { User } from "../models/user.model";
 import { Role, Roles } from "../models/role.model";
 import { isNullOrEmpty, response, textTohash, getSessionInfo, getCurrentDateTime } from "../utils/common.util";
 import { getLogger } from "../conf/logger.conf";
-import { getUserWithPosts, getUserFriends } from "../utils/db-query.util";
+import { getUserWithPosts, getUserFriends, searchUser } from "../utils/db-query.util";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -31,6 +30,11 @@ userRoute.post("/", upload.single('profilePic'), async (req: Request, res: Respo
     
     const userRole = await Role.findOne({ where: { name: Roles.USER } });
 
+    if (isNullOrEmpty(userRole))
+    {
+      return response(res, "User role not found", 500);  
+    }
+
     const time = getCurrentDateTime();
     await User.create(
       {
@@ -38,7 +42,7 @@ userRoute.post("/", upload.single('profilePic'), async (req: Request, res: Respo
         firstName: user.firstName,
         lastName: user.lastName,
         password: hashedPassword,
-        roleId: userRole.id,
+        roleId: userRole?.id,
         profileUrl: downloadURL,
         createdAt: time,
         updatedAt: time
@@ -62,33 +66,19 @@ userRoute.get("/search", async (req: Request, res: Response) =>
     {
       return response(res, "No valid session found", 400);  
     }
-    const keyword = req.query.keyword;
+    const keyword = req.query.keyword as string;
     if (isNullOrEmpty(keyword))
     {
       return response(res, "No keyword found!", 400);  
     }
   
-    const users = await User.findAll({
-      where: {
-        [Op.or]:
-        [
-          {
-            firstName: { [Op.startsWith]: [keyword] }
-          },
-          {
-            lastName: { [Op.startsWith]: [keyword] }  
-          }
-        ]
-      },
-      attributes: ['id', 'firstName', 'lastName']
-    });
-    
+    const users = await searchUser(keyword);
     return response(res, users, 200);
   }
   catch (error)
   {
     getLogger().error(error);
-    return response(res, "Error!", 500);
+    return response(res, "Error while searching users", 500);
   }
 });
 

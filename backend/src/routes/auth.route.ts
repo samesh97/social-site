@@ -71,7 +71,7 @@ authRoute.post("/refresh", async (req, res) =>
     {
       return response(res, "Refresh token not found", 401);
     }
-    const object = verifyToken(refreshToken, config.JWT_REFRESH_TOKEN_SECRET);
+    const object: any = verifyToken(refreshToken, config.JWT_REFRESH_TOKEN_SECRET);
     if (isNullOrEmpty(object))
     {
       return response(res, "Invalid refresh token", 401);
@@ -146,7 +146,7 @@ authRoute.post("/logout", async (req, res) =>
       return response(res, "No session info found", 401);  
     }
 
-    const result = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);
+    const result: any = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);
     if (isNullOrEmpty(result))
     {
       return response(res, `Failed to verify.`, 400);

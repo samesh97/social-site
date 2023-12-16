@@ -1,6 +1,7 @@
 import { getLogger } from "../conf/logger.conf";
 import { Response } from "../dtos/response.dto";
 import { Config } from "../models/config.model";
+import { Response  as ResponseExpress, Request }  from "express";
 import bcrypt from "bcrypt";
 
 const isNullOrEmpty = (...values: any []) =>
@@ -28,7 +29,7 @@ const minutesToMilliseconds = (minutes: number) =>
     return minutes * 1000 * 60;
 }
 
-const response = (res, data: any, code: number) =>
+const response = (res: ResponseExpress, data: any, code: number) =>
 {
     const response = new Response();
     response.code = code;
@@ -36,7 +37,7 @@ const response = (res, data: any, code: number) =>
     return res.status(code).json(response);
 };
 
-const sliceEnd = (text, endChar) => 
+const sliceEnd = (text: string, endChar: string) => 
 {
     if (!text || !endChar)
     {
@@ -45,7 +46,7 @@ const sliceEnd = (text, endChar) =>
     return text.endsWith(endChar) ? text.substring(0, text.length - 1): text;
 }
 
-const getConfig = async (name) =>
+const getConfig = async (name: string) =>
 {
     const config: any = await Config.findOne({
         where: { name: name },
@@ -53,17 +54,17 @@ const getConfig = async (name) =>
     return config?.value;
 }
 
-const getSessionInfo = (req) => 
+const getSessionInfo = (req: Request) => 
 {
     const data = req.body.session;
     return data ? data : {};
 }
-const setSessionInfo = (req, data) => 
+const setSessionInfo = (req: Request, data: any) => 
 {
     req.body.session = data;
 }
 
-const textTohash = (text, saltRounds) => 
+const textTohash = (text: string, saltRounds: number) => 
 {
     try
     {
@@ -91,7 +92,7 @@ const getPostScore = (currentScore: number, postedDate: Date) =>
     getLogger().info(`Calculated post score -> ${currentScore + timeScore}`);
     return currentScore + timeScore;
 }
-const getFriendScore = (currentScore: number, friendship) =>
+const getFriendScore = (currentScore: number, friendship: string) =>
 {
     const currentDate = new Date(getCurrentDateTime());
     const addedDate = new Date(friendship);
