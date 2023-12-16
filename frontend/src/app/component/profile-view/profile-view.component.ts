@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/service/auth/auth.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
-  selector: 'app-profile-view',
+  selector: 'profile-view',
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.css']
 })

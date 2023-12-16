@@ -8,7 +8,7 @@
     </div>
     <div class="container-description">
         <p id="description">{{post.description}}</p>
-        <app-image-grid [postImages]="post.PostImages"></app-image-grid>
+        <image-grid [postImages]="post.PostImages"></image-grid>
     </div>
-    <app-user-post-interaction [post]="post" (commentEmitter)="commentPosted($event)"></app-user-post-interaction>
+    <user-post-interaction [post]="post" (commentEmitter)="commentPosted($event)"></user-post-interaction>
 </div>

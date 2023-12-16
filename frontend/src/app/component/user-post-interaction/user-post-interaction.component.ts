@@ -5,7 +5,7 @@ import { Comment } from 'src/app/model/comment.model';
 import { PostService } from 'src/app/service/post/post.service';
 
 @Component({
-  selector: 'app-user-post-interaction',
+  selector: 'user-post-interaction',
   templateUrl: './user-post-interaction.component.html',
   styleUrls: ['./user-post-interaction.component.css']
 })

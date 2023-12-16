@@ -6,7 +6,7 @@ import { ProgressService } from 'src/app/service/progress/progress.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
-  selector: 'app-main',
+  selector: 'main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })

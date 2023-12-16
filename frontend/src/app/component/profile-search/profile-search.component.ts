@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from 'src/app/model/user.model';
 
 @Component({
-  selector: 'app-profile-search',
+  selector: 'profile-search',
   templateUrl: './profile-search.component.html',
   styleUrls: ['./profile-search.component.css']
 })

@@ -7,7 +7,7 @@ import { JourneyManagerService } from 'src/app/service/journey-manager/journey-m
 import { PostService } from 'src/app/service/post/post.service';
 
 @Component({
-  selector: 'app-user-post',
+  selector: 'user-post',
   templateUrl: './user-post.component.html',
   styleUrls: ['./user-post.component.css'],
 })

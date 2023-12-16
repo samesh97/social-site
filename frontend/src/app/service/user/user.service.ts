@@ -12,6 +12,7 @@ export class UserService
   private SEARCH_URL = `${config.SERVER_BASE_URL}/users/search`;
   private PROFILE_URL = `${config.SERVER_BASE_URL}/users`;
   private FRIEND_URL = `${config.SERVER_BASE_URL}/friends`;
+  private SUGGESTION_URL = `${config.SERVER_BASE_URL}/suggestions`;
   constructor(private http: HttpClient) { }
 
   search = (keyword: string): Observable<Response> =>
@@ -37,5 +38,8 @@ export class UserService
   acceptOrDenyFriendRequest = (userId: string, isAccepted: boolean) =>
   {
     return this.http.post<Response>(`${this.FRIEND_URL}/action`, { user: userId, isAccepted });
+  }
+  getSuggestions = () => {
+    return this.http.get<Response>(this.SUGGESTION_URL);
   }
 }

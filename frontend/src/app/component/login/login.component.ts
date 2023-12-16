@@ -4,7 +4,7 @@ import { Response } from 'src/app/model/response.model';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })

@@ -7,7 +7,7 @@ import { UserService } from 'src/app/service/user/user.service';
 import { User } from 'src/app/model/user.model';
 
 @Component({
-  selector: 'app-timeline',
+  selector: 'timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.css'],
 })

@@ -1,0 +1,9 @@
+<div class="main-container">
+    <img id="profile-image" src="{{image}}"/>
+    <div class="name-container">
+        <span *ngFor="let content of contents">{{content}}</span>
+    </div>
+    <div class="actions">
+        <button [disabled]="actionPeformed" (click)="btnClicked()">{{intialActionText}}</button>
+    </div>
+</div>

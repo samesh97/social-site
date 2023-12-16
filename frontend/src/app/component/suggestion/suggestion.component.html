@@ -1,0 +1,13 @@
+<div class="suggestion-container">
+    <span id="heading">Let's make some friends first</span>
+    <div class="suggestion-item-container">
+        <card-item *ngFor="let suggestion of suggestions"
+            [id]="suggestion.id" 
+            [contents]="[suggestion.firstName, suggestion.lastName]" 
+            [image]="suggestion.profileUrl" 
+            [intialActionText]="'Add Friend'"
+            [textAfterActionPerformed]="'Request Sent'"
+            (event)="itemClicked($event)"
+        ></card-item>
+    </div>
+</div>

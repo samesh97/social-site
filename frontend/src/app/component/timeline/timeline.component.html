@@ -1,11 +1,14 @@
 <div class="main-container">
      <div class="suggestion-container">
-        <app-friend-request></app-friend-request>
+        <friend-request></friend-request>
     </div>
     <div class="post-container">
-        <app-create-post></app-create-post>
+        <create-post></create-post>
         <div class="timeline-post-container" *ngFor="let post of posts">
-            <app-user-post [post]="post"></app-user-post>
+            <user-post [post]="post"></user-post>
+        </div>
+        <div *ngIf="posts.length <= 0" class="suggestion-view">
+            <suggestion></suggestion>
         </div>
     </div>
      <div class="active-container">

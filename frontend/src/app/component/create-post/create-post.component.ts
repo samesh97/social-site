@@ -7,7 +7,7 @@ import { PostService } from 'src/app/service/post/post.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
 
 @Component({
-  selector: 'app-create-post',
+  selector: 'create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
 })

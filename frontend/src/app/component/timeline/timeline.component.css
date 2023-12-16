@@ -14,11 +14,18 @@
 .suggestion-container {
     width: 15%;
     height: 100vh;
-    border-right: 1px solid var(--supporting-color);
     position: fixed;
 }
 .timeline-post-container {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+.suggestion-view
+{
+    width: 100%;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

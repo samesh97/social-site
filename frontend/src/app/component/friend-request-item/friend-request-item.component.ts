@@ -3,7 +3,7 @@ import { Friend } from 'src/app/model/Friend.mode';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
-  selector: 'app-friend-request-item',
+  selector: 'friend-request-item',
   templateUrl: './friend-request-item.component.html',
   styleUrls: ['./friend-request-item.component.css']
 })

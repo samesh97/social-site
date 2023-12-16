@@ -6,7 +6,7 @@
         <div class="search-container">
             <input type="text" placeholder="Search..." [(ngModel)]="searchText" (blur)="search()">
             <button (click)="search()">Search</button>
-            <app-profile-search [users]="searchUsers" (select)="viewProfile($event)"></app-profile-search>
+            <profile-search [users]="searchUsers" (select)="viewProfile($event)"></profile-search>
         </div>
     </div>
     <div class="profile">
@@ -16,4 +16,4 @@
 </div>
 <div *ngIf="isLoggedIn" class="seperation"></div>
 <router-outlet></router-outlet>
-<app-progress-bar [isShowProgress]="showProgress"></app-progress-bar>
+<progress-bar [isShowProgress]="showProgress"></progress-bar>

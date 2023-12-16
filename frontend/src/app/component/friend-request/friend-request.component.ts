@@ -4,7 +4,7 @@ import { Response } from 'src/app/model/response.model';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
-  selector: 'app-friend-request',
+  selector: 'friend-request',
   templateUrl: './friend-request.component.html',
   styleUrls: ['./friend-request.component.css'],
 })

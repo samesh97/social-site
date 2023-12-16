@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, map, of, switchMap, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-create-post-dialog',
+  selector: 'create-post-dialog',
   templateUrl: './create-post-dialog.component.html',
   styleUrls: ['./create-post-dialog.component.css'],
 })
