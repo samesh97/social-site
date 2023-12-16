@@ -1,12 +1,19 @@
-import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import {
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+}
+from "@angular/common/http";
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from "../service/auth/auth.service";
-import { Observable, throwError } from "rxjs";
+import { Observable, ReplaySubject, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
 import { Response } from "../model/response.model";
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
+  private isRefreshRequestSent: boolean = false;
+  private refreshTokenSubject = new ReplaySubject<boolean>(1);
   constructor(
     private authService: AuthService)
   { }
@@ -27,12 +34,15 @@ export class AuthInterceptorService implements HttpInterceptor {
     err: any
   ): Observable<any> =>
   {
-    if (err instanceof HttpErrorResponse && err.status == 401 && !err.url?.endsWith("/auth/refresh"))
+    if (err.status == 401 && !err.url?.endsWith("/auth/refresh") && !this.isRefreshRequestSent)
     {
+      this.isRefreshRequestSent = true;
       return this.authService.refresh().pipe(
         switchMap((data: Response) => {
-          if (data.code == 200) {
-            // this.authService.setUserInfo(data);
+          this.isRefreshRequestSent = false;
+          if (data.code == 200)
+          {
+            this.refreshTokenSubject.next(true);
             return handler.handle(request);
           }
           return throwError(data);
@@ -42,6 +52,14 @@ export class AuthInterceptorService implements HttpInterceptor {
           return throwError(err);
         })
       );
+    }
+    else if (this.isRefreshRequestSent)
+    {
+      return this.refreshTokenSubject.pipe(
+        switchMap(() => {
+          return handler.handle(request);
+        })
+      )
     }
     return throwError(err);
   };

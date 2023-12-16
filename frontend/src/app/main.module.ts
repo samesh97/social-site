@@ -30,7 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserPostInteractionComponent } from './component/user-post-interaction/user-post-interaction.component';
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { SuggetionComponent } from './component/suggestion/suggestion.component';
-import { CardItemComponent } from './component/suggestion-item/card-item.component';
+import { CardItemComponent } from './component/card-item/card-item.component';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
