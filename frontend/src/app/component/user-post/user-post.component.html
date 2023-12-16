@@ -10,5 +10,5 @@
         <p id="description">{{post.description}}</p>
         <app-image-grid [postImages]="post.PostImages"></app-image-grid>
     </div>
-    <app-user-post-interaction [post]="post"></app-user-post-interaction>
+    <app-user-post-interaction [post]="post" (commentEmitter)="commentPosted($event)"></app-user-post-interaction>
 </div>

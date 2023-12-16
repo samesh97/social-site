@@ -15,12 +15,12 @@ export class LocalDatePipe implements PipeTransform {
     var seconds = Math.round(diff / 1000);
     if (seconds < 60)
     {
-      return "Just now"  
+      return "Just now"; 
     }
     var minutes = Math.round(seconds / 60);
     if (minutes < 60)
     {
-      return `${minutes}  minute ago`  
+      return `${minutes}  minute ago`;
     }
     var hours = Math.round(minutes / 60);
     if (hours < 24)
@@ -28,11 +28,24 @@ export class LocalDatePipe implements PipeTransform {
       return `${hours} hour ago`; 
     }
     var days = Math.round(hours / 24);
-    if (days < 3)
+    if (days < 7)
     {
       return `${days} day ago`;  
     }
-    return postedDate.toDateString();
+    var weeks = Math.round(days / 7);
+    if (weeks < 4)
+    {
+      return `${weeks} week ago`;   
+    }
+    var months = Math.round(weeks / 4);
+    if (months < 12)
+    {
+      return `${months} month ago`;  
+    }
+    var years = Math.round(months / 12);
+    return `${years} year ago`;  
+  
+    //return postedDate.toLocaleString();
   }
 
 }

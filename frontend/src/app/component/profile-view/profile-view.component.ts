@@ -54,23 +54,27 @@ export class ProfileViewComponent implements OnInit
   }
   setFriendBtnStatus = () =>
   {
-    const friend = this.user.Friends.filter(frd => frd.requestedUser == this.currentUser.id || frd.acceptedUser == this.currentUser.id)[0];
+    console.log(this.user.Friends);
+    const friend = this.user.Friends.filter(frd => frd.requestedUserId == this.currentUser.id || frd.acceptedUserId== this.currentUser.id)[0];
     if (!friend)
     {
       this.friendActionBtnStatusIndex = 0;
+      return;
     }
-    else if (friend.isAccepted)
+    if (friend.isAccepted)
     {
       this.friendActionBtnStatusIndex = 1;
       return;
     }
-    else if (friend.acceptedUser == this.currentUser.id)
+    if(friend.acceptedUserId == this.currentUser.id)
     {
       this.friendActionBtnStatusIndex = 2;
+      return;
     }
-    else if (friend.requestedUser == this.currentUser.id)
+    if (friend.requestedUserId == this.currentUser.id)
     {
       this.friendActionBtnStatusIndex = 3;
+      return;
     }
   }
 }

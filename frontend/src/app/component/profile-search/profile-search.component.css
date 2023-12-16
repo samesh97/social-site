@@ -20,7 +20,9 @@
 #profile-pic
 {
     width: 35px;
+    height: 35px;
     clip-path: circle();
+    object-fit: cover;
 }
 #name
 {

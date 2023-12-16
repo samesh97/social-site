@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { AuthService } from '../service/auth/auth.service';
 import { JourneyManagerService } from '../service/journey-manager/journey-manager.service';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginGuard {
-  constructor(private journeyManager: JourneyManagerService, private authService: AuthService) {}
+  constructor(private journeyManager: JourneyManagerService, private authService: AuthService, private router: Router) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
   {
-    const status = this.authService.hasLoggedIn();
-    console.log(`LoginGuard -> ${status}`);
-    if (status)
+
+    if (!this.authService.hasLoggedIn())
     {
-      this.journeyManager.loadHome();
+      return true;  
     }
-    return !status;
+    return false;
   }
 }

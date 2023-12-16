@@ -23,20 +23,10 @@ export class MainComponent implements OnInit
     private userService: UserService,
     private journeyManager: JourneyManagerService,
     private progressService: ProgressService
-  ) { }
-  
-  ngOnInit(): void
+  )
   {
-    this.loginState();
-    this.progressStatus();
-  }
-  loginState = () =>
-  {
-    this.isLoggedIn = this.authService.hasLoggedIn();
-    this.currentUser = this.authService.getUserInfo();
     this.authService.loginChangeListener().subscribe(isLogin => {
       this.isLoggedIn = isLogin;
-      console.log('Login state checked ' + isLogin);
       if(isLogin)
       {
         this.journeyManager.loadHome();
@@ -47,6 +37,21 @@ export class MainComponent implements OnInit
       }
       this.currentUser = this.authService.getUserInfo();
     });  
+  }
+  
+  ngOnInit(): void
+  {
+    this.loginState();
+    this.progressStatus();
+  }
+  loginState = () =>
+  {
+    this.authService.loginChangeListener()
+      .subscribe(state => {
+        this.isLoggedIn = state;
+    });
+    this.isLoggedIn = this.authService.hasLoggedIn();
+    this.currentUser = this.authService.getUserInfo();
   }
   search()
   {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
+import { ProgressService } from 'src/app/service/progress/progress.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
@@ -10,7 +11,11 @@ import { UserService } from 'src/app/service/user/user.service';
 })
 export class RegisterComponent implements OnInit
 {
-  constructor(private userService: UserService, private journeyManager: JourneyManagerService ){}
+  constructor(
+    private userService: UserService,
+    private journeyManager: JourneyManagerService,
+    private progressService: ProgressService
+  ) { }
   private profilePicFile: any;
   registerFormGroup: FormGroup = new FormGroup({});
   ngOnInit(): void
@@ -27,6 +32,7 @@ export class RegisterComponent implements OnInit
   {
     if (this.registerFormGroup.valid && this.profilePicFile )
     {
+      this.progressService.show();
       const formData = new FormData();
       formData.append("profilePic", this.profilePicFile);
       formData.append("email", this.registerFormGroup.value.email);
@@ -35,6 +41,7 @@ export class RegisterComponent implements OnInit
       formData.append("password", this.registerFormGroup.value.password);
 
       this.userService.register(formData).subscribe(data => {
+        this.progressService.hide();
         this.journeyManager.loadLogin();
       });
     }

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { config } from '../../configuration/common.conf';
 import { Response } from 'src/app/model/response.model';
 import { Observable } from 'rxjs';
-import { Post } from 'src/app/model/post.model';
 import { Reaction } from 'src/app/model/reaction.model';
 import { Comment } from 'src/app/model/comment.model';
 
@@ -34,5 +33,8 @@ export class PostService {
     return this.http.post<Response>(this.COMMENT_URL, comment, {
       withCredentials: true
     });
+  }
+  loadComments = (postId: string) => {
+    return this.http.get<Response>(`${this.COMMENT_URL}/${postId}`);
   }
 }

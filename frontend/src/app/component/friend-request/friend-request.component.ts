@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Friend } from 'src/app/model/Friend.mode';
+import { Response } from 'src/app/model/response.model';
+import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
   selector: 'app-friend-request',
@@ -6,19 +9,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./friend-request.component.css'],
 })
 export class FriendRequestComponent implements OnInit {
-  suggestions: any[] = [];
+  requests: Friend[] = [];
 
-  ngOnInit(): void {
-    this.suggestions.push({ firstname: 'Samesh', lastname: 'Alahakoon', mutual: '153' })
-    this.suggestions.push({
-      firstname: 'Pamosha',
-      lastname: 'Wijesekera',
-      mutual: '3',
-    });
-    this.suggestions.push({
-      firstname: 'Shelani',
-      lastname: 'Wijesekera',
-      mutual: '10',
-    });
+  constructor(
+    private userService: UserService
+  ){}
+
+  ngOnInit(): void
+  {
+    this.userService.getFriendRequests()
+      .subscribe((data: Response) => {
+        if (data.code == 200)
+        {
+          this.requests = data.data;  
+        }
+      });
   }
 }

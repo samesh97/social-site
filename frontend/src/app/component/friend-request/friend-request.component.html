@@ -1,6 +1,6 @@
 <div class="heading">
     <span>People you may know</span>
 </div>
-<div class="suggestions" *ngFor="let suggestion of suggestions">
-    <app-friend-request-item [friend]="suggestion"></app-friend-request-item>
+<div class="suggestions" *ngFor="let request of requests">
+    <app-friend-request-item [friend]="request"></app-friend-request-item>
 </div>

@@ -5,7 +5,7 @@
     border-radius: 6px;
     padding: 10px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 .first-line {
@@ -14,7 +14,10 @@
 }
 .first-line img {
     width: 40px;
+    height: 40px;
     margin: 8px;
+    object-fit: cover;
+    clip-path: circle();
 }
 .first-line span {
     text-transform: capitalize;
@@ -26,12 +29,23 @@
     flex-direction: column;
     margin-left: 5px;
 }
-.add-friend {
+.frd-action {
     width: 25px;
     height: 25px;
-    margin-right: 10px;
     cursor: pointer;
+    margin-left: 10px;
 }
 .mutual-text {
     color: rgb(138, 133, 133);
+}
+.action
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#requested-time
+{
+    font-size: 11px;
+    color: #5e5757;
 }

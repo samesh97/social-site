@@ -20,34 +20,27 @@ export class AuthService {
   login = (email: string, password: string): Observable<Response> => {
     return this.http.post<Response>(
       this.LOGIN_URL,
-      { email, password },
-      { withCredentials: true }
+      { email, password }
     );
   };
   verify = (): Observable<Response> => {
     return this.http.post<Response>(
-      this.VERIFY_URL,
-      {},
-      { withCredentials: true }
+      this.VERIFY_URL, {}
     );
   };
   refresh = (): Observable<Response> => {
     return this.http.post<Response>(
-      this.REFRESH_URL,
-      {},
-      { withCredentials: true }
+      this.REFRESH_URL,{}
     );
   };
   logout = (): Observable<Response> => {
     return this.http.post<Response>(
-      this.LOGOUT_URL,
-      {},
-      { withCredentials: true }
+      this.LOGOUT_URL,{}
     );
   }
 
   setLoggedIn = (value: boolean) => {
-    localStorage.setItem('loginState', value.toString());
+    sessionStorage.setItem('loginState', value.toString());
     if (!value)
     {
       this.setUserInfo(new Response());  
@@ -55,7 +48,7 @@ export class AuthService {
     this.loginStateSubject.next(value);
   };
   hasLoggedIn = (): boolean => {
-    const loginStatus = localStorage.getItem('loginState');
+    let loginStatus = sessionStorage.getItem('loginState');
     return loginStatus ? loginStatus == 'true' : false;
   };
   loginChangeListener = (): Observable<boolean> => 
@@ -66,15 +59,15 @@ export class AuthService {
   {
     if (res == null || res.data == null )
     {
-      localStorage.removeItem('userInfo');
+      sessionStorage.removeItem('userInfo');
       return;
     }
     const data = JSON.stringify(res.data);
-    localStorage.setItem('userInfo', data);
+    sessionStorage.setItem('userInfo', data);
   }
   getUserInfo = () =>
   {
-    const data = localStorage.getItem('userInfo');
-    return JSON.parse(data ? data : "");
+    const data = sessionStorage.getItem('userInfo');
+    return JSON.parse(data ? data : "{}");
   }
 }

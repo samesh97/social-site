@@ -1,11 +1,14 @@
 <div class="request-container">
    <div class="first-line">
-      <img src="assets/images/default-profile-pic.png">
+      <img src="{{friend.requestedUser.profileUrl}}">
       <div class="name-container">
-         <span>{{friend.firstname}}</span>
-         <span>{{friend.lastname}}</span>
-         <span class="mutual-text">{{friend.mutual}} mutual</span>
+         <span>{{friend.requestedUser.firstName}}</span>
+         <span>{{friend.requestedUser.lastName}}</span>
+         <span id="requested-time">{{friend.createdAt | localDate}}</span>
       </div>
    </div>
-   <img class="add-friend" src="assets/images/add_friend.png"> 
+   <div class="action">
+      <img class="frd-action" src="assets/images/accept.png" (click)="acceptRequest()"> 
+      <img class="frd-action" src="assets/images/remove.png" (click)="denyRequest()"> 
+   </div>
 </div>

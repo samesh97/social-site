@@ -16,18 +16,26 @@ export class UserService
 
   search = (keyword: string): Observable<Response> =>
   {
-    return this.http.get<Response>(`${this.SEARCH_URL}?keyword=${keyword}`, { withCredentials: true });
+    return this.http.get<Response>(`${this.SEARCH_URL}?keyword=${keyword}`);
   }
   viewProfile = (id: string) => 
   {
-    return this.http.get<Response>(`${this.PROFILE_URL}/${id}`, { withCredentials: true });
+    return this.http.get<Response>(`${this.PROFILE_URL}/${id}`);
   }
   register = (formData: FormData): Observable<Response> => 
   {
-    return this.http.post<Response>(this.PROFILE_URL, formData, { withCredentials: true });
+    return this.http.post<Response>(this.PROFILE_URL, formData);
   }
   addFriend = (userId: string) =>
   {
-    return this.http.post<Response>(this.FRIEND_URL, { user: userId }, { withCredentials: true });
+    return this.http.post<Response>(this.FRIEND_URL, { user: userId });
+  }
+  getFriendRequests = () => 
+  {
+    return this.http.get<Response>(`${this.FRIEND_URL}/requests`);  
+  }
+  acceptOrDenyFriendRequest = (userId: string, isAccepted: boolean) =>
+  {
+    return this.http.post<Response>(`${this.FRIEND_URL}/action`, { user: userId, isAccepted });
   }
 }

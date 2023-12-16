@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Post } from 'src/app/model/post.model';
 import { Reaction } from 'src/app/model/reaction.model';
 import { Comment } from 'src/app/model/comment.model';
@@ -15,6 +15,8 @@ export class UserPostInteractionComponent {
   public commentText: string = "";
   @Input() post: Post = new Post();
 
+  @Output() commentEmitter = new EventEmitter<string>();
+
   public constructor(private postService:PostService){}
 
   showOrHideCommentInput = () =>
@@ -30,10 +32,12 @@ export class UserPostInteractionComponent {
     const comment = new Comment();
     comment.comment = this.commentText;
     comment.postId = this.post.id;
+
     this.postService.comment(comment)
       .subscribe(data => {
         this.commentText = "";
-      });
+        this.commentEmitter.emit(this.post.id);
+    });
     
   }
   react = (type: string) => {
