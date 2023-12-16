@@ -183,16 +183,16 @@ const getFriendRequests = async (userId: string) =>
   });
 }
 
-const searchUser = async (keyword: string) => {
+const searchUser = async (...keywords: string []) => {
   return await User.findAll({
     where: {
       [Op.or]:
       [
         {
-          firstName: { [Op.startsWith]: [keyword] }
+          firstName: { [Op.startsWith]: keywords }
         },
         {
-          lastName: { [Op.startsWith]: [keyword] }  
+          lastName: { [Op.startsWith]: keywords }  
         }
       ]
     },
