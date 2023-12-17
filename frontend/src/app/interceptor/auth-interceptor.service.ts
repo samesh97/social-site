@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpHandler,
   HttpInterceptor,
   HttpRequest
@@ -12,48 +13,52 @@ import { Response } from "../model/response.model";
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
-  private isRefreshRequestSent: boolean = false;
+  private hasTokenRefreshed: boolean = true;
   private refreshTokenSubject = new ReplaySubject<boolean>(1);
-  constructor(
-    private authService: AuthService)
-  { }
 
-  intercept(req: HttpRequest<any>, handler: HttpHandler) {
-    let cloneReq = req.clone({
-      withCredentials: true
-    });
-    return handler.handle(cloneReq).pipe(
+  constructor(
+    private authService: AuthService
+  ) {}
+
+  intercept(req: HttpRequest<any>, handler: HttpHandler)
+  {
+    let clonedReq = req.clone({ withCredentials: true });
+    return handler.handle(clonedReq).pipe(
       catchError((err) => {
-        return this.handleError(cloneReq, handler, err)
+        return this.handleError(clonedReq, handler, err)
       })
     );
   }
   private handleError = (
     request: HttpRequest<any>,
     handler: HttpHandler,
-    err: any
+    err: HttpErrorResponse
   ): Observable<any> =>
   {
-    if (err.status == 401 && !err.url?.endsWith("/auth/refresh") && !this.isRefreshRequestSent)
+    if (this.isUnauthorized(err) && this.isNotTokenRefreshRq(err) && this.hasTokenRefreshed)
     {
-      this.isRefreshRequestSent = true;
+      //refreshing the access token
+      this.hasTokenRefreshed = false;
       return this.authService.refresh().pipe(
         switchMap((data: Response) => {
-          this.isRefreshRequestSent = false;
+          this.hasTokenRefreshed = true;
           if (data.code == 200)
           {
             this.refreshTokenSubject.next(true);
             return handler.handle(request);
           }
-          return throwError(data);
+          return throwError(() => new Error(data.data));
         }),
         catchError((err) => {
-          this.authService.setLoggedIn(false);
-          return throwError(err);
+          if (this.isUnauthorized(err))
+          {
+            this.authService.setLoggedIn(false); 
+          }
+          return throwError(() => new Error(err));
         })
       );
     }
-    else if (this.isRefreshRequestSent)
+    else if (!this.hasTokenRefreshed)
     {
       return this.refreshTokenSubject.pipe(
         switchMap(() => {
@@ -61,6 +66,14 @@ export class AuthInterceptorService implements HttpInterceptor {
         })
       )
     }
-    return throwError(err);
+    return throwError(() => new Error(err.message));
   };
+  private isNotTokenRefreshRq = (err: HttpErrorResponse) =>
+  {
+    return !err.url?.endsWith("/auth/refresh");
+  }
+  private isUnauthorized = (err: HttpErrorResponse) =>
+  {
+    return err.status == 401;
+  }
 }

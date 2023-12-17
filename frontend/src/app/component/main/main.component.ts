@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Toast } from 'src/app/model/toast.model';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
+import { ToastService } from 'src/app/service/toast/toast.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
@@ -17,12 +19,14 @@ export class MainComponent implements OnInit
   isLoggedIn: boolean = false;
   showProgress: boolean = false;
   currentUser: User = new User();
+  public toastList: Toast[] = [];
   
   public constructor(
     private authService: AuthService,
     private userService: UserService,
     private journeyManager: JourneyManagerService,
-    private progressService: ProgressService
+    private progressService: ProgressService,
+    private toastService: ToastService
   )
   {
     this.authService.loginChangeListener().subscribe(isLogin => {
@@ -36,7 +40,12 @@ export class MainComponent implements OnInit
         this.journeyManager.loadLogin();
       }
       this.currentUser = this.authService.getUserInfo();
-    });  
+    }); 
+
+    this.toastService.getToastSubject()
+      .subscribe(toast => {
+        this.toastList.push(toast);
+      });
   }
   
   ngOnInit(): void

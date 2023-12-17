@@ -16,4 +16,5 @@
 </div>
 <div *ngIf="isLoggedIn" class="seperation"></div>
 <router-outlet></router-outlet>
+<toast [toasts]="toastList"></toast>
 <progress-bar [isShowProgress]="showProgress"></progress-bar>

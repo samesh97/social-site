@@ -31,6 +31,8 @@ import { UserPostInteractionComponent } from './component/user-post-interaction/
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { SuggetionComponent } from './component/suggestion/suggestion.component';
 import { CardItemComponent } from './component/card-item/card-item.component';
+import { ToastComponent } from './component/toast/toast.component';
+import { ToastItemComponent } from './component/toast-item/toast-item.component';
 
 const routes: Routes = [
   { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
@@ -59,6 +61,8 @@ const routes: Routes = [
       LocalDatePipe,
       SuggetionComponent,
       CardItemComponent,
+      ToastComponent,
+      ToastItemComponent,
     ],
   imports:
     [
