@@ -3,6 +3,7 @@ import { Response } from "../dtos/response.dto";
 import { Config } from "../models/config.model";
 import { Response  as ResponseExpress, Request }  from "express";
 import bcrypt from "bcrypt";
+import crypto from 'crypto';
 
 const isNullOrEmpty = (...values: any []) =>
 {
@@ -107,6 +108,11 @@ const getFriendScore = (currentScore: number, friendship: string) =>
     getLogger().info(`Calculated friendship score -> ${currentScore + friendshipScore}`);
     return currentScore + friendshipScore;
 }
+
+const generateRandomUUID = (): string => {
+    return crypto.randomUUID();
+}
+
 export  {
     isNullOrEmpty,
     minutesToMilliseconds,
@@ -118,5 +124,6 @@ export  {
     textTohash,
     getCurrentDateTime,
     getPostScore,
-    getFriendScore
+    getFriendScore,
+    generateRandomUUID
 };

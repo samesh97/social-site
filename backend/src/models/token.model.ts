@@ -23,6 +23,7 @@ class Token extends Model
     declare type: string;
     declare status: string;
     declare token: string;
+    declare sessionId: string;
     declare createdAt: Date;
     declare updatedAt: Date;
 }
@@ -49,6 +50,10 @@ Token.init(
         token: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        sessionId: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
         createdAt: {
             type: DataTypes.DATE,

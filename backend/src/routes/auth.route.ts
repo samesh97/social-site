@@ -10,7 +10,7 @@ import
 } from "../utils/auth.util";
 
 import { User } from "../models/user.model";
-import { response, getSessionInfo } from "../utils/common.util";
+import { response, getSessionInfo, generateRandomUUID } from "../utils/common.util";
 import { config } from "../conf/common.conf";
 import { isNullOrEmpty } from "../utils/common.util";
 import { Token, TokenStatus } from "../models/token.model";
@@ -44,14 +44,16 @@ authRoute.post("/login", async (req: Request, res: Response) =>
       return response(res, "Invalid email, password combination.", 400);
     }
 
-    await genAccessRefreshTokensAndSetAsCookies(res, user.id, true);
+    const sessiondId = generateRandomUUID();
+    await genAccessRefreshTokensAndSetAsCookies(res, user.id, sessiondId, true);
 
     const returnUser = {
       id: user.id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      profileUrl: user.profileUrl
+      profileUrl: user.profileUrl,
+      sessionId: sessiondId
     }
     return response(res, returnUser, 200);
   }
@@ -86,8 +88,11 @@ authRoute.post("/refresh", async (req, res) =>
       return response(res, "Refresh token is revoked.", 401);
     }
 
-    await genAccessRefreshTokensAndSetAsCookies(res, user.id);
-    return response(res, "Token refreshed.", 200);
+    const sessionId = generateRandomUUID();
+    await genAccessRefreshTokensAndSetAsCookies(res, user.id, sessionId);
+    return response(res, {
+      sessionId
+    }, 200);
   }
   catch (error)
   {

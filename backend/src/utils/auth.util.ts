@@ -23,20 +23,24 @@ const isPlainPasswordMatches = (palinText: string, hashedPassword: string) =>
   }
 };
 
-const genAccessRefreshTokensAndSetAsCookies = async (res: Response, userId: string, refreshToken: boolean = false) =>
+const genAccessRefreshTokensAndSetAsCookies = async (
+  res: Response,
+  userId: string,
+  sessionId: string,
+  refreshToken: boolean = false
+) =>
 {
-  const accessToken = await genAccessToken(userId);
+  const accessToken = await genAccessToken(userId, sessionId);
   const accessTokenExpiresIn = minutesToMilliseconds(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES);
 
   setCookie(res, config.ACCESS_TOKEN_COOKIE_NAME, accessToken, accessTokenExpiresIn);
+  setSessionId(res, sessionId);
 
   if (refreshToken)
   {
     const newRefreshToken = await genRefreshToken(userId);
     const refreshTokenExpiresIn = minutesToMilliseconds(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES);
     setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
-
-    setCookie(res, config.CSRF_TOKEN_COOKIE_NAME, "12345", refreshTokenExpiresIn);
   }
 };
 
@@ -46,6 +50,7 @@ const setCookie = (res: Response, key: string, value: string, maxAge: number, ht
   {
     httpOnly: httpOnly,
     maxAge: maxAge,
+    secure: true
   });
 }
 
@@ -134,29 +139,24 @@ const verifyAuthHeader = async (req: Request) =>
   }
 
   const dbToken = await getTokenFromDB(object.userId, TokenType.ACCESS_TOKEN);
-  if (isNullOrEmpty(dbToken))
-  {
-    return false;  
-  }
-  
-  if (dbToken != authHeader)
+  if (isNullOrEmpty(dbToken) || dbToken.token != authHeader)
   {
     return false;  
   }
 
-  //checking csrf token
-  // const csrfToken = req.headers[config.CSRF_TOKEN_COOKIE_NAME];
-  // if (isNullOrEmpty(csrfToken))
-  // {
-  //   return false;  
-  // }
+  //checking csrf prevention session id
+  const sessionId = getSessionId(req);
+  if (isNullOrEmpty(sessionId, dbToken.sessionId) || dbToken.sessionId != sessionId)
+  {
+    return false;
+  }
   
   getLogger().info("Setting user session..");
   setSessionInfo(req, object);
   return true;
 };
 
-const genAccessToken = async (userId: string) => {
+const genAccessToken = async (userId: string, sessionId: string) => {
   const currentEpochTime = Date.now;
   const object = {
     userId,
@@ -166,7 +166,7 @@ const genAccessToken = async (userId: string) => {
   const token = jwt.sign(object, config.JWT_ACCESS_TOKEN_SECRET, {
     expiresIn: expiresInSeconds,
   });
-  await saveTokenInDB(userId, token, TokenType.ACCESS_TOKEN);
+  await saveTokenInDB(userId, token, TokenType.ACCESS_TOKEN, sessionId);
   return token;
 };
 const genRefreshToken = async (userId: string) => {
@@ -199,10 +199,10 @@ const isRefreshTokenRevoked = async (refreshToken: string, object: any) => {
     object.userId,
     TokenType.REFRESH_TOKEN
   );
-  if (dbRefreshToken) {
-    if (dbRefreshToken != refreshToken) {
+  if (dbRefreshToken && dbRefreshToken.token) {
+    if (dbRefreshToken.token != refreshToken) {
       const dbRefreshTokenPayload: any = verifyToken(
-        dbRefreshToken,
+        dbRefreshToken.token,
         config.JWT_REFRESH_TOKEN_SECRET
       );
       if (dbRefreshTokenPayload && dbRefreshTokenPayload.iat > object.iat) {
@@ -224,15 +224,16 @@ const getTokenFromDB = async (
       type: tokenType,
       status: tokenStatus,
     },
-    attributes: ["token"],
+    attributes: ["token", "sessionId"],
   });
-  return token ? token.token : undefined;
+  return token;
 };
 
 const saveTokenInDB = async (
   userId: string,
   token: string,
   tokenType: any,
+  sessionId: string = null,
   tokenStatus = TokenStatus.WHITELISTED
 ) => {
   const currentToken = await Token.findOne({
@@ -243,24 +244,28 @@ const saveTokenInDB = async (
     },
   });
 
-  if (currentToken) {
+  if (currentToken)
+  {
     await Token.update(
       {
-        userId: userId,
-        type: tokenType,
-        status: tokenStatus,
         token: token,
+        sessionId: sessionId
       },
       {
-        where: { id: currentToken.id },
+        where: {
+          id: currentToken.id
+        },
       }
     );
-  } else {
+  }
+  else
+  {
     await Token.create({
       userId: userId,
       type: tokenType,
       status: tokenStatus,
       token: token,
+      sessionId: sessionId
     });
   }
 };
@@ -280,6 +285,13 @@ const getCookie = (req: Request, name: string) =>
   return req.cookies[name];
 }
 
+const setSessionId = (res: Response, id: string) => {
+  res.setHeader(config.SESSION_HEADER_NAME, id);
+}
+const getSessionId = (req: Request) => {
+  return req.headers[config.SESSION_HEADER_NAME];
+}
+
 export  {
   isPlainPasswordMatches,
   genAccessRefreshTokensAndSetAsCookies,
@@ -289,5 +301,6 @@ export  {
   authentication,
   verifyToken,
   isRefreshTokenRevoked,
-  getCookie
+  getCookie,
+  setSessionId
 };

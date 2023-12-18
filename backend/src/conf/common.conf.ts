@@ -20,7 +20,7 @@ const config: any = {
   },
   REFRESH_TOKEN_COOKIE_NAME: "x-refresh-token",
   ACCESS_TOKEN_COOKIE_NAME: "x-access-token",
-  CSRF_TOKEN_COOKIE_NAME: process.env.CSRF_TOKEN_COOKIE_NAME || 'csrf-token',
+  SESSION_HEADER_NAME: process.env.SESSION_HEADER_NAME || 's-id',
   FIREBASE_CONFIG: {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOM,
