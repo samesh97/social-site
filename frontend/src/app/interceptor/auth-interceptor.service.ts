@@ -1,11 +1,12 @@
 import {
   HttpErrorResponse,
   HttpHandler,
+  HttpHeaders,
   HttpInterceptor,
   HttpRequest
 }
 from "@angular/common/http";
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthService } from "../service/auth/auth.service";
 import { Observable, ReplaySubject, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -22,7 +23,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, handler: HttpHandler)
   {
-    let clonedReq = req.clone({ withCredentials: true });
+    const clonedReq = this.cloneRequest(req);
     return handler.handle(clonedReq).pipe(
       catchError((err) => {
         return this.handleError(clonedReq, handler, err)
@@ -44,8 +45,10 @@ export class AuthInterceptorService implements HttpInterceptor {
           this.hasTokenRefreshed = true;
           if (data.code == 200)
           {
+            this.authService.updateSessionId(data.data.sessionId);
             this.refreshTokenSubject.next(true);
-            return handler.handle(request);
+            const req = this.cloneRequest(request);
+            return handler.handle(req);
           }
           return throwError(() => new Error(data.data));
         }),
@@ -62,7 +65,8 @@ export class AuthInterceptorService implements HttpInterceptor {
     {
       return this.refreshTokenSubject.pipe(
         switchMap(() => {
-          return handler.handle(request);
+          const req = this.cloneRequest(request);
+          return handler.handle(req);
         })
       )
     }
@@ -75,5 +79,19 @@ export class AuthInterceptorService implements HttpInterceptor {
   private isUnauthorized = (err: HttpErrorResponse) =>
   {
     return err.status == 401;
+  }
+  private cloneRequest = (req: HttpRequest<any>) =>
+  {
+    const userInfo = this.authService.getUserInfo();
+    const sessionId = userInfo.sessionId ? userInfo.sessionId: "";
+    const headers = new HttpHeaders({
+      's-id' : sessionId
+    })
+    return req.clone(
+      {
+        withCredentials: true,
+        headers: headers
+      }
+    );
   }
 }

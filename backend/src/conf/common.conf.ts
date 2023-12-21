@@ -18,8 +18,8 @@ const config: any = {
     optionsSuccessStatus: 200,
     credentials: true,
   },
-  REFRESH_TOKEN_COOKIE_NAME: "x-refresh-token",
-  ACCESS_TOKEN_COOKIE_NAME: "x-access-token",
+  REFRESH_TOKEN_COOKIE_NAME: "rt",
+  ACCESS_TOKEN_COOKIE_NAME: "at",
   SESSION_HEADER_NAME: process.env.SESSION_HEADER_NAME || 's-id',
   FIREBASE_CONFIG: {
     apiKey: process.env.FIREBASE_API_KEY,

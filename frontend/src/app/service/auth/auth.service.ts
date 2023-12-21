@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { config } from '../../configuration/common.conf';
 import { Response } from 'src/app/model/response.model';
+import { User } from 'src/app/model/user.model';
+import { getSessionStorage, removeSessionStorage, setSessionStorage } from '../../util/common.util';
 
 @Injectable({
   providedIn: 'root',
@@ -39,35 +41,50 @@ export class AuthService {
     );
   }
 
-  setLoggedIn = (value: boolean) => {
-    sessionStorage.setItem('loginState', value.toString());
-    if (!value)
-    {
-      this.setUserInfo(new Response());  
-    }
-    this.loginStateSubject.next(value);
-  };
-  hasLoggedIn = (): boolean => {
-    let loginStatus = sessionStorage.getItem('loginState');
-    return loginStatus ? loginStatus == 'true' : false;
-  };
   loginChangeListener = (): Observable<boolean> => 
   {
     return this.loginStateSubject;
   }
-  setUserInfo = (res: Response) =>
-  {
-    if (res == null || res.data == null )
+
+  setLoggedIn = (value: boolean) => {
+    setSessionStorage(config.LOGIN_STATE_KEY, value.toString());
+    if (!value)
     {
-      sessionStorage.removeItem('userInfo');
+      this.clearStorage();  
+    }
+    this.loginStateSubject.next(value);
+  };
+  hasLoggedIn = (): boolean =>
+  {
+    let loginStatus = getSessionStorage(config.LOGIN_STATE_KEY);
+    return loginStatus ? loginStatus == 'true' : false;
+  };
+  setUserInfo = (user: User) =>
+  {
+    if (!user)
+    {
       return;
     }
-    const data = JSON.stringify(res.data);
-    sessionStorage.setItem('userInfo', data);
+    const data = JSON.stringify(user);
+    setSessionStorage(config.USER_PROFILE_INFO_KEY, data);
   }
   getUserInfo = () =>
   {
-    const data = sessionStorage.getItem('userInfo');
+    const data = getSessionStorage(config.USER_PROFILE_INFO_KEY);
     return JSON.parse(data ? data : "{}");
+  }
+  private clearStorage = () =>
+  {
+    removeSessionStorage(config.USER_PROFILE_INFO_KEY);
+    removeSessionStorage(config.LOGIN_STATE_KEY);
+  }
+  updateSessionId = (sessionId: string) => 
+  {
+    const userInfo = this.getUserInfo();
+    if (userInfo)
+    {
+      userInfo.sessionId = sessionId;
+      this.setUserInfo(userInfo);
+    }
   }
 }

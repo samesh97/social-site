@@ -25,7 +25,7 @@ export class LoginComponent {
       .subscribe((data: Response) => {
         if (data.code == 200)
         {
-          this.authService.setUserInfo(data);
+          this.authService.setUserInfo(data.data);
           this.authService.setLoggedIn(true);
           this.toastService.showToast('Login success');
         }
