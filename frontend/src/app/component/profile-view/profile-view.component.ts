@@ -54,7 +54,6 @@ export class ProfileViewComponent implements OnInit
   }
   setFriendBtnStatus = () =>
   {
-    console.log(this.user.Friends);
     const friend = this.user.Friends.filter(frd => frd.requestedUserId == this.currentUser.id || frd.acceptedUserId== this.currentUser.id)[0];
     if (!friend)
     {

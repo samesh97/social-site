@@ -1,5 +1,7 @@
 <div class="interction-btn-container">
-    <img src="assets/images/like_button.png" (click)="react('LIKE')">
+    <img 
+        src="{{isLiked ? 'assets/images/liked_button.png' : 'assets/images/like_button.png'}}" 
+        (click)="react('LIKE')">
     <img src="assets/images/comment_button.png" (click)="showOrHideCommentInput()">
     <img src="assets/images/share_button.png">
 </div>

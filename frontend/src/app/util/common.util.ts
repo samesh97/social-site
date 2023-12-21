@@ -11,7 +11,6 @@ export const getSessionStorage = (key: string) =>
 {
     const hashedKey = genHash(key);
     const encryptedValue = sessionStorage.getItem(hashedKey);
-    console.log(hashedKey);
     return decryptString(encryptedValue ? encryptedValue : "");
 }
 export const removeSessionStorage = (key: string) =>

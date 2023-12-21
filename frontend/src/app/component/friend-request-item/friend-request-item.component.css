@@ -1,7 +1,7 @@
 .request-container {
     width: auto;
     height: auto;
-    background-color: var(--supporting-color);
+    background-color: var(--secondary-color);
     border-radius: 6px;
     padding: 10px;
     display: flex;

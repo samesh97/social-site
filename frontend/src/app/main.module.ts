@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { PostService } from './service/post/post.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CreatePostDialogComponent } from './dialog/create-post-dialog/create-post-dialog.component';
+import { CreatePostDialogComponent } from './component/create-post-dialog/create-post-dialog.component';
 import { ProfileSearchComponent } from './component/profile-search/profile-search.component';
 import { ProfileViewComponent } from './component/profile-view/profile-view.component';
 import { RegisterComponent } from './component/register/register.component';
