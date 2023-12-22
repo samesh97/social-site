@@ -62,4 +62,24 @@ export class UserPostInteractionComponent implements OnInit{
     const userInfo = this.authService.getUserInfo();
     this.isLiked = this.post.Reactions.some(reaction => reaction.userId == userInfo.id);  
   }
+  getNumberOfComments = () => {
+    const count = this.post.Comments.length;
+    if (count == 0)
+    {
+      return "";  
+    }
+    if (count == 1)
+    {
+      return "1 comment";  
+    }
+    return count + " comments";
+  }
+  getLikeCount = () => {
+    const count = this.post.Reactions.length;
+    if (count == 0)
+    {
+      return "";  
+    }
+    return count;
+  }
 }

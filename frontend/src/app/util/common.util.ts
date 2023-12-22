@@ -5,18 +5,18 @@ export const setSessionStorage = (key: string, value: string) =>
 {
     const hashedKey = genHash(key);
     const entryptedValue = encryptString(value);
-    sessionStorage.setItem(hashedKey, entryptedValue);
+    localStorage.setItem(hashedKey, entryptedValue);
 }
 export const getSessionStorage = (key: string) =>
 {
     const hashedKey = genHash(key);
-    const encryptedValue = sessionStorage.getItem(hashedKey);
+    const encryptedValue = localStorage.getItem(hashedKey);
     return decryptString(encryptedValue ? encryptedValue : "");
 }
 export const removeSessionStorage = (key: string) =>
 {
     const hashedKey = genHash(key);
-    sessionStorage.removeItem(hashedKey);
+    localStorage.removeItem(hashedKey);
 }
 const encryptString = (str: string) =>
 {
