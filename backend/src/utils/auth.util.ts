@@ -31,7 +31,7 @@ const genAccessRefreshTokensAndSetAsCookies = async (
 ) =>
 {
   const accessToken = await genAccessToken(userId, sessionId);
-  const accessTokenExpiresIn = minutesToMilliseconds(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES);
+  const accessTokenExpiresIn = minutesToMilliseconds(parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES));
 
   setCookie(res, config.ACCESS_TOKEN_COOKIE_NAME, accessToken, accessTokenExpiresIn);
   setSessionId(res, sessionId);
@@ -39,7 +39,7 @@ const genAccessRefreshTokensAndSetAsCookies = async (
   if (refreshToken)
   {
     const newRefreshToken = await genRefreshToken(userId);
-    const refreshTokenExpiresIn = minutesToMilliseconds(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES);
+    const refreshTokenExpiresIn = minutesToMilliseconds(parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES));
     setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
   }
 };
@@ -162,7 +162,7 @@ const genAccessToken = async (userId: string, sessionId: string) => {
     userId,
     issuedAt: currentEpochTime,
   };
-  const expiresInSeconds = config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES * 60;
+  const expiresInSeconds = parseInt(config.JWT_ACCESS_TOKEN_EXPIRES_IN_MINUTES) * 60;
   const token = jwt.sign(object, config.JWT_ACCESS_TOKEN_SECRET, {
     expiresIn: expiresInSeconds,
   });
@@ -175,7 +175,7 @@ const genRefreshToken = async (userId: string) => {
     userId,
     issuedAt: currentEpochTime,
   };
-  const expiresInSeconds = config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES * 60;
+  const expiresInSeconds = parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES) * 60;
   const refreshToken = jwt.sign(object, config.JWT_REFRESH_TOKEN_SECRET, {
     expiresIn: expiresInSeconds,
   });

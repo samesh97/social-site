@@ -2,8 +2,7 @@ import { Router } from 'express';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { response, getSessionInfo, isNullOrEmpty, getCurrentDateTime, getPostScore, getFriendScore } from "../utils/common.util";
-import { hasRole, authentication } from '../utils/auth.util';
-import { Roles } from '../models/role.model';
+import { authentication } from '../utils/auth.util';
 import multer from 'multer';
 import { uploadMultipleFile } from '../conf/firebase.conf';
 import { PostImage } from '../models/post-image.model';
@@ -60,7 +59,7 @@ postRoute.post('/', upload.array('post-images', 6), authentication, async (req, 
   }
 });
 
-postRoute.get('/', hasRole(Roles.USER), async (req, res) =>
+postRoute.get('/', async (req, res) =>
 {
   try
   {

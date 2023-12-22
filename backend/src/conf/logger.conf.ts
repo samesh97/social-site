@@ -1,10 +1,15 @@
-const logger = require('pino')();
+import pino, { Logger } from 'pino';
+import pretty from 'pino-pretty';
 
-const getLogger: any = () =>
+const stream = pretty({
+    colorize: true
+});
+
+export const getLogger = (name: string = 'DEFAULT'): Logger =>
 {
-    return logger;
-}
-
-export {
-    getLogger
+    return pino({
+        name: name,
+        level: 'info'
+    },
+    stream);
 }

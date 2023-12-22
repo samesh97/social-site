@@ -4,7 +4,6 @@ import { response, isNullOrEmpty, getSessionInfo, getCurrentDateTime } from "../
 import { changeScore } from "../utils/friend.util";
 import { config } from "../conf/common.conf";
 import { getLogger } from "../conf/logger.conf";
-import { User } from "../models/user.model";
 import { getPostComments } from "../utils/db-query.util";
 
 const commentRoute = Router();
@@ -32,7 +31,7 @@ commentRoute.post("/", async (req, res) =>
             createdAt: time,
             updatedTime: time
         });
-        changeScore(userId, config.FRIEND_SCORE.comment);
+        changeScore(userId, parseInt(config.FRIEND_SCORE.comment));
         return response(res, "Commented", 201);
     }
     catch (error)

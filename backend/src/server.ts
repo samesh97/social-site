@@ -12,6 +12,8 @@ import { commentRoute } from './routes/comment.route';
 import { getLogger } from './conf/logger.conf';
 import { friendRoute } from './routes/friend.route';
 import { suggestionRouter } from './routes/suggestion.route';
+import { notificationRoute } from './routes/notification.route';
+import { errorRoute } from './routes/error.route';
 
 const app: Application = express();
 
@@ -31,6 +33,10 @@ app.use("/reactions", reactionRoute);
 app.use("/comments", commentRoute);
 app.use("/friends", friendRoute);
 app.use("/suggestions", suggestionRouter);
+app.use("/notifications", notificationRoute);
+
+//error(404) route
+app.use("/", errorRoute);
 
 
 app.listen(config.SERVER_PORT, async () =>

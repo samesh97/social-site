@@ -21,12 +21,12 @@ Role.init(
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue: UUIDV1,
-      primaryKey: true
+      defaultValue: UUIDV1
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     createdAt: {
       type: DataTypes.DATE,

@@ -21,13 +21,13 @@ class Config extends Model
 Config.init(
 {
     id: {
-        primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: UUIDV1
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
     },
     value: {
         type: DataTypes.STRING,

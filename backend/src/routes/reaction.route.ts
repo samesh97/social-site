@@ -36,7 +36,7 @@ reactionRoute.post('/', async (req, res) =>
             createdAt: time,
             updatedAt: time
           });
-          changeScore(userId, config.FRIEND_SCORE.like);
+          changeScore(userId, parseInt(config.FRIEND_SCORE.like));
           return response(res, "Reacted", 201);
     }
     //change reaction type later on
