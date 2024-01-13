@@ -14,12 +14,14 @@ suggestionRouter.get('/', async (req: Request, res: Response) =>
     }
     catch (e)
     {
-        getLogger().error("Error occured while loading suggestions." + e);
+        getLogger().error(e);
+        return response(res, "Server side error occured", 500);
     }
 });
 
 
-export {
+export
+{
     suggestionRouter
 }
 

@@ -18,15 +18,16 @@ friendRoute.post('/', async (req, res) =>
 
         if (isNullOrEmpty(user))
         {
-            return response(res, "No valid userIds found!", 400);    
+            return response(res, "No valid user found", 400);    
         }
 
         const requestedUser = await User.findByPk(userId);
         const acceptedUser = await User.findByPk(user);
         if (isNullOrEmpty(requestedUser, acceptedUser))
         {
-            return response(res, "No users found in the database!", 400);    
+            return response(res, "No users found", 400);    
         }
+
         const time = getCurrentDateTime();
 
         const friendship = await getFriendship(requestedUser.id, acceptedUser.id);
@@ -55,7 +56,8 @@ friendRoute.post('/', async (req, res) =>
     }
 });
 
-friendRoute.post('/action', async (req: Request, res: Response) => {
+friendRoute.post('/action', async (req: Request, res: Response) =>
+{
     try
     {
         //accepting or denying user
@@ -65,7 +67,7 @@ friendRoute.post('/action', async (req: Request, res: Response) => {
 
         if (isNullOrEmpty(user, isAccepted))
         {
-            return response(res, "No valid payload found.", 400);    
+            return response(res, "Incomplete request", 400);    
         }
 
         const userInAction = await User.findByPk(userId);
@@ -73,7 +75,7 @@ friendRoute.post('/action', async (req: Request, res: Response) => {
 
         if (isNullOrEmpty(userInAction, targetUser))
         {
-            return response(res, "No users found in the database!", 400);    
+            return response(res, "No user found", 400);    
         }
 
         const friendship = await getFriendship(userInAction.id, targetUser.id);
@@ -95,8 +97,8 @@ friendRoute.post('/action', async (req: Request, res: Response) => {
     }
     catch (e)
     {
-        getLogger().error("Error occured while perfoming action on friend request");
-        return response(res, "Failed to perform action on friend request.", 500);
+        getLogger().error(e);
+        return response(res, "Server side error occured", 500);
     }
 });
 
@@ -115,11 +117,12 @@ friendRoute.get('/requests', async (req: Request, res: Response) =>
     }
     catch (e)
     {
-        getLogger().error("Erroc occured while fetching friend requests " + e);
-        return response(res, "Error while loading friend requests.", 500);
+        getLogger().error(e);
+        return response(res, "Server side error occured", 500);
     }
 });
 
-export {
+export
+{
     friendRoute
 }

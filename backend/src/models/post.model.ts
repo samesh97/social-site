@@ -10,6 +10,7 @@ class Post extends Model
   declare description: string;
   declare createdAt: Date;
   declare updatedAt: Date
+  declare UserId: string;
 }
 Post.init(
   {

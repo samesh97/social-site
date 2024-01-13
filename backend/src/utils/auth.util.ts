@@ -23,7 +23,7 @@ const isPlainPasswordMatches = (palinText: string, hashedPassword: string) =>
   }
 };
 
-const genAccessRefreshTokensAndSetAsCookies = async (
+const generateTokens = async (
   res: Response,
   userId: string,
   sessionId: string,
@@ -36,12 +36,16 @@ const genAccessRefreshTokensAndSetAsCookies = async (
   setCookie(res, config.ACCESS_TOKEN_COOKIE_NAME, accessToken, accessTokenExpiresIn);
   setSessionId(res, sessionId);
 
-  if (refreshToken)
+  //generate only the access token
+  if (!refreshToken)
   {
-    const newRefreshToken = await genRefreshToken(userId);
-    const refreshTokenExpiresIn = minutesToMilliseconds(parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES));
-    setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
+    return;  
   }
+
+  //generate refresh token
+  const newRefreshToken = await genRefreshToken(userId);
+  const refreshTokenExpiresIn = minutesToMilliseconds(parseInt(config.JWT_REFRESH_TOKEN_EXPIRES_IN_MINUTES));
+  setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
 };
 
 const setCookie = (res: Response, key: string, value: string, maxAge: number, httpOnly = true) => 
@@ -294,7 +298,7 @@ const getSessionId = (req: Request) => {
 
 export  {
   isPlainPasswordMatches,
-  genAccessRefreshTokensAndSetAsCookies,
+  generateTokens,
   hasRole,
   isByPassAuth,
   verifyAuthHeader,

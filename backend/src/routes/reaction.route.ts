@@ -5,6 +5,8 @@ import { response, getSessionInfo, isNullOrEmpty, getCurrentDateTime } from "../
 import { changeScore } from '../utils/friend.util';
 import { config } from '../conf/common.conf';
 import { getLogger } from '../conf/logger.conf';
+import { sendNotification } from '../utils/db-query.util';
+import { Post } from '../models/post.model';
 const reactionRoute = Router();
 
 reactionRoute.post('/', async (req, res) =>
@@ -25,6 +27,12 @@ reactionRoute.post('/', async (req, res) =>
     }
     const reaction = await Reaction.findOne({ where: { userId: userId, postId: postId } });
 
+    const post = await Post.findOne({
+      where: {
+        id: postId
+      }
+    });
+
     const time = getCurrentDateTime();
     //react for the first time
     if ( isNullOrEmpty(reaction) )
@@ -37,6 +45,7 @@ reactionRoute.post('/', async (req, res) =>
             updatedAt: time
           });
           changeScore(userId, parseInt(config.FRIEND_SCORE.like));
+          sendNotification('LIKE', userId, post.UserId, postId);
           return response(res, "Reacted", 201);
     }
     //change reaction type later on

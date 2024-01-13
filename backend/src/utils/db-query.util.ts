@@ -6,12 +6,15 @@ import { Reaction } from '../models/reaction.model';
 import { PostImage } from '../models/post-image.model';
 import { Comment } from '../models/comment.model';
 import { Friend } from '../models/friend.model';
+import { Notification } from "../models/notification.model";
+import { getCurrentDateTime } from "./common.util";
 
 const userAttributes = ['id', 'firstName', 'lastName', 'profileUrl'];
 const postAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const commentAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const postImageAttributes = ['id', 'imageUrl'];
 const friendAttributes = ['requestedUserId', 'acceptedUserId', 'isAccepted', 'score', 'createdAt', 'updatedAt'];
+const notificationAttributes = ['id', 'type', 'initiatedUserId', 'hasSeen', 'targetId', 'createdAt', 'updatedAt'];
 
 
 const getUser = async (userId: string) =>
@@ -200,6 +203,40 @@ const searchUser = async (...keywords: string []) => {
   });
 }
 
+const sendNotification = (
+  type: string,
+  initiatedUserId: string,
+  targetUserId: string,
+  targetId: string
+) =>
+{
+  const time = getCurrentDateTime();
+  Notification.create({
+    type,
+    initiatedUserId,
+    targetUserId,
+    targetId,
+    createdAt: time,
+    updatedAt: time
+  });
+}
+const getUserNotifications = async (userId: string) =>
+{
+  return await Notification.findAll({
+    where: {
+        targetUserId: userId
+    },
+    attributes: notificationAttributes,
+    include: [
+      {
+        model: User,
+        as: 'initiatedUser',
+        attributes: userAttributes
+      }
+    ]
+});
+}
+
 export {
     getUser,
     getUserWithPosts,
@@ -208,5 +245,7 @@ export {
     getFriendship,
     getPostComments,
     getFriendRequests,
-    searchUser
+    searchUser,
+    sendNotification,
+    getUserNotifications
 };

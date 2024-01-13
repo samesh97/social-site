@@ -5,12 +5,12 @@ import
   isPlainPasswordMatches,
   verifyToken,
   isRefreshTokenRevoked,
-  genAccessRefreshTokensAndSetAsCookies,
+  generateTokens,
   getCookie,
 } from "../utils/auth.util";
 
 import { User } from "../models/user.model";
-import { response, getSessionInfo, generateRandomUUID } from "../utils/common.util";
+import { response, generateRandomUUID } from "../utils/common.util";
 import { config } from "../conf/common.conf";
 import { isNullOrEmpty } from "../utils/common.util";
 import { Token, TokenStatus } from "../models/token.model";
@@ -22,8 +22,7 @@ authRoute.post("/login", async (req: Request, res: Response) =>
 {
   try
   {
-    const { email } = req.body;
-    const { password } = req.body;
+    const { email, password } = req.body;
 
     //check email, password
     if (isNullOrEmpty(email, password))
@@ -45,9 +44,9 @@ authRoute.post("/login", async (req: Request, res: Response) =>
     }
 
     const sessiondId = generateRandomUUID();
-    await genAccessRefreshTokensAndSetAsCookies(res, user.id, sessiondId, true);
+    await generateTokens(res, user.id, sessiondId, true);
 
-    const returnUser = {
+    const resObject = {
       id: user.id,
       email: user.email,
       firstName: user.firstName,
@@ -55,12 +54,12 @@ authRoute.post("/login", async (req: Request, res: Response) =>
       profileUrl: user.profileUrl,
       sessionId: sessiondId
     }
-    return response(res, returnUser, 200);
+    return response(res, resObject, 200);
   }
   catch (error)
   {
     getLogger().error(error);
-    return response(res, "Failed", 500);
+    return response(res, "Server side error was occured.", 500);
   }
 });
 
@@ -68,76 +67,38 @@ authRoute.post("/refresh", async (req, res) =>
 {
   try
   {
-    const refreshToken = req.cookies[config.REFRESH_TOKEN_COOKIE_NAME];
+    const refreshToken = getCookie(req, config.REFRESH_TOKEN_COOKIE_NAME);
     if (isNullOrEmpty(refreshToken))
     {
       return response(res, "Refresh token not found", 401);
     }
+
     const object: any = verifyToken(refreshToken, config.JWT_REFRESH_TOKEN_SECRET);
     if (isNullOrEmpty(object))
     {
       return response(res, "Invalid refresh token", 401);
     }
+
     const user = await User.findByPk(object.userId);
     if (isNullOrEmpty(user))
     {
-      return response(res,"User with associated refresh token not found",401);
+      return response(res,"User with associated refresh token not found", 401);
     }
-    if (await isRefreshTokenRevoked(refreshToken, object))
+    //check if the token is revoked
+    const isRevoked = await isRefreshTokenRevoked(refreshToken, object);
+    if (isRevoked)
     {
       return response(res, "Refresh token is revoked.", 401);
     }
 
     const sessionId = generateRandomUUID();
-    await genAccessRefreshTokensAndSetAsCookies(res, user.id, sessionId);
-    return response(res, {
-      sessionId
-    }, 200);
+    await generateTokens(res, user.id, sessionId);
+    return response(res, { sessionId }, 200);
   }
   catch (error)
   {
     getLogger().error(error);
-    return response(res, "Failed", 500);
-  }
-});
-
-authRoute.post("/verify", async (req, res) =>
-{
-  try
-  {
-    const { userId } = getSessionInfo(req); 
-    const accessToken = getCookie(req, config.ACCESS_TOKEN_COOKIE_NAME);
-    const refreshToken = getCookie(req, config.REFRESH_TOKEN_COOKIE_NAME);
-    if (isNullOrEmpty(accessToken) && isNullOrEmpty(refreshToken))
-    {
-      return response(res, `Failed to verify.`, 401);
-    }
-    const result = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);
-    if (isNullOrEmpty(result))
-    {
-      const refreshTokenContent = verifyToken(refreshToken, config.JWT_REFRESH_TOKEN_SECRET);
-      if (isNullOrEmpty(refreshTokenContent))
-      {
-        return response(res, `Failed to verify.`, 401);
-      }
-      
-    }
-
-    const user = await User.findByPk(userId);
-    const returnUser = {
-      id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      profileUrl: user.profileUrl
-    }
-
-    return response(res, returnUser, 200);
-  }
-  catch (error)
-  {
-    getLogger().error(error);
-    return response(res, "Failed", 500);
+    return response(res, "Server side error occured", 500);
   }
 });
 
@@ -154,19 +115,29 @@ authRoute.post("/logout", async (req, res) =>
     const result: any = verifyToken(accessToken, config.JWT_ACCESS_TOKEN_SECRET);
     if (isNullOrEmpty(result))
     {
-      return response(res, `Failed to verify.`, 400);
+      return response(res, `Invalid user session`, 400);
     }
 
-    await Token.destroy({ where: { userId: result.userId, status: TokenStatus.WHITELISTED } });
-    return response(res, "Logout success", 200);
+    //destroy the tokens in database
+    await Token.destroy(
+    {
+        where:
+        {
+          userId: result.userId,
+          status: TokenStatus.WHITELISTED
+        }
+    });
+    
+    return response(res, "Successfully logout", 200);
   }
   catch (error)
   {
     getLogger().error(error);
-    return response(res, "Failed", 500);
+    return response(res, "Server side error occured", 500);
   }
 });
 
-export {
+export
+{
   authRoute
 }
