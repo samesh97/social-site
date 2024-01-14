@@ -7,6 +7,7 @@ import
   isRefreshTokenRevoked,
   generateTokens,
   getCookie,
+  clearCookies,
 } from "../utils/auth.util";
 
 import { User } from "../models/user.model";
@@ -126,8 +127,9 @@ authRoute.post("/logout", async (req, res) =>
           userId: result.userId,
           status: TokenStatus.WHITELISTED
         }
-    });
+      });
     
+    clearCookies(res);
     return response(res, "Successfully logout", 200);
   }
   catch (error)

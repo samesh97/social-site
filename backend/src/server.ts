@@ -19,7 +19,7 @@ const app: Application = express();
 
 //middlewares
 app.use( express.json() );
-app.use( cookieParser() );
+app.use( cookieParser(config.COOKIE_SIGNED_KEY) );
 app.use( cors( config.CORS_CONFIG ) );
 
 //auth route

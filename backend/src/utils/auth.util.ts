@@ -10,6 +10,7 @@ import { Config, ConfigKey } from "../models/config.model";
 import { isNullOrEmpty, minutesToMilliseconds, sliceEnd, getConfig } from "./common.util";
 import { getLogger } from "../conf/logger.conf";
 import { NextFunction, Request, Response } from "express";
+import cookieParser from "cookie-parser";
 
 const isPlainPasswordMatches = (palinText: string, hashedPassword: string) =>
 {
@@ -48,13 +49,22 @@ const generateTokens = async (
   setCookie(res, config.REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenExpiresIn);
 };
 
-const setCookie = (res: Response, key: string, value: string, maxAge: number, httpOnly = true) => 
+const setCookie = (
+  res: Response,
+  key: string,
+  value: string,
+  maxAge: number,
+  httpOnly = true
+) => 
 {
-  res.cookie(key, value,
+  const signedCookie = cookieParser.signedCookie(value, config.COOKIE_SIGNED_KEY);
+  res.cookie(key, signedCookie,
   {
     httpOnly: httpOnly,
     maxAge: maxAge,
-    secure: true
+    secure: true,
+    sameSite: 'strict',
+    signed: true
   });
 }
 
@@ -130,7 +140,7 @@ const isByPassAuth = async (req: Request) =>
 const verifyAuthHeader = async (req: Request) =>
 {
   getLogger().info("Executing the verifyAuthHeader...");
-  let authHeader = req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
+  let authHeader = getCookie(req, config.ACCESS_TOKEN_COOKIE_NAME);
 
   if (isNullOrEmpty(authHeader))
   {
@@ -286,7 +296,12 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
 
 const getCookie = (req: Request, name: string) =>
 {
-  return req.cookies[name];
+  return req.signedCookies[name];
+}
+
+const clearCookies = (res: Response) => {
+  res.clearCookie(config.ACCESS_TOKEN_COOKIE_NAME);
+  res.clearCookie(config.REFRESH_TOKEN_COOKIE_NAME);
 }
 
 const setSessionId = (res: Response, id: string) => {
@@ -306,5 +321,6 @@ export  {
   verifyToken,
   isRefreshTokenRevoked,
   getCookie,
-  setSessionId
+  setSessionId,
+  clearCookies
 };

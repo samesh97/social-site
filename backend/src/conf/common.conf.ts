@@ -19,6 +19,7 @@ const config = {
   REFRESH_TOKEN_COOKIE_NAME: "rt",
   ACCESS_TOKEN_COOKIE_NAME: "at",
   SESSION_HEADER_NAME: 's-id',
+  COOKIE_SIGNED_KEY: process.env.COOKIE_SIGNED_KEY,
   FIREBASE_CONFIG: {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOM,
