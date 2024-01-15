@@ -15,7 +15,11 @@ export class UserPostInteractionComponent implements OnInit{
   public isCommentable: boolean = false;
   public commentText: string = "";
   public isLiked = false;
-  @Input() post: Post = new Post();
+
+
+  @Input() postId: string = "";
+  @Input() comments: Comment[] = [];
+  @Input() reactions: Reaction[] = [];
 
   @Output() commentListner = new EventEmitter<string>();
 
@@ -41,12 +45,12 @@ export class UserPostInteractionComponent implements OnInit{
     }
     const comment = new Comment();
     comment.comment = this.commentText;
-    comment.postId = this.post.id;
+    comment.postId = this.postId;
 
     this.postService.comment(comment)
       .subscribe(data => {
         this.commentText = "";
-        this.commentListner.emit(this.post.id);
+        this.commentListner.emit(this.postId);
     });
     
   }
@@ -54,16 +58,25 @@ export class UserPostInteractionComponent implements OnInit{
     this.isLiked = !this.isLiked;
     const reaction = new Reaction();
     reaction.type = type;
-    reaction.postId = this.post.id;
+    reaction.postId = this.postId;
+    
+    if (this.isLiked)
+    {
+      this.reactions.push(new Reaction()); 
+    }
+    else
+    {
+      this.reactions.pop();
+    }
     this.postService.react(reaction).subscribe(data => { });
   }
   isLikedByUser = () =>
   {
     const userInfo = this.authService.getUserInfo();
-    this.isLiked = this.post.Reactions.some(reaction => reaction.userId == userInfo.id);  
+    this.isLiked = this.reactions.some(reaction => reaction.userId == userInfo.id);  
   }
   getNumberOfComments = () => {
-    const count = this.post.Comments.length;
+    const count = this.comments.length;
     if (count == 0)
     {
       return "";  
@@ -75,7 +88,7 @@ export class UserPostInteractionComponent implements OnInit{
     return count + " comments";
   }
   getLikeCount = () => {
-    const count = this.post.Reactions.length;
+    const count = this.reactions.length;
     if (count == 0)
     {
       return "";  

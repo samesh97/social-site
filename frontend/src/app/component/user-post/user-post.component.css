@@ -36,11 +36,27 @@
 #time {
     color: #5e5757;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 13px;
+    font-size: 12px;
 }
 
-#description
+#span-description
 {
     font-size: 12px;
     font-weight: 500;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    word-wrap: break-word;
+}
+#textarea-description
+{
+    font-size: 12px;
+    font-weight: 500;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    outline: none;
+    border: none;
 }

@@ -33,12 +33,30 @@ import { SuggetionComponent } from './component/suggestion/suggestion.component'
 import { CardItemComponent } from './component/card-item/card-item.component';
 import { ToastComponent } from './component/toast/toast.component';
 import { ToastItemComponent } from './component/toast-item/toast-item.component';
+import { PopupListComponent } from './component/popup-list/popup-list.component';
 
-const routes: Routes = [
-  { path: '', component: TimelineComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-  { path: 'profile', component: ProfileViewComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard]}
+const routes: Routes =
+[
+  {
+    path: '',
+    component: TimelineComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [LoginGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [LoginGuard]
+  }
 ];
 
 @NgModule({
@@ -63,6 +81,7 @@ const routes: Routes = [
       CardItemComponent,
       ToastComponent,
       ToastItemComponent,
+      PopupListComponent,
     ],
   imports:
     [

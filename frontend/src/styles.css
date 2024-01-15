@@ -17,4 +17,8 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     background-color: var(--secondary-color);
  }
-
+ .dialog-style {
+    mat-dialog-container {
+        padding: 0;
+    }
+}

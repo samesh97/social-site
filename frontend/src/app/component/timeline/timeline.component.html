@@ -5,7 +5,19 @@
     <div class="post-container">
         <create-post></create-post>
         <div class="timeline-post-container" *ngFor="let post of posts">
-            <user-post [post]="post"></user-post>
+            <user-post
+                [postId]="post.id"
+                [userId]="post.User.id"
+                [username]="post.User.firstName + ' ' + post.User.lastName"
+                [date]="post.createdAt"
+                [profileImage]="post.User.profileUrl"
+                [images]="post.PostImages"
+                [description]="post.description"
+                [reactions]="post.Reactions"
+                [comments]="post.Comments"
+                (onNameClick)="nameClicked($event)"
+                (onComment)="commented($event)"
+            ></user-post>
         </div>
         <div *ngIf="posts.length <= 0" class="suggestion-view">
             <suggestion></suggestion>

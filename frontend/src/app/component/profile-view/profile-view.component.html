@@ -11,6 +11,16 @@
         </div>
     </div>
     <div *ngFor="let post of posts" class="posts">
-        <user-post [post]="post"></user-post>
+      <user-post
+        [postId]="post.id"
+        [userId]="post.User.id"
+        [username]="post.User.firstName + ' ' + post.User.lastName"
+        [date]="post.createdAt"
+        [profileImage]="post.User.profileUrl"
+        [images]="post.PostImages"
+        [description]="post.description"
+        [reactions]="post.Reactions"
+        [comments]="post.Comments"
+      ></user-post>
     </div>
 </div>

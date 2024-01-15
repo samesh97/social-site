@@ -1,14 +1,33 @@
 <div class="container">
     <div class="container-profile">
-        <img src="{{post.User.profileUrl}}">
+        <img src="{{profileImage}}">
         <div class="name-container">
-            <span id="name" (click)="nameClicked()">{{post.User.firstName + ' ' + post.User.lastName}}</span>
-            <span id="time">{{post.createdAt | localDate}}</span>
+            <span id="name" (click)="nameClicked()">{{username}}</span>
+            <span id="time">{{date | localDate}}</span>
         </div>
     </div>
     <div class="container-description">
-        <p id="description">{{post.description}}</p>
-        <image-grid [postImages]="post.PostImages"></image-grid>
+        <div *ngIf="isEditable; else span">
+            <textarea 
+                id="textarea-description" 
+                value="{{description}}" 
+                [disabled]="!isEditable" 
+                [(ngModel)]="description" 
+                (change)="descriptionChanged()"
+            ></textarea>
+        </div>
+        <ng-template #span>
+            <p id="span-description">{{description}}</p>
+        </ng-template>
+        <image-grid 
+            [postImages]="images"
+            (onImageClick)="imageClick($event)"
+        ></image-grid>
     </div>
-    <user-post-interaction [post]="post" (commentListner)="commentPosted($event)"></user-post-interaction>
+    <user-post-interaction
+        [postId]="postId" 
+        [comments]="comments"
+        [reactions]="reactions"
+        (commentListner)="commentPosted($event)"
+    ></user-post-interaction>
 </div>

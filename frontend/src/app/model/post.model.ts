@@ -10,6 +10,6 @@ export class Post {
     Reactions: Reaction[] = [];
     User: User = new User();
     PostImages: PostImage[] = [];
-    createdAt: string = "";
-    updatedAt: string = "";
+    createdAt: string = new Date().toUTCString();
+    updatedAt: string = new Date().toUTCString();
 }

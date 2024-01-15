@@ -1,0 +1,16 @@
+button {
+    height: 42px;
+    outline: none;
+    border: none;
+    background-color: var(--primary-color);
+    padding: 0 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin: 10px 10px;
+    padding: 0 100px;
+}
+input
+{
+    margin-left: 10px;
+}

@@ -1,7 +1,7 @@
 <div class="create-post-container">
     <div class="first-row">
         <img src="{{currentUser.profileUrl}}">
-        <input id="search-input" type="text" placeholder="What's on your mind?" [(ngModel)]="post.description">
+        <input id="search-input" type="text" placeholder="What's on your mind?" (click)="openPostDialog()">
         <!-- <button (click)="createPost()">Post</button> -->
         <!-- <input type="file" placeholder="Select Images" (change)="imageSelected($event)"> -->
     </div>

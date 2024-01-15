@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Post } from 'src/app/model/post.model';
 import { Response } from 'src/app/model/response.model';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { PostService } from 'src/app/service/post/post.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
+import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 
 @Component({
   selector: 'create-post',
@@ -16,10 +18,12 @@ export class CreatePostComponent implements OnInit
   post = new Post();
   images: any[] = [];
   currentUser: User = new User();
+
   constructor(
     private postService: PostService,
     private progressService: ProgressService,
-    private authService: AuthService
+    private authService: AuthService,
+    private matDialog: MatDialog
   ) { }
 
 
@@ -48,5 +52,9 @@ export class CreatePostComponent implements OnInit
     {
       this.images.push(event.target.files[0]);  
     }
+  }
+  openPostDialog = () => 
+  {
+    this.matDialog.open(CreatePostDialogComponent, {panelClass: 'custom-modalbox'});
   }
 }

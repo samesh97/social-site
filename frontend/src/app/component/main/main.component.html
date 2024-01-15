@@ -11,7 +11,8 @@
     </div>
     <div class="profile">
         <img src="{{currentUser.profileUrl}}" (click)="logout()">
-        <img src="assets/images/notifications.png">
+        <img src="assets/images/notifications.png" (click)="notificationClick()" (focusout)="notificationClick()">
+        <popup-list [isOpen]="isPopupOpen"></popup-list>
     </div>
 </div>
 <div *ngIf="isLoggedIn" class="seperation"></div>

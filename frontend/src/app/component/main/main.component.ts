@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Response } from 'src/app/model/response.model';
 import { Toast } from 'src/app/model/toast.model';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
+import { NotificationService } from 'src/app/service/notification/notification.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
 import { ToastService } from 'src/app/service/toast/toast.service';
 import { UserService } from 'src/app/service/user/user.service';
@@ -20,13 +22,15 @@ export class MainComponent implements OnInit
   showProgress: boolean = false;
   currentUser: User = new User();
   public toastList: Toast[] = [];
+  isPopupOpen: boolean = false;
   
   public constructor(
     private authService: AuthService,
     private userService: UserService,
     private journeyManager: JourneyManagerService,
     private progressService: ProgressService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private notificationService: NotificationService
   )
   {
     this.authService.loginChangeListener().subscribe(isLogin => {
@@ -52,6 +56,7 @@ export class MainComponent implements OnInit
   {
     this.loginState();
     this.progressStatus();
+    this.loadNotifications();
   }
   loginState = () =>
   {
@@ -87,5 +92,14 @@ export class MainComponent implements OnInit
     this.progressService.getSubject().subscribe(state => {
       this.showProgress = state;
     });  
+  }
+  loadNotifications = () => {
+    this.notificationService.loadNotifications()
+      .subscribe((res: Response) => {
+      
+      });
+  }
+  notificationClick = () => {
+    this.isPopupOpen = !this.isPopupOpen;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PostImage } from 'src/app/model/post-image.model';
 
 @Component({
@@ -9,4 +9,11 @@ import { PostImage } from 'src/app/model/post-image.model';
 export class ImageGridComponent {
 
   @Input() postImages: PostImage[] = [];
+
+  @Output() onImageClick = new EventEmitter<PostImage>();
+
+  imageClicked = (postImage: PostImage) => 
+  {
+    this.onImageClick.emit(postImage);
+  }
 }

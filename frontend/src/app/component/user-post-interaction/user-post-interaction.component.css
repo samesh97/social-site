@@ -92,3 +92,11 @@
     margin-left: 5px;
     font-size: 12px;
 }
+#likescount
+{
+    font-weight: 500;
+    font-size: 14px;
+    padding-right: 5px;
+    border-right: 1px solid black;
+    margin-right: 5px;
+}
