@@ -14,6 +14,7 @@ import { friendRoute } from './routes/friend.route';
 import { suggestionRouter } from './routes/suggestion.route';
 import { notificationRoute } from './routes/notification.route';
 import { errorRoute } from './routes/error.route';
+import { ipLimitter } from './utils/rate-limitter.util';
 
 const app: Application = express();
 
@@ -21,6 +22,9 @@ const app: Application = express();
 app.use( express.json() );
 app.use( cookieParser(config.COOKIE_SIGNED_KEY) );
 app.use( cors( config.CORS_CONFIG ) );
+
+//rate limitters
+app.use( ipLimitter );
 
 //auth route
 app.use( authentication );

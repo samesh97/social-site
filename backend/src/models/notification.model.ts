@@ -12,6 +12,7 @@ class Notification extends Model
     declare targetUserId: string;
     declare hasSeen: boolean;
     declare targetId: string;
+    declare targetType: string;
     declare createdAt: Date;
     declare updatedAt: Date;
 }
@@ -38,7 +39,11 @@ Notification.init(
     targetId: {
         type: DataTypes.UUID,
         allowNull: false
-        },
+    },
+    targetType: {
+        type: DataTypes.STRING(1000),
+        allowNull: false
+    },
     hasSeen: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

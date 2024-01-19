@@ -44,7 +44,7 @@ commentRoute.post("/", async (req, res) =>
             updatedTime: time
         });
         changeScore(userId, parseInt(config.FRIEND_SCORE.comment));
-        sendNotification('Comment', userId, post.UserId, commentObj.id);
+        sendNotification('Comment', userId, post.UserId, post.id, "Post");
         return response(res, "Success", 201);
     }
     catch (error)

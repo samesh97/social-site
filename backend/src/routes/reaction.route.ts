@@ -45,7 +45,7 @@ reactionRoute.post('/', async (req, res) =>
             updatedAt: time
           });
           changeScore(userId, parseInt(config.FRIEND_SCORE.like));
-          sendNotification('LIKE', userId, post.UserId, postId);
+          sendNotification('LIKE', userId, post.UserId, postId, "Post");
           return response(res, "Reacted", 201);
     }
     //change reaction type later on

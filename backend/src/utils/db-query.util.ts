@@ -14,7 +14,7 @@ const postAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const commentAttributes = ['id', 'description', 'createdAt', 'updatedAt'];
 const postImageAttributes = ['id', 'imageUrl'];
 const friendAttributes = ['requestedUserId', 'acceptedUserId', 'isAccepted', 'score', 'createdAt', 'updatedAt'];
-const notificationAttributes = ['id', 'type', 'initiatedUserId', 'hasSeen', 'targetId', 'createdAt', 'updatedAt'];
+const notificationAttributes = ['id', 'type', 'initiatedUserId', 'hasSeen', 'targetId', 'targetType', 'createdAt', 'updatedAt'];
 
 
 const getUser = async (userId: string) =>
@@ -207,7 +207,8 @@ const sendNotification = (
   type: string,
   initiatedUserId: string,
   targetUserId: string,
-  targetId: string
+  targetId: string,
+  targetType: string
 ) =>
 {
   const time = getCurrentDateTime();
@@ -216,6 +217,7 @@ const sendNotification = (
     initiatedUserId,
     targetUserId,
     targetId,
+    targetType,
     createdAt: time,
     updatedAt: time
   });
