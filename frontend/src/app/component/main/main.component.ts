@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Notification } from 'src/app/model/notification.model';
 import { Response } from 'src/app/model/response.model';
 import { Toast } from 'src/app/model/toast.model';
 import { User } from 'src/app/model/user.model';
@@ -22,7 +23,8 @@ export class MainComponent implements OnInit
   showProgress: boolean = false;
   currentUser: User = new User();
   public toastList: Toast[] = [];
-  isPopupOpen: boolean = false;
+  isNotificationOpen: boolean = false;
+  notifications: Notification[] = [];
   
   public constructor(
     private authService: AuthService,
@@ -96,10 +98,10 @@ export class MainComponent implements OnInit
   loadNotifications = () => {
     this.notificationService.loadNotifications()
       .subscribe((res: Response) => {
-      
+        this.notifications = res.data;
       });
   }
   notificationClick = () => {
-    this.isPopupOpen = !this.isPopupOpen;
+    this.isNotificationOpen = !this.isNotificationOpen;
   }
 }

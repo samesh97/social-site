@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PopupListComponent } from './popup-list.component';
+import { NotificationComponent } from './notification.component';
 
-describe('PopupListComponent', () => {
-  let component: PopupListComponent;
-  let fixture: ComponentFixture<PopupListComponent>;
+describe('NotificationComponent', () => {
+  let component: NotificationComponent;
+  let fixture: ComponentFixture<NotificationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PopupListComponent ]
+      declarations: [ NotificationComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PopupListComponent);
+    fixture = TestBed.createComponent(NotificationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

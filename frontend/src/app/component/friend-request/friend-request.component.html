@@ -1,6 +1,8 @@
-<div *ngIf="requests.length > 0" class="heading">
-    <span>People you may know</span>
-</div>
-<div class="suggestions" *ngFor="let request of requests">
-    <friend-request-item [friend]="request"></friend-request-item>
+<div class="suggestion-container" *ngIf="requests.length > 0">
+    <div class="heading">
+        <p id="heading-text">Requests</p>
+    </div>
+    <div class="suggestions" *ngFor="let request of requests">
+        <friend-request-item [friend]="request"></friend-request-item>
+    </div>
 </div>

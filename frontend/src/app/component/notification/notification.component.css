@@ -1,0 +1,53 @@
+.notification-container {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 65px;
+  right: 0;
+  background-color: var(--supporting-color);
+  z-index: 200;
+  padding: 20px;
+}
+.notification-item 
+{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  height: auto;
+  align-items: center;
+  border-bottom: 1px solid var(--secondary-color);
+}
+#notif-name 
+{
+  font-weight: bold;
+  padding-right: 5px;
+  display: block;
+}
+#notif-type 
+{
+    padding-right: 5px;
+}
+#notif-your
+{
+    padding-right: 5px;
+}
+#notif-target-type
+{
+    text-transform: lowercase;
+    font-weight: 500;
+    cursor: pointer;
+}
+#notifi-user-image {
+  width: 40px;
+  height: 40px;
+  clip-path: circle();
+  object-fit: cover;
+  margin-right: 10px;
+}
+#notif-heading
+{
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--secondary-color);
+}

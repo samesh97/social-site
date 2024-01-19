@@ -33,7 +33,7 @@ import { SuggetionComponent } from './component/suggestion/suggestion.component'
 import { CardItemComponent } from './component/card-item/card-item.component';
 import { ToastComponent } from './component/toast/toast.component';
 import { ToastItemComponent } from './component/toast-item/toast-item.component';
-import { PopupListComponent } from './component/popup-list/popup-list.component';
+import { NotificationComponent } from './component/notification/notification.component';
 
 const routes: Routes =
 [
@@ -81,7 +81,7 @@ const routes: Routes =
       CardItemComponent,
       ToastComponent,
       ToastItemComponent,
-      PopupListComponent,
+      NotificationComponent,
     ],
   imports:
     [

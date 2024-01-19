@@ -35,6 +35,9 @@
     cursor: pointer;
     margin-left: 10px;
 }
+.frd-action:nth-child(1) {
+    margin-left: 20px;
+}
 .mutual-text {
     color: rgb(138, 133, 133);
 }

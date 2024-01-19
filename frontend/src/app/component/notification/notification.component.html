@@ -1,0 +1,14 @@
+<div *ngIf="isOpen" class="notification-container">
+    <p id="notif-heading">Notifications</p>
+    <div *ngFor="let notification of notifications" class="notification-item">
+        <div class="image">
+            <img id="notifi-user-image" src="{{notification.initiatedUser.profileUrl}}">
+        </div>
+        <div class="texts">
+            <span id="notif-name">{{notification.initiatedUser.firstName + ' ' + notification.initiatedUser.lastName}}</span>
+            <span id="notif-type">{{getType(notification.type)}}</span>
+            <span id="notif-your">your</span>
+            <span id="notif-target-type">{{notification.targetType}}</span>
+        </div>
+    </div>
+</div>
