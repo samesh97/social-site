@@ -235,6 +235,9 @@ const getUserNotifications = async (userId: string) =>
         as: 'initiatedUser',
         attributes: userAttributes
       }
+    ],
+    order: [
+      ['createdAt', 'DESC']
     ]
 });
 }
