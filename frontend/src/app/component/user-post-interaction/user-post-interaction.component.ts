@@ -76,23 +76,9 @@ export class UserPostInteractionComponent implements OnInit{
     this.isLiked = this.reactions.some(reaction => reaction.userId == userInfo.id);  
   }
   getNumberOfComments = () => {
-    const count = this.comments.length;
-    if (count == 0)
-    {
-      return "";  
-    }
-    if (count == 1)
-    {
-      return "1 comment";  
-    }
-    return count + " comments";
+    return this.comments.length;
   }
-  getLikeCount = () => {
-    const count = this.reactions.length;
-    if (count == 0)
-    {
-      return "";  
-    }
-    return count;
+  getLikeCount = (): number => {
+    return this.reactions.length;
   }
 }

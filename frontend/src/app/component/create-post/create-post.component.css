@@ -1,22 +1,21 @@
 .create-post-container {
     width: auto;
     height: auto;
-    border-radius: 5px;
-    margin: 10px;
+    margin: 10px 0;
     display: flex;
     justify-content: center;
 }
 .first-row 
 {
-    max-width: 30%;
     height: auto;
     display: flex;
     align-items: center;
-    margin: 10px;
+    margin: 10px 0;
     padding-left: 5px;
-    padding-right: 20px;
+    padding-right: 20px;    
     background-color: var(--supporting-color);
     border-radius: 20px;
+    width: 610px;
 }
 .first-row img {
     width: 35px;
@@ -29,7 +28,7 @@
     padding: 10px 10px;
     outline: none;
     border: none;
-    width: 500px;
+    width: 100%;
     height: 22px;
     border-left: 2px solid var(--supporting-color);
     border-top: 2px solid var(--supporting-color);

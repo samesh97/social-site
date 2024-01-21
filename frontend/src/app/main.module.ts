@@ -28,13 +28,14 @@ import { ProgressBarComponent } from './component/progress-bar/progress-bar.comp
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserPostInteractionComponent } from './component/user-post-interaction/user-post-interaction.component';
-import { LocalDatePipe } from './pipe/local-date.pipe';
+import { LocalDatePipe } from './pipe/local-date/local-date.pipe';
 import { SuggetionComponent } from './component/suggestion/suggestion.component';
 import { CardItemComponent } from './component/card-item/card-item.component';
 import { ToastComponent } from './component/toast/toast.component';
 import { ToastItemComponent } from './component/toast-item/toast-item.component';
 import { NotificationComponent } from './component/notification/notification.component';
 import { InitComponent } from './component/init/init.component';
+import { CountPipe } from './pipe/count/count.pipe';
 
 const routes: Routes =
 [
@@ -84,6 +85,7 @@ const routes: Routes =
       ToastItemComponent,
       NotificationComponent,
       InitComponent,
+      CountPipe,
     ],
   imports:
     [

@@ -1,6 +1,6 @@
 <div class="interction-btn-container">
     <div class="like-container">
-        <span id="likescount">{{getLikeCount()}}</span>
+        <span id="likescount">{{getLikeCount() | count}}</span>
         <img 
         src="{{isLiked ? 'assets/images/liked_button.png' : 'assets/images/like_button.png'}}" 
         (click)="react('LIKE')">
@@ -12,7 +12,7 @@
     <input type="text" placeholder="Enter your comment" [(ngModel)]="commentText">
     <img src="assets/images/send.png" (click)="comment()"/>
 </div>
-<span *ngIf="comments.length > 0" id="comments-text">{{getNumberOfComments()}}</span>
+<span *ngIf="comments.length > 0" id="comments-text">{{getNumberOfComments() | count}} comments</span>
 <div *ngIf="comments.length > 0" class="comments">
     <div *ngFor="let comment of comments" class="comment">
         <img src="{{comment.User.profileUrl}}">
