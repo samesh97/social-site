@@ -20,30 +20,30 @@ export class LocalDatePipe implements PipeTransform {
     var minutes = Math.round(seconds / 60);
     if (minutes < 60)
     {
-      return `${minutes}  minute ago`;
+      return `${minutes}m ago`;
     }
     var hours = Math.round(minutes / 60);
     if (hours < 24)
     {
-      return `${hours} hour ago`; 
+      return `${hours}h ago`; 
     }
     var days = Math.round(hours / 24);
     if (days < 7)
     {
-      return `${days} day ago`;  
+      return `${days}d ago`;  
     }
     var weeks = Math.round(days / 7);
     if (weeks < 4)
     {
-      return `${weeks} week ago`;   
+      return `${weeks}w ago`;   
     }
     var months = Math.round(weeks / 4);
     if (months < 12)
     {
-      return `${months} month ago`;  
+      return `${months} mon ago`;  
     }
     var years = Math.round(months / 12);
-    return `${years} year ago`;  
+    return `${years}y ago`;  
   
     //return postedDate.toLocaleString();
   }

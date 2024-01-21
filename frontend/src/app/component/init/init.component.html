@@ -1,0 +1,6 @@
+<div *ngIf="isLoggedIn">
+    <main></main>
+</div>
+<toast [toasts]="toastList"></toast>
+<progress-bar [isShowProgress]="showProgress"></progress-bar>
+<router-outlet></router-outlet>

@@ -6,6 +6,7 @@
         </div>
         <div class="texts">
             <span id="notif-name">{{notification.initiatedUser.firstName + ' ' + notification.initiatedUser.lastName}}</span>
+            <span id="notif-datetme">{{notification.createdAt | localDate}}</span>
             <span id="notif-type">{{getType(notification.type)}}</span>
             <span id="notif-your">your</span>
             <span id="notif-target-type">{{notification.targetType}}</span>

@@ -1,4 +1,4 @@
-<div *ngIf="isLoggedIn" class="navigation">
+<div class="navigation">
     <div class="branding" (click)="navigateHome()">
         <span>SOCIAL MEDIA</span>
     </div>
@@ -11,14 +11,11 @@
     </div>
     <div class="profile">
         <img src="{{currentUser.profileUrl}}" (click)="logout()">
-        <img src="assets/images/notifications.png" (click)="notificationClick()" (focusout)="notificationClick()">
+        <img src="assets/images/notifications.png" (click)="notificationClick()">
     </div>
 </div>
-<div *ngIf="isLoggedIn" class="seperation"></div>
-<router-outlet></router-outlet>
-<toast [toasts]="toastList"></toast>
+<div class="seperation"></div>
 <notification
     [isOpen]="isNotificationOpen"
     [notifications]="notifications"
 ></notification>
-<progress-bar [isShowProgress]="showProgress"></progress-bar>

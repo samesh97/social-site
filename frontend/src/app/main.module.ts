@@ -6,7 +6,7 @@ import { AuthService } from './service/auth/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TimelineComponent } from './component/timeline/timeline.component';
 import { Routes, RouterModule } from '@angular/router';
-import { MainComponent } from './component/main/main.component';
+import { LoggedInComponent } from './component/logged-in/logged-in.component';
 import { FriendRequestComponent } from './component/friend-request/friend-request.component';
 import { FriendRequestItemComponent } from './component/friend-request-item/friend-request-item.component';
 import { CreatePostComponent } from './component/create-post/create-post.component';
@@ -34,6 +34,7 @@ import { CardItemComponent } from './component/card-item/card-item.component';
 import { ToastComponent } from './component/toast/toast.component';
 import { ToastItemComponent } from './component/toast-item/toast-item.component';
 import { NotificationComponent } from './component/notification/notification.component';
+import { InitComponent } from './component/init/init.component';
 
 const routes: Routes =
 [
@@ -64,7 +65,7 @@ const routes: Routes =
     [
       LoginComponent,
       TimelineComponent,
-      MainComponent,
+      LoggedInComponent,
       FriendRequestComponent,
       FriendRequestItemComponent,
       CreatePostComponent,
@@ -82,6 +83,7 @@ const routes: Routes =
       ToastComponent,
       ToastItemComponent,
       NotificationComponent,
+      InitComponent,
     ],
   imports:
     [
@@ -97,7 +99,7 @@ const routes: Routes =
       MatProgressSpinnerModule,
       BrowserAnimationsModule
     ],
-  bootstrap: [ MainComponent ],
+  bootstrap: [ InitComponent ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
