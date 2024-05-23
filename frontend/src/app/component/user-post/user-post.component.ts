@@ -15,6 +15,7 @@ import { PostService } from 'src/app/service/post/post.service';
 export class UserPostComponent
 {
   @Input() isEditable = false;
+  @Input() isInteractable = true;
 
   @Input() postId: string = "";
   @Input() userId: string = "";
@@ -35,21 +36,24 @@ export class UserPostComponent
 
   nameClicked = () =>
   {
-    this.onNameClick.emit(this.userId);
+    if (this.isInteractable) 
+    {
+      this.onNameClick.emit(this.userId);
+    }
   }
   commentPosted = (postId: string) =>
   {
-    this.onComment.emit(postId);
-    // this.postService.loadComments(postId).subscribe((data: Response) => {
-    //   if (data.code == 200)
-    //   {
-    //     this.post.Comments = data.data;  
-    //   }
-    // });
+    if (this.isInteractable)
+    {
+      this.onComment.emit(postId);  
+    }
   }
   imageClick = (postImage: PostImage) =>
   {
-    this.onImageClick.emit(postImage);
+    if (this.isInteractable)
+    {
+      this.onImageClick.emit(postImage);
+    }
   }
   descriptionChanged = () =>
   {

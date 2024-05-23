@@ -13,4 +13,20 @@ button {
 input
 {
     margin-left: 10px;
+    color: var(--primary-color);
+}
+#publish-btn
+{
+    background-color: var(--primary-color);
+    color: var(--supporting-color);
+}
+#create-post-act-btns
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.create-post-cont
+{
+    background-color: var(--secondary-color);
 }

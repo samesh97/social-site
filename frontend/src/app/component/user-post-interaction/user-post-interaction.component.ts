@@ -4,6 +4,7 @@ import { Reaction } from 'src/app/model/reaction.model';
 import { Comment } from 'src/app/model/comment.model';
 import { PostService } from 'src/app/service/post/post.service';
 import { AuthService } from 'src/app/service/auth/auth.service';
+import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 
 @Component({
   selector: 'user-post-interaction',
@@ -12,11 +13,13 @@ import { AuthService } from 'src/app/service/auth/auth.service';
 })
 export class UserPostInteractionComponent implements OnInit{
 
+
   public isCommentable: boolean = false;
   public commentText: string = "";
   public isLiked = false;
 
 
+  @Input() isInteractable: boolean = true;
   @Input() postId: string = "";
   @Input() comments: Comment[] = [];
   @Input() reactions: Reaction[] = [];
@@ -25,7 +28,8 @@ export class UserPostInteractionComponent implements OnInit{
 
   public constructor(
     private postService: PostService,
-    private authService: AuthService)
+    private authService: AuthService,
+    private journeyManager: JourneyManagerService)
   { 
     
   }
@@ -35,10 +39,17 @@ export class UserPostInteractionComponent implements OnInit{
 
   showOrHideCommentInput = () =>
   {
-    this.isCommentable = !this.isCommentable;  
+    if (this.isInteractable)
+    {
+      this.isCommentable = !this.isCommentable;    
+    }
   }
   comment()
   {
+    if (!this.isInteractable)
+    {
+      return;  
+    }
     if (this.commentText == "")
     {
       return;
@@ -55,6 +66,12 @@ export class UserPostInteractionComponent implements OnInit{
     
   }
   react = (type: string) => {
+
+    if (!this.isInteractable)
+    {
+      return;  
+    }
+
     this.isLiked = !this.isLiked;
     const reaction = new Reaction();
     reaction.type = type;
@@ -80,5 +97,11 @@ export class UserPostInteractionComponent implements OnInit{
   }
   getLikeCount = (): number => {
     return this.reactions.length;
+  }
+  nameClicked(profileId: string) {
+    if (this.isInteractable)
+    {
+      this.journeyManager.loadProfileView(profileId);  
+    }
   }
 }

@@ -18,7 +18,7 @@
         <img src="{{comment.User.profileUrl}}">
         <div class="comment-text">
             <div class="name-container">
-                <span id="full-name">{{comment.User.firstName + ' ' + comment.User.lastName}}</span>
+                <span id="full-name" (click)="nameClicked(comment.User.id)">{{comment.User.firstName + ' ' + comment.User.lastName}}</span>
                 <span id="comment-time">| {{comment.createdAt | localDate}}</span>
             </div>
             <span id="comment-text">{{comment.comment}}</span>

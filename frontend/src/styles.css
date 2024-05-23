@@ -17,8 +17,3 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: var(--secondary-color);
  }
- .dialog-style {
-    mat-dialog-container {
-        padding: 0;
-    }
-}

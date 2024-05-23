@@ -87,6 +87,11 @@
     font-weight: bold;
     font-size: 12px;
 }
+#full-name:hover
+{
+    text-decoration: underline;
+    cursor: pointer;
+}
 #comment-time
 {
     margin-left: 5px;

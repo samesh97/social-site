@@ -1,4 +1,5 @@
-<user-post
+<div class="create-post-cont">
+    <user-post
     [postId]="post.id"
     [userId]="post.User.id"
     [username]="post.User.firstName + ' ' + post.User.lastName"
@@ -9,8 +10,12 @@
     [reactions]="post.Reactions"
     [comments]="post.Comments"
     [isEditable]="true"
+    [isInteractable]="false"
     (onImageClick)="imageClicked($event)"
     (onDescriptionChange)="onDescriptionChange($event)"
 ></user-post>
-<input type="file" placeholder="Pick an image" (change)="imageSelected($event)">
-<button (click)="createPost()">Publish</button>
+<div id="create-post-act-btns">
+    <input type="file" placeholder="Pick an image" (change)="imageSelected($event)">
+    <button id="publish-btn" (click)="createPost()">Publish</button>
+</div>
+</div>
