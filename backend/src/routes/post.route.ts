@@ -71,9 +71,13 @@ postRoute.get('/', async (req, res) =>
 
     const friends = await getUserFriends(userId, true);
 
+    //get user's friend's userIds
     const frienUserIds = friends.map((friend: any) => {
       return friend.requestedUserId == userId ? friend.acceptedUserId : friend.requestedUserId
     });
+
+    //load own user posts
+    frienUserIds.push(userId);
 
     const posts: any = await getFriendsPosts(frienUserIds);    
     

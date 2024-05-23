@@ -21,6 +21,11 @@ friendRoute.post('/', async (req, res) =>
             return response(res, "No valid user found", 400);    
         }
 
+        if (userId == user)
+        {
+            return response(res, "Cannot send a friend request to the same user", 400);    
+        }
+
         const requestedUser = await User.findByPk(userId);
         const acceptedUser = await User.findByPk(user);
         if (isNullOrEmpty(requestedUser, acceptedUser))

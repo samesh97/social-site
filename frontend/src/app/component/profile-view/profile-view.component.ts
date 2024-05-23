@@ -17,8 +17,8 @@ export class ProfileViewComponent implements OnInit
   public user: User = new User();
   private currentUser: User = new User();
 
-  public friendActionBtnStatusIndex = 4;
-  public friendActionBtnStatus = ['Add friend','Unfriend','Accept','Remove','Loading'];
+  // public friendActionBtnStatusIndex = 4;
+  // public friendActionBtnStatus = ['Add friend','Unfriend','Accept','Remove','Loading'];
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -52,28 +52,29 @@ export class ProfileViewComponent implements OnInit
     this.currentUser = this.authSerice.getUserInfo();
     this.setFriendBtnStatus();
   }
-  setFriendBtnStatus = () =>
+  setFriendBtnStatus = (): string =>
   {
-    const friend = this.user.Friends.filter(frd => frd.requestedUserId == this.currentUser.id || frd.acceptedUserId== this.currentUser.id)[0];
+    const friend = this.user.Friends.filter(frd => frd.requestedUserId == this.currentUser.id || frd.acceptedUserId == this.currentUser.id)[0];
     if (!friend)
     {
-      this.friendActionBtnStatusIndex = 0;
-      return;
+        return 'Add friend';
     }
     if (friend.isAccepted)
     {
-      this.friendActionBtnStatusIndex = 1;
-      return;
+        return 'Unfriend';
     }
     if(friend.acceptedUserId == this.currentUser.id)
     {
-      this.friendActionBtnStatusIndex = 2;
-      return;
+        return 'Accept';
     }
     if (friend.requestedUserId == this.currentUser.id)
     {
-      this.friendActionBtnStatusIndex = 3;
-      return;
+        return 'Remove';
     }
+    return '';
+  }
+  isOwnAccount = (): boolean => {
+    const user = this.authSerice.getUserInfo();
+    return !(this.authSerice.hasLoggedIn() && this.profileId === user.id)
   }
 }
