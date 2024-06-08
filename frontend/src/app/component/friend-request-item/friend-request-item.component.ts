@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Friend } from 'src/app/model/Friend.mode';
+import { Friend } from 'src/app/model/friend.mode';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({

@@ -1,4 +1,4 @@
-import { Friend } from "./Friend.mode";
+import { Friend } from "./friend.mode";
 
 export class User
 {

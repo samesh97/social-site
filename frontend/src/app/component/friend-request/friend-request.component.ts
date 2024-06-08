@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Friend } from 'src/app/model/Friend.mode';
+import { Friend } from 'src/app/model/friend.mode';
 import { Response } from 'src/app/model/response.model';
 import { UserService } from 'src/app/service/user/user.service';
 
