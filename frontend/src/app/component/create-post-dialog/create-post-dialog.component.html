@@ -15,7 +15,10 @@
     (onDescriptionChange)="onDescriptionChange($event)"
 ></user-post>
 <div id="create-post-act-btns">
-    <input type="file" placeholder="Pick an image" (change)="imageSelected($event)">
-    <button id="publish-btn" (click)="createPost()">Publish</button>
+    <label>
+       <img src="assets/images/add_icon.png" class="add-image">
+       <input type="file" placeholder="Pick an image" (change)="imageSelected($event)">
+    </label>
+    <button id="publish-btn" (click)="createPost()">Post</button>
 </div>
 </div>

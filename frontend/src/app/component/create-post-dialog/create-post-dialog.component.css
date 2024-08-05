@@ -19,6 +19,7 @@ input
 {
     background-color: var(--primary-color);
     color: var(--supporting-color);
+    font-size: 15px;
 }
 #create-post-act-btns
 {
@@ -29,4 +30,20 @@ input
 .create-post-cont
 {
     background-color: var(--secondary-color);
+}
+
+.add-image
+{
+    width: 50px;
+    cursor: pointer;
+}
+#create-post-act-btns input
+{
+    display: none;
+}
+label
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
