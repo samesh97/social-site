@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LoggedUser } from 'src/app/model/logged-user.model';
 import { Post } from 'src/app/model/post.model';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
@@ -15,7 +16,7 @@ export class ProfileViewComponent implements OnInit
   private profileId: string = "";
   public posts: Post[] = [];
   public user: User = new User();
-  private currentUser: User = new User();
+  private currentUser: LoggedUser = new LoggedUser();
 
   // public friendActionBtnStatusIndex = 4;
   // public friendActionBtnStatus = ['Add friend','Unfriend','Accept','Remove','Loading'];

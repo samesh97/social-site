@@ -5,6 +5,7 @@ import { config } from '../../configuration/common.conf';
 import { Response } from 'src/app/model/response.model';
 import { User } from 'src/app/model/user.model';
 import { getSessionStorage, removeSessionStorage, setSessionStorage } from '../../util/common.util';
+import { LoggedUser } from 'src/app/model/logged-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,23 +20,28 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login = (email: string, password: string): Observable<Response> => {
+  login = (email: string, password: string): Observable<Response> =>
+  {
     return this.http.post<Response>(
       this.LOGIN_URL,
       { email, password }
     );
   };
-  verify = (): Observable<Response> => {
+  verify = (): Observable<Response> =>
+  {
     return this.http.post<Response>(
       this.VERIFY_URL, {}
     );
   };
-  refresh = (): Observable<Response> => {
+  refresh = (): Observable<Response> =>
+  {
     return this.http.post<Response>(
       this.REFRESH_URL,{}
     );
   };
-  logout = (): Observable<Response> => {
+
+  logout = (): Observable<Response> =>
+  {
     return this.http.post<Response>(
       this.LOGOUT_URL,{}
     );
@@ -46,7 +52,8 @@ export class AuthService {
     return this.loginStateSubject;
   }
 
-  setLoggedIn = (value: boolean) => {
+  setLoggedIn = (value: boolean) =>
+  {
     setSessionStorage(config.LOGIN_STATE_KEY, value.toString());
     if (!value)
     {
@@ -59,7 +66,7 @@ export class AuthService {
     let loginStatus = getSessionStorage(config.LOGIN_STATE_KEY);
     return loginStatus ? loginStatus == 'true' : false;
   };
-  setUserInfo = (user: User) =>
+  setUserInfo = (user: LoggedUser) =>
   {
     if (!user)
     {
@@ -68,7 +75,7 @@ export class AuthService {
     const data = JSON.stringify(user);
     setSessionStorage(config.USER_PROFILE_INFO_KEY, data);
   }
-  getUserInfo = () =>
+  getUserInfo = (): LoggedUser =>
   {
     const data = getSessionStorage(config.USER_PROFILE_INFO_KEY);
     return JSON.parse(data ? data : "{}");

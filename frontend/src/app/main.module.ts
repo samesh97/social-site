@@ -36,6 +36,7 @@ import { ToastItemComponent } from './component/toast-item/toast-item.component'
 import { NotificationComponent } from './component/notification/notification.component';
 import { InitComponent } from './component/init/init.component';
 import { CountPipe } from './pipe/count/count.pipe';
+import { ProfileOptionsComponent } from './component/profile-options/profile-options.component';
 
 const routes: Routes =
 [
@@ -86,6 +87,7 @@ const routes: Routes =
       NotificationComponent,
       InitComponent,
       CountPipe,
+      ProfileOptionsComponent,
     ],
   imports:
     [

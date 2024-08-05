@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="profile">
-        <img src="{{currentUser.profileUrl}}" (click)="logout()">
+        <img id="profile-option-icon" src="{{currentUser.profileUrl}}" (click)="profileClick()">
         <img src="assets/images/notifications.png" (click)="notificationClick()">
     </div>
 </div>
@@ -19,3 +19,9 @@
     [isOpen]="isNotificationOpen"
     [notifications]="notifications"
 ></notification>
+
+<app-profile-options
+    [isActive]="isProfileOptionOpen"
+    (logoutEmitter)="logout()"
+    (viewUserProfileEmitter)="viewCurrentUserProfile()"
+></app-profile-options>

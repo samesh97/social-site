@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoggedUser } from 'src/app/model/logged-user.model';
 import { Notification } from 'src/app/model/notification.model';
 import { Response } from 'src/app/model/response.model';
 import { User } from 'src/app/model/user.model';
@@ -16,9 +17,10 @@ export class LoggedInComponent implements OnInit
 {
   public searchText: string = "";
   searchUsers: User[] = [];
-  currentUser: User = new User();
+  currentUser: LoggedUser = new LoggedUser();
   isNotificationOpen: boolean = false;
   notifications: Notification[] = [];
+  isProfileOptionOpen: boolean = false;
   
   public constructor(
     private authService: AuthService,
@@ -36,6 +38,11 @@ export class LoggedInComponent implements OnInit
   }
   search()
   {
+    if ( !this.searchText || this.searchText.trim() == '')
+    {
+        return;
+    }
+
     this.userService.search(this.searchText).subscribe(data => {
       this.searchUsers = data.data;
     });
@@ -62,5 +69,13 @@ export class LoggedInComponent implements OnInit
   }
   notificationClick = () => {
     this.isNotificationOpen = !this.isNotificationOpen;
+  }
+  profileClick = () => 
+  {
+    this.isProfileOptionOpen = !this.isProfileOptionOpen;
+  }
+  viewCurrentUserProfile = () => 
+  {
+    this.viewProfile(this.authService.getUserInfo().id);
   }
 }

@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/service/auth/auth.service';
 import { PostService } from 'src/app/service/post/post.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
+import { LoggedUser } from 'src/app/model/logged-user.model';
 
 @Component({
   selector: 'create-post',
@@ -17,7 +18,7 @@ export class CreatePostComponent implements OnInit
 {
   post = new Post();
   images: any[] = [];
-  currentUser: User = new User();
+  currentUser: LoggedUser = new LoggedUser();
 
   constructor(
     private postService: PostService,

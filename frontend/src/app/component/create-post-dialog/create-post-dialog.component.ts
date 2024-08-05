@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PostImage } from 'src/app/model/post-image.model';
 import { Post } from 'src/app/model/post.model';
+import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { PostService } from 'src/app/service/post/post.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
@@ -26,7 +27,13 @@ export class CreatePostDialogComponent implements OnInit
 
   ngOnInit(): void
   {
-    this.post.User = this.authService.getUserInfo();
+    let loggedUser = this.authService.getUserInfo();
+    let user = new User();
+    user.id = loggedUser.id;
+    user.firstName = loggedUser.firstName;
+    user.lastName = loggedUser.lastName;
+    user.profileUrl = loggedUser.profileUrl;
+    this.post.User = user;
   }
   imageClicked = (postImage: PostImage) =>
   {
