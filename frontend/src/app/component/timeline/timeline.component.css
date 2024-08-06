@@ -1,26 +1,17 @@
+.main-container
+{
+    width: 100%;
+    min-height: calc( 100vh - var(--navigation-bar-height));
+}
+.post-container
+{
 
-.active-container 
+}
+.posts-container-timeline
 {
-    width: 15%;
-    height: 100vh;
-    border-left: 1px solid var(--supporting-color);
-    position: fixed;
-    right: 0;
-}
-.post-container {
-    width: 100%;
-    height: 100vh;
-}
-.timeline-post-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-.suggestion-view
-{
-    width: 100%;
-    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    flex-direction: column;  
 }

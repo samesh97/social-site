@@ -1,9 +1,12 @@
-.create-post-container {
+.create-post-container 
+{
+    max-width: 100%;
     width: auto;
     height: auto;
     margin: 10px 0;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .first-row 
 {
@@ -16,15 +19,17 @@
     background-color: var(--supporting-color);
     border-radius: 20px;
     width: 610px;
+    max-width: 86%;
 }
-.first-row img {
+.first-row img 
+{
     width: 35px;
     height: 35px;
     clip-path: circle();
     object-fit: cover;
-    z-index: 1;
 }
-#search-input {
+#search-input 
+{
     padding: 10px 10px;
     outline: none;
     border: none;
@@ -34,7 +39,8 @@
     border-top: 2px solid var(--supporting-color);
     border-bottom: 2px solid var(--supporting-color);
 }
-.first-row button {
+.first-row button 
+{
     height: 42px;
     width: 70px;
     outline: none;
