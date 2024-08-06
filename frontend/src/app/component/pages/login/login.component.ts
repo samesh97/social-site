@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../service/auth/auth.service';
+import { AuthService } from '../../../service/auth/auth.service';
 import { Response } from 'src/app/model/response.model';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 import { ToastService } from 'src/app/service/toast/toast.service';

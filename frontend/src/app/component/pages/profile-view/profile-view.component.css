@@ -1,28 +1,30 @@
 .main-container
 {
-    width: 100%;
+    width: 98vw;
     height: auto;
     display: flex;
     align-items: center;
     flex-direction: column;
+    justify-content: center;
 }
 .profile-details
 {
     height: 250px;
-    width: 50%;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+    width: 60vw;
+    display: flex; 
+    flex-direction: column;
     margin-top: 20px;
-    padding: 0 40px;
+    padding: 0 0;
     position: relative;
+    align-items: center;
+    justify-content: center;
 }
 
 
 #profile-pic
 {
-    height: 75%;
-    width: 150px;
+    height: auto;
+    width: 7vw;
     object-fit: cover;
     clip-path: circle();
 }
@@ -47,12 +49,12 @@
 {
     margin-left: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 .posts
 {
     margin-top: 10px;
-    width: 40%;
+    width: auto;
 }
 #add-frnd-btn
 {
@@ -74,12 +76,40 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
-    filter: blur(0.9px);
-    border-radius: 10px;
+    border-radius: 7px;
+    filter: brightness(60%);
     z-index: -1;
 }
 .profile-texts
 {
-    border-left: 5px solid var(--secondary-color);
-    margin-left: 20px;
+   margin-top: 20px;
+}
+.separator p
+{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.separator
+{
+    margin-top: 20px;
+}
+
+@media screen and (width < 1000px)
+{
+    .profile-details
+    {
+        width: 90vw;
+        height: 200px;
+    }
+    #profile-pic
+    {
+        height: 50%;
+        width: auto;
+    }
+    #first-name
+    {
+        font-size: 25px;
+    }
 }

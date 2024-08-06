@@ -17,84 +17,73 @@
 .image-container img
 {
     max-height: 300px;
+    min-height: 100%;
     max-width: 100%;
     min-width: 100%;
     display: block;
     object-fit: cover;
     cursor: pointer;
 }
-/* .image-container img:nth-child(4)
+
+
+/* 1 Grid Item */
+.image-list-size-1 img
 {
     grid-column: span 3;
 }
-.image-container img:nth-child(5)
+
+/* 2 Grid Item */
+.image-list-size-2 img
+{
+    grid-column: span 3;
+}
+
+/* 3 Grid Item */
+.image-list-size-3 img:nth-child(1)
+{
+    grid-column: span 3;
+}
+
+.image-list-size-3 img:nth-child(2)
 {
     grid-column: span 2;
-} */
-
-.image-list-size-1 img, .image-list-size-2 img, .image-list-size-3 img
-{
-    grid-column: span 3;
 }
 
-.image-list-size-4 img:nth-child(1),.image-list-size-4 img:nth-child(4)
-{
-    grid-column: span 3;
-}
-
-.image-list-size-4 img:nth-child(3)
-{
-    grid-column: span 2;
-}
-
-.image-list-size-5 img:nth-child(5),img:nth-child(1)
-{
-    grid-column: span 3;
-}
-.image-list-size-6 img:nth-child(2),img:nth-child(3),img:nth-child(4)
+.image-list-size-3 img:nth-child(3)
 {
     grid-column: span 1;
 }
-.image-list-size-6 img:nth-child(6)
+
+
+/* 4 Grid Item */
+.image-list-size-4 img:nth-child(1), .image-list-size-4 img:nth-child(4)
 {
     grid-column: span 2;
 }
 
-
-
-/* div[title="1"] img
-{
-    grid-column: span 3;
-}
-div[title="2"] img
-{
-    grid-column: span 3;
-} */
-
-/* div[title="3"] img
-{
-    grid-column: span 3;
-} */
-
-/* div[title="4"] img:nth-child(1), div[title="4"] img:nth-child(4)
-{
-    grid-column: span 3;
-}
-
-div[title="4"] img:nth-child(3)
-{
-    grid-column: span 2;
-}
-
-div[title="5"] img:nth-child(5),img:nth-child(1)
-{
-    grid-column: span 3;
-}
-div[title="5"] img:nth-child(2),img:nth-child(3),img:nth-child(4)
+.image-list-size-4 img:nth-child(2), .image-list-size-4 img:nth-child(3)
 {
     grid-column: span 1;
 }
-div[title="6"] img:nth-child(6)
+
+/* 5 Grid Item */
+.image-list-size-5 img:nth-child(1), .image-list-size-5 img:nth-child(2), .image-list-size-5 img:nth-child(3)
+{
+    grid-column: span 1;
+}
+
+.image-list-size-5 img:nth-child(4)
+{
+    grid-column: span 1;
+}
+
+.image-list-size-5 img:nth-child(5)
 {
     grid-column: span 2;
-} */
+}
+
+/* 6 Grid Item */
+.image-list-size-6 img
+{
+    grid-column: span 1;
+}
