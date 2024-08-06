@@ -16,6 +16,7 @@ export class UserPostComponent
 {
   @Input() isEditable = false;
   @Input() isInteractable = true;
+  @Input() isCommentable = false;
 
   @Input() postId: string = "";
   @Input() userId: string = "";

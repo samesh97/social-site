@@ -37,17 +37,20 @@
     display: flex;
     flex-direction: column;
     margin-left: 10px;
-    justify-content: center;
+    justify-content: start;
+    align-items: start;
 }
 
 .container-description {
     width: auto;
     padding-top: 8px;
 }
-#time {
+#time 
+{
     color: #5e5757;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 12px;
+    margin-top: -2px;
 }
 
 #span-description

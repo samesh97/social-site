@@ -13,14 +13,12 @@ import { ExpandableRow } from 'src/app/model/expandable-row.model';
   styleUrls: ['./user-post-interaction.component.css']
 })
 export class UserPostInteractionComponent implements OnInit{
-
-
-  public isCommentable: boolean = true;
   public commentText: string = "";
   public isLiked = false;
 
 
   @Input() isInteractable: boolean = true;
+  @Input() isCommentable: boolean = true;
   @Input() postId: string = "";
   @Input() comments: Comment[] = [];
   @Input() reactions: Reaction[] = [];

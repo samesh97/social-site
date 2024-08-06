@@ -12,6 +12,7 @@
                 [images]="post.PostImages"
                 [description]="post.description"
                 [reactions]="post.Reactions"
+                [isCommentable]="true"
                 [comments]="post.Comments"
                 (onNameClick)="nameClicked($event)"
                 (onComment)="commented($event)"

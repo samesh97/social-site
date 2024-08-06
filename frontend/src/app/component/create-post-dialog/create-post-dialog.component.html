@@ -1,18 +1,19 @@
 <div class="create-post-cont">
     <user-post
-    [postId]="post.id"
-    [userId]="post.User.id"
-    [username]="post.User.firstName + ' ' + post.User.lastName"
-    [date]="post.createdAt"
-    [profileImage]="post.User.profileUrl"
-    [images]="post.PostImages"
-    [description]="post.description"
-    [reactions]="post.Reactions"
-    [comments]="post.Comments"
-    [isEditable]="true"
-    [isInteractable]="false"
-    (onImageClick)="imageClicked($event)"
-    (onDescriptionChange)="onDescriptionChange($event)"
+        [postId]="post.id"
+        [userId]="post.User.id"
+        [username]="post.User.firstName + ' ' + post.User.lastName"
+        [date]="post.createdAt"
+        [profileImage]="post.User.profileUrl"
+        [images]="post.PostImages"
+        [description]="post.description"
+        [reactions]="post.Reactions"
+        [comments]="post.Comments"
+        [isEditable]="true"
+        [isInteractable]="false"
+        [isCommentable]="false"
+        (onImageClick)="imageClicked($event)"
+        (onDescriptionChange)="onDescriptionChange($event)"
 ></user-post>
 <div id="create-post-act-btns">
     <label>
