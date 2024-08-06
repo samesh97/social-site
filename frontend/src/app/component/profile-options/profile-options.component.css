@@ -1,14 +1,13 @@
 
 .profile-opt-container
 {
-    position: absolute;
+    position: fixed;
     right: 5px;
     top: 65px;
     height: auto;
     width: auto;
     background-color: var(--supporting-color);
     padding: 5px;
-    border-radius: 4px;
 }
 
 #opt-list

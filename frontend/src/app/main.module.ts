@@ -37,6 +37,7 @@ import { NotificationComponent } from './component/notification/notification.com
 import { InitComponent } from './component/init/init.component';
 import { CountPipe } from './pipe/count/count.pipe';
 import { ProfileOptionsComponent } from './component/profile-options/profile-options.component';
+import { ClickEventDirective } from './directive/click-event/click-event.directive';
 
 const routes: Routes =
 [
@@ -88,6 +89,7 @@ const routes: Routes =
       InitComponent,
       CountPipe,
       ProfileOptionsComponent,
+      ClickEventDirective,
     ],
   imports:
     [

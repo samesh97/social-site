@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Toast } from 'src/app/model/toast.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
+import { ClickEventService } from 'src/app/service/click-event/click-event.service';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
 import { ToastService } from 'src/app/service/toast/toast.service';
@@ -20,8 +21,17 @@ export class InitComponent implements OnInit{
     private authService: AuthService,
     private journeyManager: JourneyManagerService,
     private toastService: ToastService,
-    private progressService: ProgressService
+    private progressService: ProgressService,
+    private clickEventService: ClickEventService
   ) { }
+
+  ngAfterViewInit()
+  {
+    document.addEventListener('click', (event) =>
+    {
+      this.clickEventService.getClickEvent().next(event);
+    });
+  }
 
   ngOnInit(): void
   {

@@ -15,6 +15,9 @@ import { UserService } from 'src/app/service/user/user.service';
 })
 export class LoggedInComponent implements OnInit
 {
+handle(boolean: boolean) {
+throw new Error('Method not implemented.');
+}
   public searchText: string = "";
   searchUsers: User[] = [];
   currentUser: LoggedUser = new LoggedUser();
@@ -67,12 +70,13 @@ export class LoggedInComponent implements OnInit
         this.notifications = res.data;
       });
   }
-  notificationClick = () => {
-    this.isNotificationOpen = !this.isNotificationOpen;
-  }
-  profileClick = () => 
+  notificationClick = (event: boolean) =>
   {
-    this.isProfileOptionOpen = !this.isProfileOptionOpen;
+    this.isNotificationOpen = event;
+  }
+  profileClick = (event: boolean) => 
+  {
+    this.isProfileOptionOpen = event;
   }
   viewCurrentUserProfile = () => 
   {

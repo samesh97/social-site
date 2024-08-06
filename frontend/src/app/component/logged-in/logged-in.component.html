@@ -10,8 +10,8 @@
         </div>
     </div>
     <div class="profile">
-        <img id="profile-option-icon" src="{{currentUser.profileUrl}}" (click)="profileClick()">
-        <img src="assets/images/notifications.png" (click)="notificationClick()">
+        <img id="profile-option-icon" src="{{currentUser.profileUrl}}" appClickEvent [currentState]="isProfileOptionOpen" (changeListner)="profileClick($event)">
+        <img src="assets/images/notifications.png" appClickEvent [currentState]="isNotificationOpen" (changeListner)="notificationClick($event)">
     </div>
 </div>
 <div class="seperation"></div>
