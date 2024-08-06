@@ -5,6 +5,7 @@ import { Comment } from 'src/app/model/comment.model';
 import { PostService } from 'src/app/service/post/post.service';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
+import { ExpandableRow } from 'src/app/model/expandable-row.model';
 
 @Component({
   selector: 'user-post-interaction',
@@ -14,7 +15,7 @@ import { JourneyManagerService } from 'src/app/service/journey-manager/journey-m
 export class UserPostInteractionComponent implements OnInit{
 
 
-  public isCommentable: boolean = false;
+  public isCommentable: boolean = true;
   public commentText: string = "";
   public isLiked = false;
 
@@ -98,10 +99,24 @@ export class UserPostInteractionComponent implements OnInit{
   getLikeCount = (): number => {
     return this.reactions.length;
   }
-  nameClicked(profileId: string) {
+  nameClicked(profileId: string)
+  {
     if (this.isInteractable)
     {
       this.journeyManager.loadProfileView(profileId);  
     }
+  }
+  mapToExpandableRows = ( comments: Comment[] ): ExpandableRow[] =>
+  {
+    return comments.map((comment: Comment) =>
+    {
+      let expandableRow = new ExpandableRow();
+      expandableRow.id = comment.User.id;
+      expandableRow.date = comment.updatedAt;
+      expandableRow.imageUrl = comment.User.profileUrl;
+      expandableRow.mainText = `${comment.User.firstName} ${comment.User.lastName}`;
+      expandableRow.subText = comment.comment;
+      return expandableRow;
+    })
   }
 }

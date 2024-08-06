@@ -1,0 +1,9 @@
+<div class="expandable-container">
+    <div *ngFor="let expandableRow of getShowingList()">
+        <app-common-row-item
+            [item]="expandableRow"
+            (mainTextListner)="itemClickListenerEvent($event)">
+        </app-common-row-item>
+    </div>
+    <p id="load-more-text" *ngIf="showingList.length < list.length">Load More...</p>
+</div>

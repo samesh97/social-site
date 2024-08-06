@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { every } from 'rxjs';
+import { ExpandableRow } from 'src/app/model/expandable-row.model';
 import { Notification } from 'src/app/model/notification.model';
 import { ClickEventService } from 'src/app/service/click-event/click-event.service';
 
@@ -44,4 +45,17 @@ export class NotificationComponent
     }
     return "";
   }
+  getExpandableRowList = ( notifications: Notification[] ): ExpandableRow[] =>
+    {
+      return notifications.map((notification: Notification) =>
+      {
+        let expandableRow = new ExpandableRow();
+        expandableRow.id = notification.initiatedUser.id;
+        expandableRow.date = notification.updatedAt;
+        expandableRow.imageUrl = notification.initiatedUser.profileUrl;
+        expandableRow.mainText = `${notification.initiatedUser.firstName} ${notification.initiatedUser.lastName}`;
+        expandableRow.subText = `${this.getType(notification.type)} your ${notification.targetType.toLowerCase()}.`;
+        return expandableRow;
+      })
+    }
 }

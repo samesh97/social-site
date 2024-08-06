@@ -38,6 +38,8 @@ import { InitComponent } from './component/init/init.component';
 import { CountPipe } from './pipe/count/count.pipe';
 import { ProfileOptionsComponent } from './component/profile-options/profile-options.component';
 import { ClickEventDirective } from './directive/click-event/click-event.directive';
+import { ExpandableViewComponent } from './component/core/expandable-view/expandable-view.component';
+import { CommonRowItemComponent } from './component/core/common-row-item/common-row-item.component';
 
 const routes: Routes =
 [
@@ -90,6 +92,8 @@ const routes: Routes =
       CountPipe,
       ProfileOptionsComponent,
       ClickEventDirective,
+      ExpandableViewComponent,
+      CommonRowItemComponent,
     ],
   imports:
     [
