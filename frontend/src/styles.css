@@ -1,8 +1,12 @@
 :root
 {
+    /* colors */
     --primary-color: black;
     --secondary-color: #f1f1f1;
     --supporting-color: white;
+
+    /* navigation */
+    --navigation-bar-height: 60px;
 }
 
 
