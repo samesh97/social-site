@@ -38,6 +38,7 @@
     border-left: 2px solid var(--supporting-color);
     border-top: 2px solid var(--supporting-color);
     border-bottom: 2px solid var(--supporting-color);
+    font-weight: bold;
 }
 .first-row button 
 {

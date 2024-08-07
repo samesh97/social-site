@@ -1,10 +1,10 @@
 <div class="navigation">
     <div class="branding" (click)="navigateHome()">
-        <span>SOCIAL MEDIA</span>
+        <span>SOCIAL <span id="branding-txt-last-part">MEDIA</span></span>
     </div>
     <div class="nav-list">
         <div class="search-container">
-            <input type="text" placeholder="Keyword..." [(ngModel)]="searchText" (keydown)="search()">
+            <input type="text" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
             <button (click)="search()">Search</button>
             <profile-search [users]="searchUsers" (select)="viewProfile($event)"></profile-search>
         </div>
