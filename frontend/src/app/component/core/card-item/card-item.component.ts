@@ -13,7 +13,7 @@ export class CardItemComponent
   @Input() textAfterActionPerformed: string = '';
   @Input() contents: string[] = [];
 
-  @Output() event = new EventEmitter<string>();
+  @Output() mainButtonClickListener = new EventEmitter<string>();
 
   actionPeformed: boolean = false;
 
@@ -21,6 +21,6 @@ export class CardItemComponent
   {
     this.actionPeformed = true;  
     this.intialActionText = this.textAfterActionPerformed;
-    this.event.emit(this.id);
+    this.mainButtonClickListener.emit(this.id);
   }
 }

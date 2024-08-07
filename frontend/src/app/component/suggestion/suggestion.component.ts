@@ -28,7 +28,14 @@ export class SuggetionComponent implements OnInit
         }
       });
   }
-  itemClicked = (id: string) => {
-    this.toastService.showToast('Added friend', ToastType.INFO);
+  itemClicked = (id: string) =>
+  {
+    this.userService.addFriend(id).subscribe((response: Response) =>
+    {
+      if (response.code == 200)
+      {
+        this.toastService.showToast('Added friend', ToastType.INFO);
+      }
+    });
   }
 }

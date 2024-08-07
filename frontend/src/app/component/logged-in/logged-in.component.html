@@ -4,13 +4,21 @@
     </div>
     <div class="nav-list">
         <div class="search-container">
-            <input type="text" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
-            <button (click)="search()">Search</button>
+            <div class="search-input-container">
+                <input type="text" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
+                <img id="search-icon" src="assets/images/search-icon.png">
+            </div>
+            <!-- <button (click)="search()">Search</button> -->
             <profile-search [users]="searchUsers" (select)="viewProfile($event)"></profile-search>
         </div>
     </div>
     <div class="profile">
-        <img src="assets/images/notifications.png" appClickEvent [currentState]="isNotificationOpen" (changeListner)="notificationClick($event)">
+        <div class="notification-container">
+            <img src="assets/images/notifications.png" appClickEvent [currentState]="isNotificationOpen" (changeListner)="notificationClick($event)">
+            <div class="notif-count" *ngIf="getCountOfUnreadNotifications() != '0'">
+                <span id="notification-count">{{ getCountOfUnreadNotifications() }}</span>
+            </div>
+        </div>
         <img id="profile-option-icon" src="{{currentUser.profileUrl}}" appClickEvent [currentState]="isProfileOptionOpen" (changeListner)="profileClick($event)">
     </div>
 </div>

@@ -82,4 +82,18 @@ throw new Error('Method not implemented.');
   {
     this.viewProfile(this.authService.getUserInfo().id);
   }
+
+  getCountOfUnreadNotifications = (): string =>
+  {
+    let length = this.notifications.filter(notification => !notification.hasSeen).length;
+    if (length > 100)
+    {
+      return '99+';
+    }
+    if (length <= 0)
+    {
+      return '0';
+    }
+    return length + '+';
+  }
 }

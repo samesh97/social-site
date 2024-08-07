@@ -1,19 +1,26 @@
 .suggestion-container
 {
     background-color: var(--supporting-color);
-    width: 50vw;
-    height: 500px;
     padding: 15px;
     border-radius: 5px;
+    width: 80vw;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 #heading
 {
-    font-size: 13px;
-    font-weight: 500;
     background-color: var(--secondary-color); 
     color: rgb(26, 25, 25);
-    padding: 3px 10px;
+    padding: 5px 15px;
     border-radius: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 14px;
 }
 .suggestion-item-container
 {
@@ -23,4 +30,12 @@
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+@media screen and (width >= 1000px) 
+{
+    .suggestion-container
+    {
+        width: 50vw;
+    }    
 }
