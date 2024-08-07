@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FriendRequestItemComponent } from './friend-request-item.component';
+import { FriendRequestItemComponent } from './action-row-item.component';
 
 describe('FriendRequestItemComponent', () => {
   let component: FriendRequestItemComponent;

@@ -8,7 +8,6 @@ import { TimelineComponent } from './component/pages/timeline/timeline.component
 import { Routes, RouterModule } from '@angular/router';
 import { LoggedInComponent } from './component/logged-in/logged-in.component';
 import { FriendRequestComponent } from './component/friend-request/friend-request.component';
-import { FriendRequestItemComponent } from './component/friend-request-item/friend-request-item.component';
 import { CreatePostComponent } from './component/create-post/create-post.component';
 import { UserPostComponent } from './component/user-post/user-post.component';
 import { AuthInterceptorService } from './interceptor/auth-interceptor.service';
@@ -29,7 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserPostInteractionComponent } from './component/user-post-interaction/user-post-interaction.component';
 import { LocalDatePipe } from './pipe/local-date/local-date.pipe';
-import { SuggetionComponent } from './component/suggestion/suggestion.component';
+import { SuggetionComponent } from './component/views/suggestion/suggestion.component';
 import { CardItemComponent } from './component/core/card-item/card-item.component';
 import { ToastComponent } from './component/toast/toast.component';
 import { ToastItemComponent } from './component/toast-item/toast-item.component';
@@ -40,6 +39,7 @@ import { ProfileOptionsComponent } from './component/views/profile-options/profi
 import { ClickEventDirective } from './directive/click-event/click-event.directive';
 import { ExpandableViewComponent } from './component/core/expandable-view/expandable-view.component';
 import { CommonRowItemComponent } from './component/core/common-row-item/common-row-item.component';
+import { ActionRowItemComponent } from './component/core/action-row-item/action-row-item.component';
 
 const routes: Routes =
 [
@@ -72,7 +72,7 @@ const routes: Routes =
       TimelineComponent,
       LoggedInComponent,
       FriendRequestComponent,
-      FriendRequestItemComponent,
+      ActionRowItemComponent,
       CreatePostComponent,
       UserPostComponent,
       CreatePostDialogComponent,
