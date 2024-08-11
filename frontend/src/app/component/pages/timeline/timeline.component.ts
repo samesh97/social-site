@@ -3,6 +3,7 @@ import { PostService } from 'src/app/service/post/post.service';
 import { Response } from 'src/app/model/response.model';
 import { Post } from 'src/app/model/post.model';
 import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'timeline',
@@ -12,29 +13,30 @@ import { JourneyManagerService } from 'src/app/service/journey-manager/journey-m
 export class TimelineComponent implements OnInit
 {
   public searchText: string = "";
+  posts: Post[] = [];
 
   constructor(
     private postService: PostService,
-    private journeyManager: JourneyManagerService
+    private journeyManager: JourneyManagerService,
+    private activatedRoute: ActivatedRoute
   )
   { }
-  posts: Post[] = [];
+  
   
 
   ngOnInit(): void
   {
-    this.loadPosts();
+    this.activatedRoute.data.subscribe((data: any) =>
+    {
+      this.posts = data.posts.data;
+    })
   }
-  loadPosts = () => {
-    this.postService.loadPosts().subscribe((data: Response) => {
-      const postList = <Post[]>data.data;
-      this.posts.push(...postList);
-    });
-  }
+
   nameClicked = (profileId: string) =>
   {
     this.journeyManager.loadProfileView(profileId);
   }
+  
   commented = (postId: string) =>
   {
     this.postService.loadComments(postId)

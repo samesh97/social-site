@@ -40,13 +40,15 @@ import { ClickEventDirective } from './directive/click-event/click-event.directi
 import { ExpandableViewComponent } from './component/core/expandable-view/expandable-view.component';
 import { CommonRowItemComponent } from './component/core/common-row-item/common-row-item.component';
 import { ActionRowItemComponent } from './component/core/action-row-item/action-row-item.component';
+import { TimelinePostResolver } from './resolver/timeline-post-resolver/timeline-post.resolver';
 
 const routes: Routes =
 [
   {
     path: '',
     component: TimelineComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { posts: TimelinePostResolver }
   },
   {
     path: 'login',
