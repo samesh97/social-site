@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TimelinePostResolver } from './timeline-post.resolver';
+import { PostResolver } from './post.resolver';
 
 describe('GenericResolverResolver', () => {
-  let resolver: TimelinePostResolver;
+  let resolver: PostResolver;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    resolver = TestBed.inject(TimelinePostResolver);
+    resolver = TestBed.inject(PostResolver);
   });
 
   it('should be created', () => {

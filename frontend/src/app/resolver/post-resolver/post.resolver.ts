@@ -11,7 +11,7 @@ import { Response } from '../../model/response.model';
 @Injectable({
   providedIn: 'root'
 })
-export class TimelinePostResolver implements Resolve<Response>
+export class PostResolver implements Resolve<Response>
 {
   constructor(
     private postService: PostService

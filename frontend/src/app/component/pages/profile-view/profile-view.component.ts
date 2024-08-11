@@ -18,9 +18,6 @@ export class ProfileViewComponent implements OnInit
   public user: User = new User();
   private currentUser: LoggedUser = new LoggedUser();
 
-  // public friendActionBtnStatusIndex = 4;
-  // public friendActionBtnStatus = ['Add friend','Unfriend','Accept','Remove','Loading'];
-
   public constructor(
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
@@ -32,6 +29,8 @@ export class ProfileViewComponent implements OnInit
       this.profileId = params['id'];
       this.loadProfile();
     });
+
+    
   }
   loadProfile = () => 
   {

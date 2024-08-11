@@ -28,6 +28,7 @@
 .name-container span
 {
     font-weight: bold;
+    cursor: pointer;
 }
 .actions button
 {

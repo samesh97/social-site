@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Response } from 'src/app/model/response.model';
 import { Suggestion } from 'src/app/model/suggestion.model';
 import { ToastType } from 'src/app/model/toast.model';
+import { JourneyManagerService } from 'src/app/service/journey-manager/journey-manager.service';
 import { ToastService } from 'src/app/service/toast/toast.service';
 import { UserService } from 'src/app/service/user/user.service';
 
@@ -16,7 +17,8 @@ export class SuggetionComponent implements OnInit
 
   constructor(
     private userService: UserService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private journeyManager: JourneyManagerService
   ){}
   ngOnInit(): void
   {
@@ -37,5 +39,10 @@ export class SuggetionComponent implements OnInit
         this.toastService.showToast('Added friend', ToastType.INFO);
       }
     });
+  }
+
+  profileNameClicked = (id: string) =>
+  {
+    this.journeyManager.loadProfileView(id);
   }
 }
