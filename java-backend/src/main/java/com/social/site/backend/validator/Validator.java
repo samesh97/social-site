@@ -14,14 +14,10 @@ public final class Validator
     public static <T> void validate( T object )
     {
         Set<ConstraintViolation<T>> validations = Validation.buildDefaultValidatorFactory().getValidator().validate( object );
-        String validationFailures = validations.isEmpty() ? null : validations.stream()
-                .findFirst()
-                .map( ConstraintViolation::getMessage )
-                .stream()
-                .collect( Collectors.joining() );
-        if( validationFailures != null )
+        if( validations.isEmpty() )
         {
-            throw new ValidationException( validationFailures );
+            return;
         }
+        throw new ValidationException( validations.stream().findFirst().get().getMessage() );
     }
 }

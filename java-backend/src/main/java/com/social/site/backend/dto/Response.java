@@ -1,5 +1,6 @@
 package com.social.site.backend.dto;
 
+import com.social.site.backend.enums.HttpStatusCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,22 @@ public class Response<T>
         this.data = body;
         this.error = error;
     }
-    public static <T> ResponseEntity<Response<T>> wrap( int status, T data )
+
+    public static <T> ResponseEntity<Response<T>> wrap( HttpStatusCode status, String error )
     {
-       return createResponse( status, data, null );
+        return createResponse( status.intValue(), null, error );
     }
-    public static <T> ResponseEntity<Response<T>> wrap( int status, T data, String error )
+
+    public static <T> ResponseEntity<Response<T>> wrap( HttpStatusCode status, T data )
     {
-        return createResponse( status, data, error );
+       return createResponse( status.intValue(), data, null );
     }
+
+    public static <T> ResponseEntity<Response<T>> wrap( HttpStatusCode status, T data, String error )
+    {
+        return createResponse( status.intValue(), data, error );
+    }
+
     private static <T> ResponseEntity<Response<T>> createResponse( int status, T data, String error )
     {
         Response<T> response = new Response<>( status, data, error );

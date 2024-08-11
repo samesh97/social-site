@@ -1,4 +1,4 @@
-package com.social.site.backend.authentication;
+package com.social.site.backend.filters;
 
 
 import jakarta.servlet.*;
@@ -23,10 +23,10 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = ( HttpServletResponse ) servletResponse;
 
         //TODO: Auth logic implementation
-        if( request.getHeader("Authorization") == null )
-        {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized.");
-        }
+//        if( request.getHeader("Authorization") == null )
+//        {
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized.");
+//        }
         filterChain.doFilter( servletRequest, servletResponse );
     }
 

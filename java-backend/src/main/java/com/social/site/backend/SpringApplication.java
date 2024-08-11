@@ -3,9 +3,11 @@ package com.social.site.backend;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringApplication {
+public class SpringApplication
+{
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		org.springframework.boot.SpringApplication.run(SpringApplication.class, args);
 	}
 
