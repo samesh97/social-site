@@ -4,6 +4,7 @@ import com.social.site.backend.dto.Response;
 import com.social.site.backend.dto.payload.LoginPayload;
 import com.social.site.backend.enums.HttpStatusCode;
 import com.social.site.backend.exception.ValidationException;
+import com.social.site.backend.exception.auth.AuthException;
 import com.social.site.backend.service.auth.IAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,10 @@ public class AuthController
         catch ( ValidationException e )
         {
             return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
+        }
+        catch ( AuthException e )
+        {
+            return Response.wrap( HttpStatusCode.UNAUTHENTICATED, e.getMessage() );
         }
         catch ( Exception e )
         {

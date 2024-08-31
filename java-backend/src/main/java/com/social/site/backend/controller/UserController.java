@@ -57,10 +57,6 @@ public class UserController
             List<UserResponse> users = userService.getAll();
             return Response.wrap( HttpStatusCode.SUCCESS, users );
         }
-        catch (ValidationException e)
-        {
-            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
-        }
         catch ( Exception e )
         {
             return Response.wrap( HttpStatusCode.NOT_FOUND, "No users found." );

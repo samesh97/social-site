@@ -1,6 +1,7 @@
 package com.social.site.backend.service.auth;
 
 import com.social.site.backend.exception.ValidationException;
+import com.social.site.backend.exception.auth.AuthException;
 import com.social.site.backend.model.User;
 import com.social.site.backend.dto.payload.LoginPayload;
 import com.social.site.backend.repositoy.UserRepository;
@@ -24,7 +25,7 @@ public class AuthService implements IAuthService
     }
 
     @Override
-    public void login( LoginPayload payload, HttpServletResponse response )
+    public void login( LoginPayload payload, HttpServletResponse response ) throws ValidationException, AuthException
     {
         Validator.validate( payload );
         User user = userRepository.findByEmail( payload.getEmail() );
@@ -36,7 +37,7 @@ public class AuthService implements IAuthService
 
         if( !authUtil.verifyHash( payload.getPassword(), user.getPassword() ) )
         {
-            throw new ValidationException( "No user found with username password combination." );
+            throw new AuthException( "No user found with username password combination." );
         }
 
         String accessToken = authUtil.generateUUID();

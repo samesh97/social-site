@@ -11,7 +11,7 @@ public final class Validator
 {
     private Validator() {}
 
-    public static <T> void validate( T object )
+    public static <T> void validate( T object ) throws ValidationException
     {
         Set<ConstraintViolation<T>> validations = Validation.buildDefaultValidatorFactory().getValidator().validate( object );
         if( validations.isEmpty() )

@@ -28,7 +28,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public UserResponse save(User user )
+    public UserResponse save(User user ) throws ValidationException
     {
         Validator.validate( user );
         User existingUser = userRepository.findByEmail( user.getEmail() );
@@ -40,7 +40,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public UserResponse findUser( int id )
+    public UserResponse findUser( int id ) throws ValidationException
     {
         Optional<User> userOptional = userRepository.findById( id );
         if( userOptional.isPresent() )
