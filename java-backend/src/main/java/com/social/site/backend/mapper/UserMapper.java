@@ -13,4 +13,5 @@ public interface UserMapper
     UserPayload map( User user );
     List<UserPayload> map (List<User> users );
     UserResponse mapUserResponse( User user );
+    User mapToUser( UserPayload userPayload );
 }
