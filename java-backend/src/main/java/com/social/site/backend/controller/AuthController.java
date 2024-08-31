@@ -1,9 +1,10 @@
 package com.social.site.backend.controller;
 
 import com.social.site.backend.dto.Response;
-import com.social.site.backend.dto.UserDto;
-import com.social.site.backend.payload.LoginPayload;
-import com.social.site.backend.service.interfaces.IAuthService;
+import com.social.site.backend.dto.payload.LoginPayload;
+import com.social.site.backend.enums.HttpStatusCode;
+import com.social.site.backend.exception.ValidationException;
+import com.social.site.backend.service.auth.IAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,20 @@ public class AuthController
     }
 
     @PostMapping( path = "/login" )
-    public ResponseEntity<Response<UserDto>> login( @RequestBody LoginPayload payload, HttpServletResponse response )
+    public ResponseEntity<Response<String>> login(@RequestBody LoginPayload payload, HttpServletResponse response )
     {
-        return authService.login( payload, response );
+        try
+        {
+            authService.login( payload, response );
+            return Response.wrap( HttpStatusCode.SUCCESS, "Login success!", null );
+        }
+        catch ( ValidationException e )
+        {
+            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
+        }
+        catch ( Exception e )
+        {
+            return Response.wrap( HttpStatusCode.SERVER_ERROR, e.getMessage() );
+        }
     }
 }

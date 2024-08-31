@@ -1,4 +1,4 @@
-package com.social.site.backend.payload;
+package com.social.site.backend.dto.payload;
 
 
 import jakarta.validation.constraints.Email;

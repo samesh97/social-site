@@ -1,44 +1,47 @@
 package com.social.site.backend.controller;
 
 import com.social.site.backend.dto.Response;
-import com.social.site.backend.dto.UserDto;
+import com.social.site.backend.dto.response.UserResponse;
 import com.social.site.backend.enums.HttpStatusCode;
 import com.social.site.backend.exception.ValidationException;
 import com.social.site.backend.mapper.UserMapper;
 import com.social.site.backend.model.User;
-import com.social.site.backend.service.interfaces.IUserService;
+import com.social.site.backend.service.user.IUserService;
+import com.social.site.backend.util.auth.AuthUtil;
 import com.social.site.backend.validator.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.social.site.backend.util.AuthUtil.hashPassword;
-
 @RestController
 @RequestMapping( path = "/users" )
 public class UserController
 {
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
+    private final UserMapper userMapper;
+    private final AuthUtil authUtil;
 
-    @Autowired
-    private UserMapper userMapper;
+    public UserController(IUserService userService, UserMapper userMapper, AuthUtil authUtil )
+    {
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.authUtil = authUtil;
+    }
 
     @PostMapping
-    public ResponseEntity<Response<User>> createUser( @RequestBody User user )
+    public ResponseEntity<Response<UserResponse>> createUser( @RequestBody User user )
     {
         try
         {
             Validator.validate( user );
-            user.setPassword( hashPassword( user.getPassword() ) );
-            User createdUser = userService.save( user );
+            user.setPassword( authUtil.genHash( user.getPassword() ) );
+            UserResponse createdUser = userService.save( user );
             return Response.wrap( HttpStatusCode.CREATED, createdUser );
         }
         catch ( ValidationException e )
         {
-            return Response.wrap( HttpStatusCode.NOT_FOUND, e.getMessage() );
+            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
         }
         catch ( Exception e )
         {
@@ -47,12 +50,16 @@ public class UserController
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<UserDto>>> getAll()
+    public ResponseEntity<Response<List<UserResponse>>> getAll()
     {
         try
         {
-            List<User> users = userService.getAll();
-            return Response.wrap( HttpStatusCode.SUCCESS, userMapper.map( users ) );
+            List<UserResponse> users = userService.getAll();
+            return Response.wrap( HttpStatusCode.SUCCESS, users );
+        }
+        catch (ValidationException e)
+        {
+            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
         }
         catch ( Exception e )
         {
@@ -61,16 +68,20 @@ public class UserController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<UserDto>> findUser(@PathVariable int id )
+    public ResponseEntity<Response<UserResponse>> findUser( @PathVariable int id )
     {
         try
         {
-            User user = userService.findUser( id );
-            return Response.wrap(HttpStatusCode.SUCCESS, userMapper.map( user ) );
+            UserResponse user = userService.findUser(id);
+            return Response.wrap( HttpStatusCode.SUCCESS, user );
+        }
+        catch (ValidationException e)
+        {
+            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
         }
         catch ( Exception e )
         {
-            return Response.wrap( HttpStatusCode.NOT_FOUND,"No user found"  );
+            return Response.wrap( HttpStatusCode.SERVER_ERROR, e.getMessage() );
         }
     }
 }
