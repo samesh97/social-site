@@ -34,7 +34,7 @@ public class UserController
             Validator.validate( user );
             user.setPassword( hashPassword( user.getPassword() ) );
             User createdUser = userService.save( user );
-            return Response.wrap( HttpStatusCode.CREATED, createdUser, "User created." );
+            return Response.wrap( HttpStatusCode.CREATED, createdUser );
         }
         catch ( ValidationException e )
         {

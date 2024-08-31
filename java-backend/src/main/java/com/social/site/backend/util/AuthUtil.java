@@ -8,20 +8,14 @@ import java.util.UUID;
 
 public class AuthUtil
 {
-    private static final String HASH_PW_SEPARATOR = ":::";
-
     public static String hashPassword( String plainPassword )
     {
-        String salt = BCrypt.gensalt( 10 );
-        String hashedPassword = BCrypt.hashpw( plainPassword, salt );
-        return hashedPassword + HASH_PW_SEPARATOR + salt;
+        return  BCrypt.hashpw( plainPassword, BCrypt.gensalt() );
     }
 
     public static boolean isHashMatching( String hashedPasswordToCheck, String plainPassword )
     {
-        String[] parts = hashedPasswordToCheck.split( HASH_PW_SEPARATOR );
-        String salt = parts[1];
-        return BCrypt.checkpw( plainPassword, salt );
+        return BCrypt.checkpw( plainPassword, hashedPasswordToCheck );
     }
 
     public static void setCookie( HttpServletResponse response, String name, String value, int maxAge )

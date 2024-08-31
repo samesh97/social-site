@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static com.social.site.backend.util.AuthUtil.generateUUID;
-import static com.social.site.backend.util.AuthUtil.hashPassword;
 import static com.social.site.backend.util.AuthUtil.setCookie;
 
 @Service
