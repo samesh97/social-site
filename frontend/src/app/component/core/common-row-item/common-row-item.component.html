@@ -2,7 +2,7 @@
     <img src="{{item.imageUrl}}">
     <div class="comment-text">
         <div class="name-container">
-            <span id="full-name" (click)="mainTextClicked(item.id)">{{item.mainText}}</span>
+            <span id="full-name" class="link" (click)="mainTextClicked(item.id)">{{item.mainText}}</span>
             <span id="comment-time">{{item.date| localDate}}</span>
         </div>
         <span id="comment-text">{{item.subText}}</span>

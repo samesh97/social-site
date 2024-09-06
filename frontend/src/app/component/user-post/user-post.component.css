@@ -29,11 +29,6 @@
     font-size: 0.9rem;
 }
 
-#name:hover {
-   cursor: pointer;
-   text-decoration: underline;
-}
-
 .name-container {
     display: flex;
     flex-direction: column;

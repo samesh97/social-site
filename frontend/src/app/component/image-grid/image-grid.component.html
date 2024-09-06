@@ -1,5 +1,8 @@
 <div class="main-container flex-box-centered">
     <div class="image-container" ngClass="image-list-size-{{postImages.length}}" >
-        <img class="image-background" (click)="imageClicked(image)" *ngFor="let image of postImages" src="{{image.imageUrl}}" >
+        <img class="image-background" (click)="imageClicked(image)" *ngFor="let image of postImages.slice(0,3)" src="{{image.imageUrl}}" >
+        <div class="overflow-container flex-box-centered" *ngIf="postImages.length > 3">
+            <img id="grid-overlow-indicator" src="assets/images/add_icon.png"/>
+        </div>
     </div>
 </div>

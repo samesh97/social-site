@@ -8,10 +8,11 @@
     width: 100%;
     height: auto;
     display: grid;
-    grid-template-columns: repeat(10, 1fr) ;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr) ;
+    grid-template-rows: repeat(1, 1fr);
     row-gap: 5px;
     column-gap: 5px;
+    position: relative;
 }
 .image-background
 {
@@ -22,82 +23,40 @@
     cursor: pointer;
 }
 
+.image-background
+{
+    grid-column: span 2;
+    grid-row: span 1;
+}
 
 /* 1 Grid Item */
 .image-list-size-1 .image-background
 {
-    grid-column: span 10;
-    grid-row: span 2;
+    grid-column: span 6;
+    grid-row: span 1;
 }
 
 /* 2 Grid Item */
 .image-list-size-2 .image-background
 {
-    grid-column: span 5;
-    grid-row: span 2;
-}
-
-/* 3 Grid Item */
-.image-list-size-3 .image-background:first-child
-{
     grid-column: span 3;
-    grid-row: span 2;
+    grid-row: span 1;
 }
 
-.image-list-size-3 .image-background:nth-child(2)
+.overflow-container
 {
-    grid-column: span 4;
-    grid-row: span 2;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: calc( 100% / 3);
+    background-color: rgba(255,255,255,0.5);
 }
 
-.image-list-size-3 .image-background:last-child
+#grid-overlow-indicator
 {
-    grid-column: span 3;
-    grid-row: span 2;
-}
-
-
-/* 4 Grid Item */
-.image-list-size-4 .image-background:nth-child(1), 
-.image-list-size-4 .image-background:nth-child(4)
-{
-    grid-column: span 5;
-}
-
-.image-list-size-4 .image-background:nth-child(2), 
-.image-list-size-4 .image-background:nth-child(3)
-{
-    grid-column: span 5;
-}
-
-/* 5 Grid Item */
-.image-list-size-5 .image-background:nth-child(1), 
-.image-list-size-5 .image-background:nth-child(3)
-{
-    grid-column: span 3;
-}
-
-.image-list-size-5 .image-background:nth-child(2)
-{
-    grid-column: span 4;
-}
-
-.image-list-size-5 .image-background:nth-child(5), 
-.image-list-size-5 .image-background:nth-child(4)
-{
-    grid-column: span 5;
-}
-
-/* 6 Grid Item */
-.image-list-size-6 .image-background:nth-child(1), 
-.image-list-size-6 .image-background:nth-child(3), 
-.image-list-size-6 .image-background:nth-child(4), 
-.image-list-size-6 .image-background:nth-child(6)
-{
-    grid-column: span 3;
-}
-.image-list-size-6 .image-background:nth-child(2), 
-.image-list-size-6 .image-background:nth-child(5)
-{
-    grid-column: span 4;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
 }

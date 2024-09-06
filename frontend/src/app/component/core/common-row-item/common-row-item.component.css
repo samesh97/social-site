@@ -41,11 +41,6 @@
     font-weight: bold;
     font-size: 0.75rem;
 }
-#full-name:hover
-{
-    text-decoration: underline;
-    cursor: pointer;
-}
 #comment-time
 {
     font-size: 0.65rem;
