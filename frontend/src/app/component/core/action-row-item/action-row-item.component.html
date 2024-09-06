@@ -7,7 +7,7 @@
          <span id="requested-time">{{friend.createdAt | localDate}}</span>
       </div>
    </div>
-   <div class="action">
+   <div class="flex-box-centered">
       <img class="frd-action" src="assets/images/accept.png" (click)="acceptRequest(friend.requestedUser.id)"> 
       <img class="frd-action" src="assets/images/remove.png" (click)="denyRequest(friend.requestedUser.id)"> 
    </div>

@@ -23,9 +23,7 @@ input
 }
 #create-post-act-btns
 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    
 }
 .create-post-cont
 {
@@ -40,10 +38,4 @@ input
 #create-post-act-btns input
 {
     display: none;
-}
-label
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

@@ -15,8 +15,8 @@
         (onImageClick)="imageClicked($event)"
         (onDescriptionChange)="onDescriptionChange($event)"
 ></user-post>
-<div id="create-post-act-btns">
-    <label>
+<div id="create-post-act-btns flex-box-centered">
+    <label class="flex-box-centered">
        <img src="assets/images/add_icon.png" class="add-image">
        <input type="file" placeholder="Pick an image" (change)="imageSelected($event)">
     </label>

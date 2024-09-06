@@ -42,12 +42,6 @@
 .mutual-text {
     color: rgb(138, 133, 133);
 }
-.action
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 #requested-time
 {
     font-size: 0.75rem;

@@ -1,6 +1,6 @@
-<div class="main-container">
+<div class="main-container flex-box-centered">
     <img id="profile-image" src="{{image}}"/>
-    <div class="name-container" (click)="mainTextClicked(id)">
+    <div class="name-container flex-box-centered" (click)="mainTextClicked(id)">
         <span *ngFor="let content of contents">{{content}}</span>
     </div>
     <div class="actions">

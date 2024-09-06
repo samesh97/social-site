@@ -8,7 +8,7 @@
     <img src="assets/images/comment_button.png" (click)="showOrHideCommentInput()">
     <img src="assets/images/share_button.png">
 </div>
-<div *ngIf="isCommentable" class="comment-section">
+<div *ngIf="isCommentable" class="comment-section flex-box-centered">
     <input type="text" class="shaped-container" placeholder="Enter your comment.." [(ngModel)]="commentText">
     <img src="assets/images/send.png" (click)="comment()"/>
 </div>

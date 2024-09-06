@@ -74,9 +74,6 @@
 .notification-container
 {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .notif-count
 {
@@ -103,9 +100,6 @@
 .search-input-container
 {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .search-input-container input

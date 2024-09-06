@@ -1,8 +1,5 @@
 .main-container
 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     max-width: 40vw;
     width: 180px;
@@ -18,11 +15,9 @@
     height: 100px;
     object-fit: cover;
 }
-.name-container{
-    display: flex;
+.name-container
+{
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     margin-top: 10px;
 }
 .name-container span

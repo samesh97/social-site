@@ -12,10 +12,7 @@
 {
     width: auto;
     height: auto;
-    display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
     position: relative;
     margin-bottom: 10px;
 }
