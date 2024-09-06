@@ -1,5 +1,5 @@
 <div class="main-container">
     <div class="image-container" ngClass="image-list-size-{{postImages.length}}" >
-        <img (click)="imageClicked(image)" *ngFor="let image of postImages" src="{{image.imageUrl}}" alt="{{postImages.length}}">
+        <img class="image-background" (click)="imageClicked(image)" *ngFor="let image of postImages" src="{{image.imageUrl}}" >
     </div>
 </div>

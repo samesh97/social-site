@@ -1,9 +1,9 @@
 <div class="suggestion-container" *ngIf="requests.length > 0">
     <div class="heading">
-        <p id="heading-text">Requests</p>
+        <p id="heading-text">Friend Requests</p>
     </div>
-    <div class="suggestions" *ngFor="let request of requests">
-        <friend-request-item 
+    <div class="suggestions" >
+        <friend-request-item *ngFor="let request of requests"
             [friend]="request"
             (positiveActionListner)="handleEvent($event, true)"
             (negativeActionListner)="handleEvent($event, false)"

@@ -1,35 +1,32 @@
 .suggestions 
 {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin: 0 20px;
-    margin-top: 20px;
-}
-.heading 
-{
-    margin-top: 30px;
+    justify-content: start;
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 10px;
 }
 .heading span 
 {
     font-size: 14px;
     width: auto;
-    margin-left: 20px;
     font-weight: bold;
     background-color: var(--supporting-color);
-    padding: 5px 10px;
     border-radius: 2px;
     color: black;
 }
 .suggestion-container 
 {
-  width: auto;
-  height: 100vh;
-  position: fixed;
-  top: 65px;
-  left: 0;
-  background-color: var(--supporting-color);
-  z-index: 200;
+    background-color: var(--supporting-color);
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 #heading-text
 {
@@ -37,5 +34,13 @@
     font-size: 18px;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--secondary-color);
-    margin-left: 25px;
+}
+friend-request-item
+{
+    margin-right: 10px;
+}
+
+friend-request-item:last-child
+{
+    margin-right: 0;
 }

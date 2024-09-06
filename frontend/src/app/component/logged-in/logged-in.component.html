@@ -1,11 +1,11 @@
-<div class="navigation">
+<div class="navigation shaped-container">
     <div class="branding" (click)="navigateHome()">
         <span>SOCIAL <span id="branding-txt-last-part">MEDIA</span></span>
     </div>
     <div class="nav-list">
         <div class="search-container">
             <div class="search-input-container">
-                <input type="text" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
+                <input type="text" class="shaped-container" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
                 <img id="search-icon" src="assets/images/search-icon.png">
             </div>
             <!-- <button (click)="search()">Search</button> -->
@@ -14,21 +14,21 @@
     </div>
     <div class="profile">
         <div class="notification-container">
-            <img src="assets/images/notifications.png" appClickEvent [currentState]="isNotificationOpen" (changeListner)="notificationClick($event)">
-            <div class="notif-count" *ngIf="getCountOfUnreadNotifications() != '0'">
+            <img id="notification-image" src="assets/images/notifications.png">
+            <div id="notif-count" class="notif-count" *ngIf="getCountOfUnreadNotifications() != '0'">
                 <span id="notification-count">{{ getCountOfUnreadNotifications() }}</span>
             </div>
         </div>
-        <img id="profile-option-icon" src="{{currentUser.profileUrl}}" appClickEvent [currentState]="isProfileOptionOpen" (changeListner)="profileClick($event)">
+        <img id="profile-option-icon" src="{{currentUser.profileUrl}}">
     </div>
 </div>
 <div class="seperation"></div>
-<notification
+<notification appClickEvent [currentState]="isNotificationOpen" [triggeringSourceIds]="['notification-image','notif-count','notification-count']" (changeListner)="notificationClick($event)"
     [isOpen]="isNotificationOpen"
     [notifications]="notifications"
 ></notification>
 
-<app-profile-options
+<app-profile-options appClickEvent [currentState]="isProfileOptionOpen" [triggeringSourceIds]="['profile-option-icon']" (changeListner)="profileClick($event)"
     [isActive]="isProfileOptionOpen"
     (logoutEmitter)="logout()"
     (viewUserProfileEmitter)="viewCurrentUserProfile()"

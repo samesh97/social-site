@@ -1,12 +1,12 @@
 :root
 {
     /* colors */
-    --primary-color: black;
-    --secondary-color: #f1f1f1;
-    --supporting-color: white;
+    --primary-color: rgb(29, 27, 27);
+    --secondary-color: rgb(240, 241, 242);
+    --supporting-color: #fff;
 
     /* navigation */
-    --navigation-bar-height: 60px;
+    --navigation-bar-height: 62px;
 }
 
 
@@ -15,6 +15,7 @@
     margin: 0;
     transition: all 0.1s ease-out;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
 }
 
 html, body { height: 100%; }
@@ -22,3 +23,10 @@ body {
     margin: 0; 
     background-color: var(--secondary-color);
  }
+
+/* Container Setup */
+.shaped-container
+{
+    background-color: var(--supporting-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12);
+}

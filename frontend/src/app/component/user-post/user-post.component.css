@@ -1,17 +1,18 @@
  .container 
  {
-    max-width: 80vw;
-    width: 600px;
+    width: auto;
     height: auto;
-    background-color: var(--supporting-color);
     margin-bottom: 20px;
     border-radius: 4px;
+    width: inherit;
     padding: 20px;
 }
    
 .container-profile
 {
     display: flex;
+    width: inherit;
+    height: auto;
 }
  
 .container-profile img 
@@ -38,10 +39,14 @@
     margin-left: 10px;
     justify-content: start;
     align-items: start;
+    width: inherit;
+    height: auto;
 }
 
-.container-description {
-    width: auto;
+.container-description 
+{
+    width: 100%;
+    height: auto;
     padding-top: 8px;
 }
 #time 
@@ -55,19 +60,20 @@
 {
     font-size: 12px;
     font-weight: 500;
-    width: auto;
     height: auto;
+    width: 100%;
+    display: block;
     background-color: transparent;
     outline: none;
     border: none;
     word-wrap: break-word;
     font-weight: bold;
+    width: 100%; max-width: 100%; box-sizing: border-box; overflow-wrap: break-word;
 }
 #textarea-description
 {
     font-size: 12px;
     font-weight: bold;
-    width: 100%;
     height: 100px;
     background-color: transparent;
     outline: none;

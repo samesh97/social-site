@@ -1,11 +1,11 @@
-<div class="main-container">
-    <friend-request>
-        
-    </friend-request>
-    <div class="post-container">
-        <create-post></create-post>
-        <div class="posts-container-timeline">
-            <user-post *ngFor="let post of posts"
+<div class="timeline-main-container">
+   <div class="timeline-content">
+        <div class="post-create-container">
+            <create-post></create-post>
+        </div>
+        <friend-request></friend-request>
+        <div class="all-post-container">
+            <user-post class="post-container" *ngFor="let post of posts"
                 [postId]="post.id"
                 [userId]="post.User.id"
                 [username]="post.User.firstName + ' ' + post.User.lastName"
@@ -18,30 +18,7 @@
                 [comments]="post.Comments"
                 (onNameClick)="nameClicked($event)"
                 (onComment)="commented($event)"
-        ></user-post>
-        </div>
-
-
-
-
-
-        <!-- <div class="timeline-post-container" *ngFor="let post of posts">
-            <user-post
-                [postId]="post.id"
-                [userId]="post.User.id"
-                [username]="post.User.firstName + ' ' + post.User.lastName"
-                [date]="post.createdAt"
-                [profileImage]="post.User.profileUrl"
-                [images]="post.PostImages"
-                [description]="post.description"
-                [reactions]="post.Reactions"
-                [comments]="post.Comments"
-                (onNameClick)="nameClicked($event)"
-                (onComment)="commented($event)"
             ></user-post>
-        </div> -->
-        <div *ngIf="posts.length <= 0" class="suggestion-view">
-            <suggestion></suggestion>
         </div>
-    </div>
+   </div>
 </div>

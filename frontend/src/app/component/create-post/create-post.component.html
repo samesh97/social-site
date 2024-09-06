@@ -1,6 +1,6 @@
 <div class="create-post-container">
-    <div class="first-row">
+    <div class="first-row shaped-container">
         <img src="{{currentUser.profileUrl}}">
-        <input id="search-input" type="text" placeholder="What's on your mind?" (click)="openPostDialog()">
+        <input id="search-input" type="text" placeholder="{{ currentUser.firstName}}, what is on your mind ?" (click)="openPostDialog()">
     </div>
 </div>

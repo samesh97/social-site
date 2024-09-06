@@ -1,4 +1,5 @@
-.request-container {
+.request-container 
+{
     width: auto;
     height: auto;
     background-color: var(--secondary-color);

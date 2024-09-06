@@ -7,7 +7,7 @@
     height: auto;
     width: auto;
     background-color: var(--supporting-color);
-    padding: 5px;
+    padding: 10px;
 }
 
 #opt-list
@@ -21,8 +21,8 @@
 .opt-item
 {
     display: block;
-    height: 25px;
-    width: 120px;
+    height: auto;
+    width: 100px;
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--secondary-color);

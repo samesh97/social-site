@@ -1,30 +1,61 @@
 <div class="main-container">
+  <div class="profile-view-content">
     <div class="profile-details">
       <img id="cover-image" src="assets/images/cover-image.jpg">
         <img id="profile-pic" src="{{user.profileUrl}}">
         <div class="profile-texts">
           <div class="name-container">
             <span id="first-name">{{user.firstName}} {{user.lastName}}</span>
+            <span id="mutual-friend-text">25 Mutual Friends</span>
+            <!-- <span id="lives-in-text">Lives in Kandy</span> -->
             <!-- <span id="last-name"> {{user.lastName}}</span> -->
           </div>
           <button id="add-frnd-btn" *ngIf="isOwnAccount()" (click)="performBtnClick()">{{setFriendBtnStatus()}}</button>
         </div>
     </div>
     <div class="separator">
-      <P>- Posts -</P>
+      <!-- <p>Posts</p> -->
     </div>
-    <div *ngFor="let post of posts" class="posts">
-      <user-post
-        [postId]="post.id"
-        [userId]="post.User.id"
-        [username]="post.User.firstName + ' ' + post.User.lastName"
-        [date]="post.createdAt"
-        [profileImage]="post.User.profileUrl"
-        [images]="post.PostImages"
-        [description]="post.description"
-        [reactions]="post.Reactions"
-        [comments]="post.Comments"
-        [isCommentable]="true"
-      ></user-post>
+    <div class="user-details-container">
+      <div class="about-section shaped-container">
+        <h1 id="about-id">About</h1>
+        <div class="bio-data-section">
+          <table>
+            <tr>
+              <td>
+                <img src="assets/images/icons/date-icon.png">
+                <span>26 Years Old</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img src="assets/images/icons/gender-icon.png">
+                <span>Biological Male</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img src="assets/images/icons/location-icon.png">
+                <span>From Colombo</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="all-posts-container">
+        <user-post *ngFor="let post of posts" class="user-post-container"
+          [postId]="post.id"
+          [userId]="post.User.id"
+          [username]="post.User.firstName + ' ' + post.User.lastName"
+          [date]="post.createdAt"
+          [profileImage]="post.User.profileUrl"
+          [images]="post.PostImages"
+          [description]="post.description"
+          [reactions]="post.Reactions"
+          [comments]="post.Comments"
+          [isCommentable]="true"
+        ></user-post>
+      </div>
     </div>
+  </div>
 </div>

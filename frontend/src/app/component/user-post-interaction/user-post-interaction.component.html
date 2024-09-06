@@ -9,7 +9,7 @@
     <img src="assets/images/share_button.png">
 </div>
 <div *ngIf="isCommentable" class="comment-section">
-    <input type="text" placeholder="Enter your comment.." [(ngModel)]="commentText">
+    <input type="text" class="shaped-container" placeholder="Enter your comment.." [(ngModel)]="commentText">
     <img src="assets/images/send.png" (click)="comment()"/>
 </div>
 <!-- <span *ngIf="comments.length > 0" id="comments-text">{{getNumberOfComments() | count}} comments</span>

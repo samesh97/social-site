@@ -27,10 +27,10 @@ export class InitComponent implements OnInit{
 
   ngAfterViewInit()
   {
-    document.addEventListener('click', (event) =>
-    {
-      this.clickEventService.getClickEvent().next(event);
-    });
+    // document.addEventListener('click', (event) =>
+    // {
+    //   this.clickEventService.getClickEvent().next(event);
+    // });
   }
 
   ngOnInit(): void

@@ -41,6 +41,7 @@ import { ExpandableViewComponent } from './component/core/expandable-view/expand
 import { CommonRowItemComponent } from './component/core/common-row-item/common-row-item.component';
 import { ActionRowItemComponent } from './component/core/action-row-item/action-row-item.component';
 import { PostResolver } from './resolver/post-resolver/post.resolver';
+import { ContainerComponent } from './component/core/container/container.component';
 
 const routes: Routes =
 [
@@ -96,6 +97,7 @@ const routes: Routes =
       ClickEventDirective,
       ExpandableViewComponent,
       CommonRowItemComponent,
+      ContainerComponent,
     ],
   imports:
     [
