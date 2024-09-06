@@ -19,7 +19,7 @@ input
 {
     background-color: var(--primary-color);
     color: var(--supporting-color);
-    font-size: 15px;
+    font-size: 0.9rem;
 }
 #create-post-act-btns
 {

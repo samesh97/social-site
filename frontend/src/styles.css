@@ -18,15 +18,26 @@
     box-sizing: border-box;
 }
 
-html, body { height: 100%; }
-body { 
+html, body 
+{ 
+    height: 100%;
+    font-size: 16px;
+}
+body 
+{ 
     margin: 0; 
     background-color: var(--secondary-color);
- }
+}
 
 /* Container Setup */
 .shaped-container
 {
     background-color: var(--supporting-color);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12);
+}
+
+/* Set relative font sizing for all elements*/
+html
+{ 
+    font-size: 16px;
 }

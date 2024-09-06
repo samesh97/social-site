@@ -20,7 +20,7 @@
     margin-bottom: 20px;
     color: var(--primary-color);
     font-weight: bold;
-    font-size: 14px;
+    font-size: 0.9rem;
 }
 .suggestion-item-container
 {

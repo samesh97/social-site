@@ -24,7 +24,7 @@
 {
   font-weight: bold;
   padding-right: 5px;
-  font-size: 13px;
+  font-size: 0.8rem;
   display: block;
 }
 #notif-type 
@@ -51,7 +51,7 @@
 #notif-heading
 {
     font-weight: bold;
-    font-size: 18px;
+    font-size:  1.1rem;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--secondary-color);
 }
@@ -60,7 +60,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  font-size: 11px;
+  font-size: 0.65rem;
   font-weight: 500;
   color: var(--primary-color);
 }

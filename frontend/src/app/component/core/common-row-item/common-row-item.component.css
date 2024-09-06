@@ -26,20 +26,20 @@
 }
 #comment-text
 {
-    font-size: 12px;
+    font-size: 0.75rem;
     word-wrap: break-word
 }
 #comments-text
 {
     float: right;
     padding: 10px 0;
-    font-size: 11px;
+    font-size: 0.7rem;
     font-weight: 500;
 }
 #full-name
 {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 #full-name:hover
 {
@@ -48,7 +48,7 @@
 }
 #comment-time
 {
-    font-size: 10px;
+    font-size: 0.65rem;
     float: right;
     font-weight: bold;
     color: var(--primary-color);

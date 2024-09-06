@@ -23,6 +23,7 @@
     margin: 5px;
     width: 250px;
     border: 1px solid black;
+    font-size: 0.9rem;
 }
 .input-container button
 {
@@ -35,13 +36,13 @@
     color: var(--secondary-color);
     text-transform: uppercase;
     border: none;
-    font-size: 15px;
+    font-size: 0.9rem;
     font-weight: bold;
     cursor: pointer;
 }
 .no-account-text
 {
-    font-size: 13px;
+    font-size: 0.7rem;
 }
 .no-account-text span
 {

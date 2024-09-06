@@ -9,7 +9,7 @@
 }
 .heading span 
 {
-    font-size: 14px;
+    font-size: 0.85rem;
     width: auto;
     font-weight: bold;
     background-color: var(--supporting-color);
@@ -31,7 +31,7 @@
 #heading-text
 {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 1.1rem;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--secondary-color);
 }
