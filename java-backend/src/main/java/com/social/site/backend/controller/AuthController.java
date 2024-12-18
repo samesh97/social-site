@@ -3,9 +3,8 @@ package com.social.site.backend.controller;
 import com.social.site.backend.dto.Response;
 import com.social.site.backend.dto.payload.LoginPayload;
 import com.social.site.backend.enums.HttpStatusCode;
-import com.social.site.backend.exception.ValidationException;
-import com.social.site.backend.exception.auth.AuthException;
 import com.social.site.backend.service.auth.IAuthService;
+import com.social.site.backend.util.api.APIExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -31,19 +30,11 @@ public class AuthController
         try
         {
             authService.login( payload, response );
-            return Response.wrap( HttpStatusCode.SUCCESS, "Login success!", null );
-        }
-        catch ( ValidationException e )
-        {
-            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
-        }
-        catch ( AuthException e )
-        {
-            return Response.wrap( HttpStatusCode.UNAUTHENTICATED, e.getMessage() );
+            return Response.wrap( HttpStatusCode.SUCCESS, "Login success!" );
         }
         catch ( Exception e )
         {
-            return Response.wrap( HttpStatusCode.SERVER_ERROR, e.getMessage() );
+            return APIExceptionHandler.handle(e);
         }
     }
 
@@ -53,19 +44,11 @@ public class AuthController
         try
         {
             authService.logout( request );
-            return Response.wrap( HttpStatusCode.SUCCESS, "Logout success!", null );
-        }
-        catch ( ValidationException e )
-        {
-            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
-        }
-        catch ( AuthException e )
-        {
-            return Response.wrap( HttpStatusCode.UNAUTHENTICATED, e.getMessage() );
+            return Response.wrap( HttpStatusCode.SUCCESS, "Logout success!" );
         }
         catch ( Exception e )
         {
-            return Response.wrap( HttpStatusCode.SERVER_ERROR, e.getMessage() );
+            return APIExceptionHandler.handle(e);
         }
     }
 }

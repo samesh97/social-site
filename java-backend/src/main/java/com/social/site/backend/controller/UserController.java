@@ -4,8 +4,8 @@ import com.social.site.backend.dto.Response;
 import com.social.site.backend.dto.payload.UserPayload;
 import com.social.site.backend.dto.response.UserResponse;
 import com.social.site.backend.enums.HttpStatusCode;
-import com.social.site.backend.exception.ValidationException;
 import com.social.site.backend.service.user.IUserService;
+import com.social.site.backend.util.api.APIExceptionHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +29,9 @@ public class UserController
             UserResponse createdUser = userService.save( userPayload );
             return Response.wrap( HttpStatusCode.CREATED, createdUser );
         }
-        catch ( ValidationException e )
-        {
-            return Response.wrap( HttpStatusCode.BAD_REQUEST, e.getMessage() );
-        }
         catch ( Exception e )
         {
-            return Response.wrap( HttpStatusCode.SERVER_ERROR, e.getMessage() );
+            return APIExceptionHandler.handle(e);
         }
     }
 }
