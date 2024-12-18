@@ -8,6 +8,7 @@ import com.social.site.backend.repositoy.UserRepository;
 import com.social.site.backend.util.CommonUtil;
 import com.social.site.backend.util.auth.AuthUtil;
 import com.social.site.backend.validator.Validator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class AuthService implements IAuthService
 {
     private final UserRepository userRepository;
     private final AuthUtil authUtil;
+
+    private final String ACCESS_TOKEN_COOKIE_NAME = "at";
 
     public AuthService( UserRepository userRepository, AuthUtil authUtil  )
     {
@@ -41,6 +44,17 @@ public class AuthService implements IAuthService
         }
 
         String accessToken = authUtil.generateUUID();
-        authUtil.setHttpCookie( response, "at", accessToken, 3600 );
+        authUtil.setHttpCookie( response, ACCESS_TOKEN_COOKIE_NAME, accessToken, 3600 );
+    }
+
+    @Override
+    public void logout( HttpServletRequest request ) throws ValidationException, AuthException
+    {
+        String accessTokenCookieValue = authUtil.getCookie( request, ACCESS_TOKEN_COOKIE_NAME );
+        if( CommonUtil.isNull( accessTokenCookieValue ) )
+        {
+            throw new ValidationException("Access token is not found!");
+        }
+        throw new AuthException("Unauthenticated.");
     }
 }

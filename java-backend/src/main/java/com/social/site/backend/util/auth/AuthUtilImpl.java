@@ -1,9 +1,12 @@
 package com.social.site.backend.util.auth;
 
+import com.social.site.backend.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class AuthUtilImpl implements AuthUtil
@@ -25,6 +28,20 @@ public class AuthUtilImpl implements AuthUtil
     {
         Cookie cookie = createCookie( name, value, maxAge );
         response.addCookie( cookie );
+    }
+
+    @Override
+    public String getCookie( HttpServletRequest request, String cookieName )
+    {
+        Cookie cookieOpt = Arrays.stream( request.getCookies() )
+                                 .filter( cookie -> cookieName.equals( cookie.getName() ))
+                                 .findFirst()
+                                 .orElse( null );
+        if( CommonUtil.isNull( cookieOpt ) )
+        {
+            return null;
+        }
+        return cookieOpt.getValue();
     }
 
     @Override
