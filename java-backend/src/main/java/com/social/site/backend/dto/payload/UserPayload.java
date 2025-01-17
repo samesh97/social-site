@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -29,5 +30,6 @@ public class UserPayload
     @Length( min = 10, message = "Password should have at least 10 characters.")
     private String password;
 
-    private String profileUrl;
+    @NotNull(message = "Profile picture cannot be null.")
+    private MultipartFile profilePic;
 }

@@ -23,6 +23,6 @@ public class APIExceptionHandler
         {
             return Response.wrap( HttpStatusCode.UNAUTHENTICATED, exception.getMessage() );
         }
-        return Response.wrap( HttpStatusCode.SERVER_ERROR, exception.getMessage() );
+        return Response.wrap( HttpStatusCode.SERVER_ERROR, "The server is having issues processing the request." );
     }
 }

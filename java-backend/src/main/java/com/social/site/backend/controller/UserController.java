@@ -8,6 +8,7 @@ import com.social.site.backend.service.user.IUserService;
 import com.social.site.backend.util.api.APIExceptionHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController
     }
 
     @PostMapping
-    public ResponseEntity<Response<UserResponse>> createUser( @RequestBody UserPayload userPayload )
+    public ResponseEntity<Response<UserResponse>> createUser(@ModelAttribute UserPayload userPayload)
     {
         try
         {
