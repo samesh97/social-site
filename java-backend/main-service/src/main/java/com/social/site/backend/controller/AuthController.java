@@ -1,10 +1,12 @@
 package com.social.site.backend.controller;
 
-import com.social.site.backend.dto.Response;
+import com.social.site.backend.common.annotation.HandleAPIException;
+import com.social.site.backend.common.api.HttpStatusCode;
+import com.social.site.backend.common.api.Response;
+import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.dto.payload.LoginPayload;
-import com.social.site.backend.enums.HttpStatusCode;
+import com.social.site.backend.common.exception.auth.AuthException;
 import com.social.site.backend.service.auth.IAuthService;
-import com.social.site.backend.util.api.APIExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -25,30 +27,18 @@ public class AuthController
     }
 
     @PostMapping( path = "/login" )
-    public ResponseEntity<Response<String>> login(@RequestBody LoginPayload payload, HttpServletResponse response )
+    @HandleAPIException
+    public ResponseEntity<Response<String>> login(@RequestBody LoginPayload payload, HttpServletResponse response ) throws AuthException, ValidationException
     {
-        try
-        {
-            authService.login( payload, response );
-            return Response.wrap( HttpStatusCode.SUCCESS, "Login success!" );
-        }
-        catch ( Exception e )
-        {
-            return APIExceptionHandler.handle(e);
-        }
+        authService.login( payload, response );
+        return Response.wrap( HttpStatusCode.SUCCESS, "Login success!", null);
     }
 
     @PostMapping( path = "/logout" )
-    public ResponseEntity<Response<String>> logout( HttpServletRequest request )
+    @HandleAPIException
+    public ResponseEntity<Response<String>> logout( HttpServletRequest request ) throws AuthException, ValidationException
     {
-        try
-        {
-            authService.logout( request );
-            return Response.wrap( HttpStatusCode.SUCCESS, "Logout success!" );
-        }
-        catch ( Exception e )
-        {
-            return APIExceptionHandler.handle(e);
-        }
+        authService.logout( request );
+        return Response.wrap( HttpStatusCode.SUCCESS, "Logout success!", null );
     }
 }
