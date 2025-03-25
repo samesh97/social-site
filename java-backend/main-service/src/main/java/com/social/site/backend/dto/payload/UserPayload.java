@@ -30,6 +30,5 @@ public class UserPayload
     @Length( min = 10, message = "Password should have at least 10 characters.")
     private String password;
 
-    @NotNull(message = "Profile picture cannot be null.")
     private MultipartFile profilePic;
 }

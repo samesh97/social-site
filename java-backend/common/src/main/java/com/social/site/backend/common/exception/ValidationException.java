@@ -1,4 +1,4 @@
-package com.social.site.backend.exception;
+package com.social.site.backend.common.exception;
 
 public class ValidationException extends Exception
 {

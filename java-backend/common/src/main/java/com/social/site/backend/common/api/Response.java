@@ -1,19 +1,20 @@
-package com.social.site.backend.dto;
+package com.social.site.backend.common.api;
 
-import com.social.site.backend.enums.HttpStatusCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class Response<T>
+public class Response<T> implements Serializable
 {
     private final int code;
     private final T data;
     private final String error;
 
-    private Response( int code, T body, String error )
+    private Response(int code, T body, String error )
     {
         this.code = code;
         this.data = body;

@@ -1,20 +1,16 @@
 package com.social.site.backend.service.user;
 
+import com.social.site.backend.common.exception.auth.AuthException;
 import com.social.site.backend.dto.payload.UserPayload;
 import com.social.site.backend.dto.response.UserResponse;
-import com.social.site.backend.exception.ValidationException;
+import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.mapper.UserMapper;
 import com.social.site.backend.model.User;
 import com.social.site.backend.repositoy.UserRepository;
 import com.social.site.backend.util.CommonUtil;
 import com.social.site.backend.util.auth.AuthUtil;
-import com.social.site.backend.validator.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.social.site.backend.common.validator.Validator;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements IUserService
@@ -31,7 +27,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public UserResponse save( UserPayload userPayload ) throws ValidationException
+    public UserResponse save( UserPayload userPayload ) throws ValidationException, AuthException
     {
         Validator.validate( userPayload );
         User existingUser = userRepository.findByEmail( userPayload.getEmail() );

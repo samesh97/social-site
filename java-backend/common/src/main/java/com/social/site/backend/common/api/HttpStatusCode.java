@@ -1,4 +1,4 @@
-package com.social.site.backend.enums;
+package com.social.site.backend.common.api;
 
 public enum HttpStatusCode
 {

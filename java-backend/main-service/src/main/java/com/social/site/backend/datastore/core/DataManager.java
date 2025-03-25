@@ -1,4 +1,4 @@
-package com.social.site.backend.core.datastore;
+package com.social.site.backend.datastore.core;
 
 import org.springframework.data.repository.CrudRepository;
 

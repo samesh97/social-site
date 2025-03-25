@@ -1,8 +1,6 @@
 package com.social.site.backend.configuration;
 
 import com.social.site.backend.filters.AuthFilter;
-import com.social.site.backend.util.auth.AuthUtil;
-import com.social.site.backend.util.auth.AuthUtilImpl;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

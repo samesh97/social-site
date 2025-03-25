@@ -1,11 +1,10 @@
-package com.social.site.backend.validator;
+package com.social.site.backend.common.validator;
 
-import com.social.site.backend.exception.ValidationException;
+import com.social.site.backend.common.exception.ValidationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public final class Validator
 {
