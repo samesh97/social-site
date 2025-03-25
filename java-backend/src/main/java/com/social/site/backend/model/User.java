@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
 @Getter
 @Setter
@@ -11,7 +13,7 @@ import lombok.Setter;
 public class User
 {
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int id;
 
     @Column( unique = true )
@@ -21,6 +23,6 @@ public class User
     private String password;
     private boolean isVerified = false;
     private String profileUrl;
-    private String createdAt;
-    private String updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 }

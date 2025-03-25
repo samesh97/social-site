@@ -18,10 +18,4 @@ public class InstanceCreator
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
-
-    @Bean
-    public AuthUtil createAuthUtilImpl()
-    {
-        return new AuthUtilImpl();
-    }
 }

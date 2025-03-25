@@ -5,10 +5,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.UUID;
 
+@Component
 public class AuthUtilImpl implements AuthUtil
 {
     @Override
