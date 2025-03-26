@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.social.site.backend</groupId>
+    <artifactId>bill-of-material</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <library.lombok.version>1.18.32</library.lombok.version>
+        <library.mapstruct.version>1.5.5.Final</library.mapstruct.version>
+
+        <backend.common.version>1.0-SNAPSHOT</backend.common.version>
+        <backend.common.annotation.version>1.0-SNAPSHOT</backend.common.annotation.version>
+        <backend.main.service.version>1.0-SNAPSHOT</backend.main.service.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${library.lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${library.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${library.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.social.site.backend</groupId>
+                <artifactId>common</artifactId>
+                <version>${backend.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.social.site.backend</groupId>
+                <artifactId>common-annotation</artifactId>
+                <version>${backend.common.annotation.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
