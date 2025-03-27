@@ -4,6 +4,7 @@ import com.social.site.backend.common.api.HttpStatusCode;
 import com.social.site.backend.common.api.Response;
 import com.social.site.backend.model.Post;
 import com.social.site.backend.model.PostImage;
+import com.social.site.backend.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,18 @@ public class PostController
     public ResponseEntity<Response<List<Post>>> fetchPosts()
     {
         Post post = new Post();
+        User user = new User();
+        user.setFirstName("Samesh");
+        user.setLastName("Alahakoon");
+        user.setId("1");
+
+        post.setUser(user);
+        post.setId("1");
         PostImage postImage = new PostImage();
+        postImage.setId("1");
         postImage.setImageUrl("https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2018/09/1200/675/8Kenyawildlife.jpg?ve=1&tl=1");
+
+        user.setProfileUrl(postImage.getImageUrl());
         post.setPostImages(List.of(postImage));
         return Response.wrap(HttpStatusCode.SUCCESS, List.of(post));
     }

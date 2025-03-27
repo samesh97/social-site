@@ -22,6 +22,7 @@ public class APIExceptionHandler
         }
         catch (Throwable exception)
         {
+            System.out.println(exception);
             if (exception instanceof ValidationException)
             {
                 return Response.wrap( HttpStatusCode.BAD_REQUEST, exception.getMessage() );

@@ -1,18 +1,12 @@
 package com.social.site.backend.common.api;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 
-import java.io.Serializable;
-
-@Getter
-@Setter
 public class Response<T>
 {
-    private final int code;
-    private final T data;
-    private final String error;
+    private int code;
+    private T data;
+    private String error;
 
     private Response(int code, T body, String error )
     {
@@ -40,5 +34,29 @@ public class Response<T>
     {
         Response<T> response = new Response<>( status, data, error );
         return ResponseEntity.status( status ).body( response );
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }

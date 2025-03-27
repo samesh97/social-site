@@ -12,4 +12,5 @@ public class Post
     private String id;
     private String description;
     List<PostImage> postImages;
+    private User user;
 }
