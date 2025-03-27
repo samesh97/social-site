@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class Response<T> implements Serializable
+public class Response<T>
 {
     private final int code;
     private final T data;
