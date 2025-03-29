@@ -3,9 +3,10 @@ package com.social.site.backend.service.auth;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.common.exception.auth.AuthException;
-import com.social.site.backend.dto.response.LoginResponse;
-import com.social.site.backend.dto.response.TokenRefreshResponse;
+import com.social.site.backend.dto.response.LoginDto;
+import com.social.site.backend.dto.response.TokenRefreshDto;
 import com.social.site.backend.enums.TokenType;
+import com.social.site.backend.mapper.UserMapper;
 import com.social.site.backend.model.Token;
 import com.social.site.backend.model.User;
 import com.social.site.backend.dto.payload.LoginPayload;
@@ -27,15 +28,17 @@ public class AuthService implements IAuthService
 {
     private final UserRepository userRepository;
     private final AuthUtil authUtil;
+    private final UserMapper userMapper;
 
-    public AuthService( UserRepository userRepository, AuthUtil authUtil )
+    public AuthService( UserRepository userRepository, AuthUtil authUtil, UserMapper userMapper)
     {
         this.userRepository = userRepository;
         this.authUtil = authUtil;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public LoginResponse login(LoginPayload payload, HttpServletResponse response ) throws ValidationException, AuthException
+    public LoginDto login(LoginPayload payload, HttpServletResponse response ) throws ValidationException, AuthException
     {
         Validator.validate( payload );
         User user = userRepository.findByEmail( payload.getEmail() );
@@ -57,14 +60,9 @@ public class AuthService implements IAuthService
         setAccessTokenCookie(response,accessToken.getToken());
         setRefreshTokenCookie(response, refreshToken.getToken());
 
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setId(user.getId());
-        loginResponse.setEmail(user.getEmail());
-        loginResponse.setFirstName(user.getFirstName());
-        loginResponse.setLastName(user.getLastName());
-        loginResponse.setProfileUrl(user.getProfileUrl());
-        loginResponse.setSessionId(sessionId);
-        return loginResponse;
+        LoginDto loginDto = userMapper.mapToLoginResponse(user);
+        loginDto.setSessionId(sessionId);
+        return loginDto;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class AuthService implements IAuthService
     }
 
     @Override
-    public TokenRefreshResponse refresh(HttpServletRequest request,HttpServletResponse response) throws ValidationException, AuthException
+    public TokenRefreshDto refresh(HttpServletRequest request, HttpServletResponse response) throws ValidationException, AuthException
     {
         String refreshToken = authUtil.getCookie(request, REFRESH_TOKEN_COOKIE_NAME);
         if(CommonUtil.isNull(refreshToken))
@@ -112,7 +110,7 @@ public class AuthService implements IAuthService
 
         setAccessTokenCookie(response, accessToken.getToken());
 
-        TokenRefreshResponse tokenRefreshResponse = new TokenRefreshResponse();
+        TokenRefreshDto tokenRefreshResponse = new TokenRefreshDto();
         tokenRefreshResponse.setSessionId(sessionId);
         return tokenRefreshResponse;
     }

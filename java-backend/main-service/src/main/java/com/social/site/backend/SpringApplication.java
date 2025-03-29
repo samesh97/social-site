@@ -1,12 +1,11 @@
 package com.social.site.backend;
 
-import com.social.site.backend.common.annotation.APIExceptionHandler;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication( scanBasePackages = {"com.social.site.backend",
 "com.social.site.backend.common.annotation"})
-@Import(APIExceptionHandler.class)
+@EnableJpaAuditing
 public class SpringApplication
 {
 

@@ -12,19 +12,19 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Comment extends BaseModel
+public class Friend extends BaseModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    private String comment;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private boolean isAccepted;
+    private long score;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "requestedUser_id")
+    private User requestedUser;
+
+    @ManyToOne
+    @JoinColumn(name = "acceptedUser_id")
+    private User acceptedUser;
 }

@@ -12,19 +12,24 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Comment extends BaseModel
+public class Notification extends BaseModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String comment;
+    private String type;
+    private boolean hasSeen;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "initiatedUser_id")
+    private User initiatedUser;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "targetUser_id")
+    private User targetUser;
+
+    private String targetId;
+    private String targetType;
+
 }

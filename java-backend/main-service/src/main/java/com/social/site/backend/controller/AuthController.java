@@ -6,8 +6,8 @@ import com.social.site.backend.common.api.Response;
 import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.dto.payload.LoginPayload;
 import com.social.site.backend.common.exception.auth.AuthException;
-import com.social.site.backend.dto.response.LoginResponse;
-import com.social.site.backend.dto.response.TokenRefreshResponse;
+import com.social.site.backend.dto.response.LoginDto;
+import com.social.site.backend.dto.response.TokenRefreshDto;
 import com.social.site.backend.service.auth.IAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,9 +30,9 @@ public class AuthController
 
     @PostMapping( path = "/login" )
     @HandleAPIException
-    public ResponseEntity<Response<LoginResponse>> login(@RequestBody LoginPayload payload, HttpServletResponse response ) throws AuthException, ValidationException
+    public ResponseEntity<Response<LoginDto>> login(@RequestBody LoginPayload payload, HttpServletResponse response ) throws AuthException, ValidationException
     {
-        LoginResponse loginResponse = authService.login( payload, response );
+        LoginDto loginResponse = authService.login( payload, response );
         return Response.wrap( HttpStatusCode.SUCCESS, loginResponse, null);
     }
 
@@ -46,9 +46,9 @@ public class AuthController
 
     @PostMapping( path = "/refresh")
     @HandleAPIException
-    public ResponseEntity<Response<TokenRefreshResponse>> refresh(HttpServletRequest request,HttpServletResponse response) throws ValidationException, AuthException
+    public ResponseEntity<Response<TokenRefreshDto>> refresh(HttpServletRequest request, HttpServletResponse response) throws ValidationException, AuthException
     {
-        TokenRefreshResponse tokenRefreshResponse = authService.refresh(request, response);
+        TokenRefreshDto tokenRefreshResponse = authService.refresh(request, response);
         return Response.wrap(HttpStatusCode.SUCCESS, tokenRefreshResponse, null);
     }
 }

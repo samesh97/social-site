@@ -8,7 +8,7 @@ import com.social.site.backend.common.Constants;
 import com.social.site.backend.enums.TokenType;
 import com.social.site.backend.model.Token;
 import com.social.site.backend.model.User;
-import com.social.site.backend.service.token.TokenService;
+import com.social.site.backend.service.token.ITokenService;
 import com.social.site.backend.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,11 +26,11 @@ import static com.social.site.backend.common.Constants.JWT_TOKEN_PAYLOAD_USER_ID
 @Component
 public class AuthUtilImpl implements AuthUtil
 {
-    private final TokenService tokenService;
+    private final ITokenService tokenService;
     private final Algorithm jwtAccessTokenSignAlgorithm;
     private final Algorithm jwtRefreshTokenSignAlgorithm;
 
-    public AuthUtilImpl(TokenService tokenService,
+    public AuthUtilImpl(ITokenService tokenService,
                         @Qualifier(value = Constants.JWT_ACCESS_TOKEN_ALGORITHM) Algorithm jwtAccessTokenSignAlgorithm,
                         @Qualifier(value = Constants.JWT_REFRESH_TOKEN_ALGORITHM) Algorithm jwtRefreshTokenSignAlgorithm)
     {

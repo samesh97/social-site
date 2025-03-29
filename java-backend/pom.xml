@@ -13,6 +13,7 @@
         <library.lombok.version>1.18.32</library.lombok.version>
         <library.mapstruct.version>1.5.5.Final</library.mapstruct.version>
         <library.java-jwt.version>4.5.0</library.java-jwt.version>
+        <library.firebase-admin.version>9.1.1</library.firebase-admin.version>
 
         <backend.common.version>1.0.0-SNAPSHOT</backend.common.version>
         <backend.common.annotation.version>1.0.0-SNAPSHOT</backend.common.annotation.version>
@@ -40,6 +41,11 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${library.java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.firebase</groupId>
+                <artifactId>firebase-admin</artifactId>
+                <version>${library.firebase-admin.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.social.site.backend</groupId>

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Table(name = "jwt_token")
 @Getter
 @Setter
-public class Token
+public class Token extends BaseModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -19,4 +19,8 @@ public class Token
     private String sessionId;
 
     private TokenType tokenType;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

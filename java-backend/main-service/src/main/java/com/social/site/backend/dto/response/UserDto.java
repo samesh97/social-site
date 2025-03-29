@@ -5,10 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponse
+public class UserDto extends BaseDto
 {
     private String email;
     private String firstName;
     private String lastName;
     private String profileUrl;
+    private boolean isVerified;
 }

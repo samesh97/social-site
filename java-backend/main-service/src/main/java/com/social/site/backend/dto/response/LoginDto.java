@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse
+public class LoginDto extends BaseDto
 {
     private String id;
     private String email;

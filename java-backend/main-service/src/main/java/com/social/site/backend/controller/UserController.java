@@ -6,7 +6,7 @@ import com.social.site.backend.common.api.Response;
 import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.common.exception.auth.AuthException;
 import com.social.site.backend.dto.payload.UserPayload;
-import com.social.site.backend.dto.response.UserResponse;
+import com.social.site.backend.dto.response.UserDto;
 import com.social.site.backend.service.user.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +26,9 @@ public class UserController
 
     @PostMapping
     @HandleAPIException
-    public ResponseEntity<Response<UserResponse>> createUser(@ModelAttribute UserPayload userPayload) throws ValidationException, AuthException
+    public ResponseEntity<Response<UserDto>> createUser(@ModelAttribute UserPayload userPayload) throws ValidationException, AuthException
     {
-        UserResponse createdUser = userService.save( userPayload );
+        UserDto createdUser = userService.save( userPayload );
         return Response.wrap( HttpStatusCode.CREATED, createdUser );
     }
 }

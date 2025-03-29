@@ -1,12 +1,20 @@
 package com.social.site.backend.controller;
 
+import com.social.site.backend.common.annotation.HandleAPIException;
 import com.social.site.backend.common.api.HttpStatusCode;
 import com.social.site.backend.common.api.Response;
-import com.social.site.backend.model.Post;
-import com.social.site.backend.model.PostImage;
-import com.social.site.backend.model.User;
+import com.social.site.backend.common.exception.ValidationException;
+import com.social.site.backend.common.exception.auth.AuthException;
+import com.social.site.backend.common.validator.Validator;
+import com.social.site.backend.dto.payload.CreatePostPayload;
+import com.social.site.backend.dto.response.PostDto;
+import com.social.site.backend.service.post.IPostService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,23 +24,26 @@ import java.util.List;
 @RequestMapping(path = "/posts")
 public class PostController
 {
-    @GetMapping(path = "")
-    public ResponseEntity<Response<List<Post>>> fetchPosts()
+    private final IPostService postService;
+
+    public PostController(IPostService postService)
     {
-        Post post = new Post();
-        User user = new User();
-        user.setFirstName("Samesh");
-        user.setLastName("Alahakoon");
-        user.setId("1");
+        this.postService = postService;
+    }
 
-        post.setUser(user);
-        post.setId("1");
-        PostImage postImage = new PostImage();
-        postImage.setId("1");
-        postImage.setImageUrl("https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2018/09/1200/675/8Kenyawildlife.jpg?ve=1&tl=1");
+    @GetMapping(path = "")
+    @HandleAPIException
+    public ResponseEntity<Response<List<PostDto>>> fetchPosts()
+    {
+        return Response.wrap(HttpStatusCode.SUCCESS, postService.getAll());
+    }
 
-        user.setProfileUrl(postImage.getImageUrl());
-        post.setPostImages(List.of(postImage));
-        return Response.wrap(HttpStatusCode.SUCCESS, List.of(post));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @HandleAPIException
+    public ResponseEntity<Response<String>> createPost(HttpServletRequest request, @ModelAttribute CreatePostPayload payload) throws ValidationException, AuthException
+    {
+        Validator.validate(payload);
+        postService.save(request,payload);
+        return Response.wrap(HttpStatusCode.SUCCESS,"Success", null);
     }
 }
