@@ -1,11 +1,10 @@
 package com.social.site.backend.model;
 
+import com.social.site.backend.model.key.FriendKey;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,17 +13,26 @@ import lombok.Setter;
 @Setter
 public class Friend extends BaseModel
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @EmbeddedId
+    private FriendKey id;
+
     private boolean isAccepted;
     private long score;
 
     @ManyToOne
-    @JoinColumn(name = "requestedUser_id")
+    @MapsId("requestedUserId")
     private User requestedUser;
 
     @ManyToOne
-    @JoinColumn(name = "acceptedUser_id")
+    @MapsId("acceptedUserId")
     private User acceptedUser;
+
+    public Friend() {}
+
+    public Friend(User requestedUser,User acceptedUser)
+    {
+        this.requestedUser = requestedUser;
+        this.acceptedUser = acceptedUser;
+        this.id = new FriendKey(requestedUser, acceptedUser);
+    }
 }

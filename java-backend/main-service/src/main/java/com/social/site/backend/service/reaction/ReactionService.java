@@ -43,11 +43,18 @@ public class ReactionService implements IReactionService
             throw new ValidationException("The post cannot be null.");
         }
 
-        Reaction reaction = new Reaction();
-        reaction.setType(payload.getType());
-        reaction.setPost(post);
-        reaction.setUser(user);
+        Reaction existingReaction = repository.findReactionByPostAndUser(post.getId(), user.getId());
 
-        return this.repository.save(reaction);
+        if(CommonUtil.isNull(existingReaction))
+        {
+            //react
+            Reaction reaction = new Reaction(post,user);
+            reaction.setType(payload.getType());
+            return this.repository.save(reaction);
+        }
+
+        //delete reaction
+        repository.delete(existingReaction);
+        return null;
     }
 }

@@ -15,6 +15,16 @@ public class Response<T>
         this.error = error;
     }
 
+    public static <T> ResponseEntity<Response<T>> success( T data )
+    {
+        return createResponse( HttpStatusCode.SUCCESS.intValue(), data, null );
+    }
+
+    public static <T> ResponseEntity<Response<T>> created( T data )
+    {
+        return createResponse( HttpStatusCode.CREATED.intValue(), data, null );
+    }
+
     public static <T> ResponseEntity<Response<T>> wrap( HttpStatusCode status, String error )
     {
         return createResponse( status.intValue(), null, error );

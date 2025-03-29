@@ -8,7 +8,8 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface BaseMapper
 {
-    default void mapBaseModelToBaseDTO(BaseModel baseModel, @MappingTarget BaseDto baseDTO) {
+    default void mapBaseModelToBaseDTO(BaseModel baseModel, @MappingTarget BaseDto baseDTO)
+    {
         baseDTO.setCreatedAt(baseModel.getCreatedAt());
         baseDTO.setUpdatedAt(baseModel.getUpdatedAt());
     }

@@ -7,11 +7,6 @@ import lombok.Setter;
 @Setter
 public class PostImageDto extends BaseDto
 {
-    public PostImageDto()
-    {
-        System.out.println(getClass().getSimpleName());
-    }
-
     private String id;
     private String imageUrl;
 }

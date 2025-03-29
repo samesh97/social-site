@@ -4,10 +4,14 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.social.site.backend.common.exception.auth.AuthException;
 import com.social.site.backend.common.ftp.FileUploader;
 import com.social.site.backend.dto.payload.UserPayload;
+import com.social.site.backend.dto.response.FriendDto;
+import com.social.site.backend.dto.response.ProfileViewUserDto;
 import com.social.site.backend.dto.response.UserDto;
 import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.enums.TokenType;
+import com.social.site.backend.mapper.FriendMapper;
 import com.social.site.backend.mapper.UserMapper;
+import com.social.site.backend.model.Friend;
 import com.social.site.backend.model.User;
 import com.social.site.backend.repositoy.UserRepository;
 import com.social.site.backend.util.CommonUtil;
@@ -15,6 +19,9 @@ import com.social.site.backend.util.auth.AuthUtil;
 import com.social.site.backend.common.validator.Validator;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static com.social.site.backend.common.Constants.ACCESS_TOKEN_COOKIE_NAME;
 import static com.social.site.backend.common.Constants.JWT_TOKEN_PAYLOAD_USER_ID;
@@ -27,13 +34,15 @@ public class UserService implements IUserService
     private final UserMapper userMapper;
     private final AuthUtil authUtil;
     private final FileUploader fileUploader;
+    private final FriendMapper friendMapper;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, AuthUtil authUtil, FileUploader fileUploader )
+    public UserService(UserRepository userRepository, UserMapper userMapper, AuthUtil authUtil, FileUploader fileUploader, FriendMapper friendMapper)
     {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.authUtil = authUtil;
         this.fileUploader = fileUploader;
+        this.friendMapper = friendMapper;
     }
 
     @Override
@@ -88,5 +97,29 @@ public class UserService implements IUserService
             throw new AuthException("User associated with the token is not found!");
         }
         return user;
+    }
+
+    @Override
+    public List<UserDto> search(String keyword)
+    {
+        return userMapper.mapUserDto(userRepository.findByName(keyword));
+    }
+
+    @Override
+    public ProfileViewUserDto findUserDto(String id)
+    {
+        User user = findUser(id);
+        ProfileViewUserDto profileViewUserDto = userMapper.mapProfileViewUserDto(user);
+
+        List<Friend> receivedRequests = user.getReceivedFriendRequests();
+        List<Friend> sentRequests = user.getSentFriendRequests();
+
+        List<Friend> allAcceptedFriendRequests = Stream.concat(receivedRequests.stream(), sentRequests.stream())
+                .filter(Friend::isAccepted)
+                .toList();
+
+        List<FriendDto> allAcceptedFriendRequestsDto = friendMapper.convert(allAcceptedFriendRequests);
+        profileViewUserDto.setFriends(allAcceptedFriendRequestsDto);
+        return profileViewUserDto;
     }
 }

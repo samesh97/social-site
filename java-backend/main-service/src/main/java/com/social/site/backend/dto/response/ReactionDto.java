@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class ReactionDto extends BaseDto
 {
-    private String id;
     private String type;
     private UserDto user;
 }

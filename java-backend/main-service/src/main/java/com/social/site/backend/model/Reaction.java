@@ -1,11 +1,10 @@
 package com.social.site.backend.model;
 
+import com.social.site.backend.model.key.ReactionKey;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,18 +13,26 @@ import lombok.Setter;
 @Setter
 public class Reaction extends BaseModel
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @EmbeddedId
+    private ReactionKey id;
 
     private String type;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @MapsId("userId")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @MapsId("postId")
     private Post post;
+
+    public Reaction() {}
+
+    public Reaction(Post post, User user)
+    {
+        this.user = user;
+        this.post = post;
+        this.id = new ReactionKey(post,user);
+    }
 
 }

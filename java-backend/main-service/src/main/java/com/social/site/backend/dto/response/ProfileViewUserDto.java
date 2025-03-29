@@ -3,9 +3,11 @@ package com.social.site.backend.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-public class UserDto extends BaseDto
+public class ProfileViewUserDto
 {
     private String id;
     private String email;
@@ -13,4 +15,6 @@ public class UserDto extends BaseDto
     private String lastName;
     private String profileUrl;
     private boolean isVerified;
+    private List<PostDto> posts;
+    private List<FriendDto> friends;
 }
