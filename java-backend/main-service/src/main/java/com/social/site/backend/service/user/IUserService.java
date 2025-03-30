@@ -8,6 +8,7 @@ import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.enums.TokenType;
 import com.social.site.backend.model.User;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface IUserService
     User getUserFromToken(HttpServletRequest request, TokenType tokenType) throws AuthException;
     List<UserDto> search(String keyword);
     ProfileViewUserDto findUserDto(String id);
+    UserDto changeProfilePicture(HttpServletRequest request, String userId, MultipartFile file) throws AuthException, ValidationException;
 }

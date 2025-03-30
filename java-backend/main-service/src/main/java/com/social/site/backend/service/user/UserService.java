@@ -19,6 +19,7 @@ import com.social.site.backend.util.auth.AuthUtil;
 import com.social.site.backend.common.validator.Validator;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -121,5 +122,44 @@ public class UserService implements IUserService
         List<FriendDto> allAcceptedFriendRequestsDto = friendMapper.convert(allAcceptedFriendRequests);
         profileViewUserDto.setFriends(allAcceptedFriendRequestsDto);
         return profileViewUserDto;
+    }
+
+    @Override
+    public UserDto changeProfilePicture(HttpServletRequest request, String userId, MultipartFile file) throws AuthException, ValidationException
+    {
+        if(CommonUtil.isNullOrEmpty(userId))
+        {
+            throw new ValidationException("UserId is null or empty");
+        }
+
+        if(CommonUtil.isNull(file))
+        {
+            throw new ValidationException("The selected image is not received.");
+        }
+
+        User user = getUserFromToken(request, TokenType.ACCESS_TOKEN);
+        if(CommonUtil.isNull(user))
+        {
+            throw new AuthException("No user found in the session.");
+        }
+
+        User changingUser = findUser(userId);
+        if(CommonUtil.isNull(changingUser))
+        {
+            throw new ValidationException("No user found with the given id.");
+        }
+
+        if(!user.getId().equals(changingUser.getId()))
+        {
+            throw new ValidationException("The session user and the user associated with the change is not the same!");
+        }
+
+        String downloadUrl = fileUploader.uploadFile(file,null);
+        if(CommonUtil.isNullOrEmpty(downloadUrl))
+        {
+            throw new ValidationException("Something went wrong with uploading the image. Please try again later.");
+        }
+        user.setProfileUrl(downloadUrl);
+        return userMapper.mapUserResponse(userRepository.save(user));
     }
 }

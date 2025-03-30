@@ -9,9 +9,11 @@ import com.social.site.backend.dto.payload.UserPayload;
 import com.social.site.backend.dto.response.ProfileViewUserDto;
 import com.social.site.backend.dto.response.UserDto;
 import com.social.site.backend.service.user.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -49,5 +51,17 @@ public class UserController
     {
         ProfileViewUserDto userDto = userService.findUserDto(userId);
         return Response.success(userDto);
+    }
+
+    @PostMapping(path = "/{userId}/profile-pic")
+    @HandleAPIException
+    public ResponseEntity<Response<UserDto>> changeProfilePicture(
+            HttpServletRequest request,
+            @PathVariable String userId,
+            @ModelAttribute MultipartFile profilePic
+    ) throws AuthException, ValidationException
+    {
+        UserDto userDto = userService.changeProfilePicture(request,userId,profilePic);
+        return Response.created(userDto);
     }
 }
