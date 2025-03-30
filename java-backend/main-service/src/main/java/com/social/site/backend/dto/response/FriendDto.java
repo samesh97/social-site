@@ -7,9 +7,8 @@ import lombok.Setter;
 @Setter
 public class FriendDto extends BaseDto
 {
-    private boolean isAccepted;
-    private long score;
-
     private UserDto requestedUser;
     private UserDto acceptedUser;
+    private boolean isAccepted;
+    private long score;
 }

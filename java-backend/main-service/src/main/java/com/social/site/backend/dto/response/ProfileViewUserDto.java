@@ -10,11 +10,9 @@ import java.util.List;
 public class ProfileViewUserDto
 {
     private String id;
-    private String email;
     private String firstName;
     private String lastName;
     private String profileUrl;
-    private boolean isVerified;
     private List<PostDto> posts;
     private List<FriendDto> friends;
 }

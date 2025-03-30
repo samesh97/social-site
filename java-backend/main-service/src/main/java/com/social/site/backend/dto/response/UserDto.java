@@ -8,9 +8,7 @@ import lombok.Setter;
 public class UserDto extends BaseDto
 {
     private String id;
-    private String email;
     private String firstName;
     private String lastName;
     private String profileUrl;
-    private boolean isVerified;
 }

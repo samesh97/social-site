@@ -3,8 +3,14 @@ package com.social.site.backend;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication( scanBasePackages = {"com.social.site.backend",
-"com.social.site.backend.common.annotation"})
+@SpringBootApplication
+(
+	scanBasePackages =
+	{
+			"com.social.site.backend",
+			"com.social.site.backend.common.annotation"
+	}
+)
 @EnableJpaAuditing
 public class SpringApplication
 {
