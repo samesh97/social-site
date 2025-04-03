@@ -5,6 +5,7 @@ import com.social.site.backend.common.api.HttpStatusCode;
 import com.social.site.backend.common.api.Response;
 import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.common.exception.auth.AuthException;
+import com.social.site.backend.common.exception.ftp.FileUploadException;
 import com.social.site.backend.common.validator.Validator;
 import com.social.site.backend.dto.payload.CreatePostPayload;
 import com.social.site.backend.dto.response.PostDto;
@@ -40,7 +41,10 @@ public class PostController
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @HandleAPIException
-    public ResponseEntity<Response<String>> createPost(HttpServletRequest request, @ModelAttribute CreatePostPayload payload) throws ValidationException, AuthException
+    public ResponseEntity<Response<String>> createPost(
+            HttpServletRequest request,
+            @ModelAttribute CreatePostPayload payload
+    ) throws ValidationException, AuthException, FileUploadException
     {
         Validator.validate(payload);
         postService.save(request,payload);

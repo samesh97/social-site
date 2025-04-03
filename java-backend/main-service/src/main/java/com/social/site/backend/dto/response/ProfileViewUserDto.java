@@ -13,6 +13,7 @@ public class ProfileViewUserDto
     private String firstName;
     private String lastName;
     private String profileUrl;
+    private String coverUrl;
     private List<PostDto> posts;
     private List<FriendDto> friends;
 }

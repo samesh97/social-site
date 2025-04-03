@@ -2,6 +2,7 @@ package com.social.site.backend.service.user;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.social.site.backend.common.exception.auth.AuthException;
+import com.social.site.backend.common.exception.ftp.FileUploadException;
 import com.social.site.backend.common.ftp.FileUploader;
 import com.social.site.backend.dto.payload.UserPayload;
 import com.social.site.backend.dto.response.FriendDto;
@@ -47,7 +48,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public UserDto save(UserPayload userPayload ) throws ValidationException, AuthException
+    public UserDto save(UserPayload userPayload ) throws ValidationException, AuthException, FileUploadException
     {
         Validator.validate( userPayload );
         User existingUser = userRepository.findByEmail( userPayload.getEmail() );
@@ -125,16 +126,16 @@ public class UserService implements IUserService
     }
 
     @Override
-    public UserDto changeProfilePicture(HttpServletRequest request, String userId, MultipartFile file) throws AuthException, ValidationException
+    public UserDto changePhoto(HttpServletRequest request, String userId, MultipartFile profilePic, MultipartFile coverPic) throws AuthException, ValidationException, FileUploadException
     {
+        if(CommonUtil.isNull(profilePic) == CommonUtil.isNull(coverPic))
+        {
+            throw new ValidationException("You cannot change/not change profile picture and cover photo at once.");
+        }
+
         if(CommonUtil.isNullOrEmpty(userId))
         {
             throw new ValidationException("UserId is null or empty");
-        }
-
-        if(CommonUtil.isNull(file))
-        {
-            throw new ValidationException("The selected image is not received.");
         }
 
         User user = getUserFromToken(request, TokenType.ACCESS_TOKEN);
@@ -154,12 +155,16 @@ public class UserService implements IUserService
             throw new ValidationException("The session user and the user associated with the change is not the same!");
         }
 
-        String downloadUrl = fileUploader.uploadFile(file,null);
-        if(CommonUtil.isNullOrEmpty(downloadUrl))
+        if(!CommonUtil.isNull(profilePic))
         {
-            throw new ValidationException("Something went wrong with uploading the image. Please try again later.");
+            String downloadUrl = fileUploader.uploadFile(profilePic,null);
+            user.setProfileUrl(downloadUrl);
         }
-        user.setProfileUrl(downloadUrl);
+        else
+        {
+            String downloadUrl = fileUploader.uploadFile(coverPic,null);
+            user.setCoverUrl(downloadUrl);
+        }
         return userMapper.mapUserResponse(userRepository.save(user));
     }
 }

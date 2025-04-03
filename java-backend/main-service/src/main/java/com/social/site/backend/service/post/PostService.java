@@ -1,6 +1,7 @@
 package com.social.site.backend.service.post;
 
 import com.social.site.backend.common.exception.auth.AuthException;
+import com.social.site.backend.common.exception.ftp.FileUploadException;
 import com.social.site.backend.common.ftp.FileUploader;
 import com.social.site.backend.dto.payload.CreatePostPayload;
 import com.social.site.backend.dto.response.PostDto;
@@ -41,7 +42,7 @@ public class PostService implements IPostService
     };
 
     @Override
-    public Post save(HttpServletRequest request,CreatePostPayload payload) throws AuthException
+    public Post save(HttpServletRequest request,CreatePostPayload payload) throws AuthException, FileUploadException
     {
         User user = userService.getUserFromToken(request, TokenType.ACCESS_TOKEN);
 

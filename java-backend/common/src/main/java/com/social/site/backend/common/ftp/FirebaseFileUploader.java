@@ -6,6 +6,7 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.social.site.backend.common.exception.ftp.FileUploadException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +26,7 @@ public class FirebaseFileUploader implements FileUploader
     private static final String CONFIG_FILE_NAME = "firebase-private-key.json";
 
     @Override
-    public String uploadFile(MultipartFile multipartFile, String subFolder)
+    public String uploadFile(MultipartFile multipartFile, String subFolder) throws FileUploadException
     {
         try
         {
@@ -39,8 +40,7 @@ public class FirebaseFileUploader implements FileUploader
         }
         catch (Exception e)
         {
-            System.out.println(e);
-            return null;
+            throw new FileUploadException(e.getMessage());
         }
     }
 

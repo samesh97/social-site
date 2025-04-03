@@ -5,6 +5,8 @@ import com.social.site.backend.common.api.HttpStatusCode;
 import com.social.site.backend.common.api.Response;
 import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.common.exception.auth.AuthException;
+import com.social.site.backend.common.exception.ftp.FileUploadException;
+import com.social.site.backend.dto.payload.UpdateProfilePayload;
 import com.social.site.backend.dto.payload.UserPayload;
 import com.social.site.backend.dto.response.ProfileViewUserDto;
 import com.social.site.backend.dto.response.UserDto;
@@ -31,7 +33,7 @@ public class UserController
 
     @PostMapping
     @HandleAPIException
-    public ResponseEntity<Response<UserDto>> createUser(@ModelAttribute UserPayload userPayload) throws ValidationException, AuthException
+    public ResponseEntity<Response<UserDto>> createUser(@ModelAttribute UserPayload userPayload) throws ValidationException, AuthException, FileUploadException
     {
         UserDto createdUser = userService.save( userPayload );
         return Response.wrap( HttpStatusCode.CREATED, createdUser );
@@ -53,15 +55,15 @@ public class UserController
         return Response.success(userDto);
     }
 
-    @PostMapping(path = "/{userId}/profile-pic")
+    @RequestMapping(path = "/{userId}", method = RequestMethod.PATCH)
     @HandleAPIException
     public ResponseEntity<Response<UserDto>> changeProfilePicture(
             HttpServletRequest request,
             @PathVariable String userId,
-            @ModelAttribute MultipartFile profilePic
-    ) throws AuthException, ValidationException
+            @ModelAttribute UpdateProfilePayload payload
+    ) throws AuthException, ValidationException, FileUploadException
     {
-        UserDto userDto = userService.changeProfilePicture(request,userId,profilePic);
+        UserDto userDto = userService.changePhoto(request, userId, payload.getProfilePic(), payload.getCoverPic());
         return Response.created(userDto);
     }
 }

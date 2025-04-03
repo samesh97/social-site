@@ -24,6 +24,7 @@ public class User extends BaseModel
     private String password;
     private boolean isVerified = false;
     private String profileUrl;
+    private String coverUrl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
