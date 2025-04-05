@@ -1,5 +1,6 @@
 package com.social.site.backend.service.post;
 
+import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.common.exception.auth.AuthException;
 import com.social.site.backend.common.exception.ftp.FileUploadException;
 import com.social.site.backend.common.ftp.FileUploader;
@@ -12,6 +13,7 @@ import com.social.site.backend.model.PostImage;
 import com.social.site.backend.model.User;
 import com.social.site.backend.repositoy.PostRepository;
 import com.social.site.backend.service.user.IUserService;
+import com.social.site.backend.util.CommonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,8 +44,14 @@ public class PostService implements IPostService
     };
 
     @Override
-    public Post save(HttpServletRequest request,CreatePostPayload payload) throws AuthException, FileUploadException
+    public Post save(HttpServletRequest request,CreatePostPayload payload) throws AuthException, FileUploadException, ValidationException
     {
+        if(payload == null || (payload.getPostImages()
+                                      .isEmpty() && CommonUtil.isNullOrEmpty(payload.getDescription())))
+        {
+            throw new ValidationException("Either post description or post images must be present to create a post!");
+        }
+
         User user = userService.getUserFromToken(request, TokenType.ACCESS_TOKEN);
 
         Post post = new Post();

@@ -1,5 +1,6 @@
 package com.social.site.backend.service.post;
 
+import com.social.site.backend.common.exception.ValidationException;
 import com.social.site.backend.common.exception.auth.AuthException;
 import com.social.site.backend.common.exception.ftp.FileUploadException;
 import com.social.site.backend.dto.payload.CreatePostPayload;
@@ -13,6 +14,6 @@ import java.util.List;
 public interface IPostService
 {
     List<PostDto> getAll();
-    Post save(HttpServletRequest request, CreatePostPayload payload) throws AuthException, FileUploadException;
+    Post save(HttpServletRequest request, CreatePostPayload payload) throws AuthException, FileUploadException, ValidationException;
     Post findPost(String id);
 }

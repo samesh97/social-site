@@ -46,7 +46,6 @@ public class PostController
             @ModelAttribute CreatePostPayload payload
     ) throws ValidationException, AuthException, FileUploadException
     {
-        Validator.validate(payload);
         postService.save(request,payload);
         return Response.wrap(HttpStatusCode.SUCCESS,"Success", null);
     }
