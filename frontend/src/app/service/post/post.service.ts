@@ -35,6 +35,6 @@ export class PostService {
     });
   }
   loadComments = (postId: string) => {
-    return this.http.get<Response>(`${this.COMMENT_URL}/${postId}`);
+    return this.http.get<Response>(`${this.COMMENT_URL}?postId=${postId}`);
   }
 }

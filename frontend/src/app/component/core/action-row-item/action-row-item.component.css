@@ -46,9 +46,11 @@
 {
     font-size: 0.75rem;
     color: #5e5757;
+    text-transform: lowercase;
 }
 
 .name-container span
 {
+    font-size: 0.8rem;
     font-weight: bold;
 }

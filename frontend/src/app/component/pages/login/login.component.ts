@@ -11,8 +11,8 @@ import { ToastService } from 'src/app/service/toast/toast.service';
 })
 export class LoginComponent {
 
-  email: string = '';
-  password: string = '';
+  email: string = 'buddikasamesh1@gmail.com';
+  password: string = '1234567899';
 
   constructor(
     private authService: AuthService,

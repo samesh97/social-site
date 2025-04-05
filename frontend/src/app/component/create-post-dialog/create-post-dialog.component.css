@@ -30,12 +30,18 @@ input
     background-color: var(--secondary-color);
 }
 
+.post-wrapper
+{
+    width: 40vw;
+    height: auto;
+}
+
 .add-image
 {
     width: 50px;
     cursor: pointer;
 }
-#create-post-act-btns input
+.create-post-act-btns input
 {
     display: none;
 }

@@ -1,22 +1,22 @@
 <div class="interction-btn-container">
     <div class="like-container">
         <span id="likescount">{{getLikeCount() | count}}</span>
-        <img 
-        src="{{isLiked ? 'assets/images/liked_button.png' : 'assets/images/like_button.png'}}" 
+        <img
+        src="{{isLiked ? 'assets/images/liked_button.png' : 'assets/images/like_button.png'}}"
         (click)="react('LIKE')">
     </div>
     <img src="assets/images/comment_button.png" (click)="showOrHideCommentInput()">
     <img src="assets/images/share_button.png">
 </div>
 <div *ngIf="isCommentable" class="comment-section flex-box-centered">
-    <input type="text" class="shaped-container" placeholder="Enter your comment.." [(ngModel)]="commentText">
+    <input type="text" class="shaped-container" placeholder="Your thoughts on this post?" [(ngModel)]="commentText">
     <img src="assets/images/send.png" (click)="comment()"/>
 </div>
 <!-- <span *ngIf="comments.length > 0" id="comments-text">{{getNumberOfComments() | count}} comments</span>
 <br>
 <br> -->
-<div *ngIf="comments.length > 0" class="comments">
-    <app-expandable-view 
+<div *ngIf="this.getCommentsLength(comments) > 0" class="comments">
+    <app-expandable-view
         [list]="mapToExpandableRows(comments)"
         [showSize]="3"
         (itemClickListener)="nameClicked($event)">

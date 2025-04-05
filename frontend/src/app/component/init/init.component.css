@@ -1,0 +1,5 @@
+.logged-in-outlet, outer-outlet
+{
+    margin-top: var(--navigation-bar-height);
+    min-height: calc(100vh - var(--navigation-bar-height));
+}

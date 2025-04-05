@@ -3,10 +3,10 @@
         <p id="heading-text">Friend Requests</p>
     </div>
     <div class="suggestions" >
-        <friend-request-item *ngFor="let request of requests"
+        <action-row-item *ngFor="let request of requests"
             [friend]="request"
             (positiveActionListner)="handleEvent($event, true)"
             (negativeActionListner)="handleEvent($event, false)"
-        ></friend-request-item>
+        ></action-row-item>
     </div>
 </div>

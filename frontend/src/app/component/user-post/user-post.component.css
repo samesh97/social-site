@@ -1,18 +1,35 @@
  .container 
  {
-    width: auto;
+    width: 100%;
     height: auto;
     margin-bottom: 20px;
     border-radius: 4px;
     width: inherit;
     padding: 20px;
 }
-   
+
 .container-profile
 {
     display: flex;
-    width: inherit;
+    width: 100%;
+}
+
+.container-description 
+{
+    width: 100%;
     height: auto;
+    padding-top: 8px;
+}
+
+.grid-container
+{
+    height: 50vh;
+    width: 100%;
+}
+   
+.container-interactions
+{
+    width: 100%;
 }
  
 .container-profile img 
@@ -39,12 +56,6 @@
     height: auto;
 }
 
-.container-description 
-{
-    width: 100%;
-    height: auto;
-    padding-top: 8px;
-}
 #time 
 {
     color: #5e5757;
@@ -71,6 +82,7 @@
     font-size: 0.75rem;
     font-weight: bold;
     height: 100px;
+    width: 100%;
     background-color: transparent;
     outline: none;
     border: none;

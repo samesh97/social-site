@@ -3,4 +3,14 @@
 </div>
 <toast [toasts]="toastList"></toast>
 <progress-bar [isShowProgress]="showProgress"></progress-bar>
-<router-outlet></router-outlet>
+
+<div [ngSwitch]="isLoggedIn">
+    <div *ngSwitchCase="true" class="logged-in-outlet">
+        <router-outlet></router-outlet>
+    </div>
+    <div *ngSwitchCase="false" class="not-logged-in-outlet">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+

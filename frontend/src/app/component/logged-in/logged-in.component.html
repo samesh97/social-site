@@ -2,15 +2,14 @@
     <div class="branding" (click)="navigateHome()">
         <span>SOCIAL <span id="branding-txt-last-part">MEDIA</span></span>
     </div>
-    <div class="nav-list">
-        <div class="search-container">
-            <div class="search-input-container flex-box-centered">
-                <input type="text" class="shaped-container" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
-                <img id="search-icon" src="assets/images/search-icon.png">
-            </div>
-            <!-- <button (click)="search()">Search</button> -->
+    <div class="search-container">
+        <div class="search-input-container shaped-container">
+            <input type="text" placeholder="Search Profile.." [(ngModel)]="searchText" (keydown)="search()">
+            <img id="search-icon" src="assets/images/search-icon.png">
             <profile-search [users]="searchUsers" (select)="viewProfile($event)"></profile-search>
         </div>
+        <!-- <button (click)="search()">Search</button> -->
+        
     </div>
     <div class="profile">
         <div class="notification-container flex-box-centered">
@@ -19,7 +18,10 @@
                 <span id="notification-count">{{ getCountOfUnreadNotifications() }}</span>
             </div>
         </div>
-        <img id="profile-option-icon" src="{{currentUser.profileUrl}}">
+        <div class="profile-container">
+            <img id="profile-option-icon" src="{{currentUser.profileUrl}}">
+        </div>
+        
     </div>
 </div>
 <div class="seperation"></div>

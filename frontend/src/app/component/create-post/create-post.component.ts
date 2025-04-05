@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Post } from 'src/app/model/post.model';
 import { Response } from 'src/app/model/response.model';
-import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { PostService } from 'src/app/service/post/post.service';
 import { ProgressService } from 'src/app/service/progress/progress.service';
@@ -39,9 +38,9 @@ export class CreatePostComponent implements OnInit
     formData.append("description", this.post.description);
     for (let image of this.images)
     {
-      formData.append("post-images", image);    
+      formData.append("post-images", image);
     }
-  
+
     this.postService.createPost(formData)
       .subscribe((data: Response) => {
         this.progressService.hide();
@@ -51,10 +50,10 @@ export class CreatePostComponent implements OnInit
   {
     if (event.target.files && event.target.files[0])
     {
-      this.images.push(event.target.files[0]);  
+      this.images.push(event.target.files[0]);
     }
   }
-  openPostDialog = () => 
+  openPostDialog = () =>
   {
     this.matDialog.open(CreatePostDialogComponent, {panelClass: 'custom-modalbox'});
   }

@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container shaped-container">
     <div *ngFor="let user of users" class="user-container" (click)="selected(user.id)">
         <img id="profile-pic" src="{{user.profileUrl}}">
         <span id="name">{{user.firstName + ' ' + user.lastName}}</span>

@@ -1,21 +1,23 @@
 <div class="create-post-cont">
-    <user-post
+    <div class="post-wrapper">
+        <user-post
         [postId]="post.id"
-        [userId]="post.User.id"
-        [username]="post.User.firstName + ' ' + post.User.lastName"
+        [userId]="post.user.id"
+        [username]="post.user.firstName + ' ' + post.user.lastName"
         [date]="post.createdAt"
-        [profileImage]="post.User.profileUrl"
-        [images]="post.PostImages"
+        [profileImage]="post.user.profileUrl"
+        [images]="post.postImages"
         [description]="post.description"
-        [reactions]="post.Reactions"
-        [comments]="post.Comments"
+        [reactions]="post.reactions"
+        [comments]="post.comments"
         [isEditable]="true"
         [isInteractable]="false"
         [isCommentable]="false"
         (onImageClick)="imageClicked($event)"
         (onDescriptionChange)="onDescriptionChange($event)"
 ></user-post>
-<div id="create-post-act-btns flex-box-centered">
+    </div>
+<div class="create-post-act-btns flex-box-centered">
     <label class="flex-box-centered">
        <img src="assets/images/add_icon.png" class="add-image">
        <input type="file" placeholder="Pick an image" (change)="imageSelected($event)">

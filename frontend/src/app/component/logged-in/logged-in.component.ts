@@ -24,7 +24,7 @@ throw new Error('Method not implemented.');
   isNotificationOpen: boolean = false;
   notifications: Notification[] = [];
   isProfileOptionOpen: boolean = false;
-  
+
   public constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -34,7 +34,7 @@ throw new Error('Method not implemented.');
   {
     this.currentUser = this.authService.getUserInfo();
   }
-  
+
   ngOnInit(): void
   {
     this.loadNotifications();
@@ -58,7 +58,7 @@ throw new Error('Method not implemented.');
   {
     this.authService.logout().subscribe(data => {
       this.authService.setLoggedIn(false);
-    });  
+    });
   }
   navigateHome = () =>
   {
@@ -74,11 +74,11 @@ throw new Error('Method not implemented.');
   {
     this.isNotificationOpen = event;
   }
-  profileClick = (event: boolean) => 
+  profileClick = (event: boolean) =>
   {
     this.isProfileOptionOpen = event;
   }
-  viewCurrentUserProfile = () => 
+  viewCurrentUserProfile = () =>
   {
     this.viewProfile(this.authService.getUserInfo().id);
   }

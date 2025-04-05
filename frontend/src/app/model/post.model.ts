@@ -6,10 +6,10 @@ import { User } from "./user.model";
 export class Post {
     id: string = "";
     description: string = "";
-    Comments: Comment[] = [];
-    Reactions: Reaction[] = [];
-    User: User = new User();
-    PostImages: PostImage[] = [];
+    comments: Comment[] = [];
+    reactions: Reaction[] = [];
+    user: User = new User();
+    postImages: PostImage[] = [];
     createdAt: string = new Date().toUTCString();
     updatedAt: string = new Date().toUTCString();
 }

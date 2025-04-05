@@ -1,4 +1,217 @@
-.navigation 
+.navigation
+{
+    width: 100%;
+    height: var(--navigation-bar-height);
+    display: flex;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.branding
+{
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    width: auto;
+    cursor: pointer;
+    height: 100%;
+}
+
+.branding span 
+{
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#branding-txt-last-part
+{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    margin-left: 0.5rem;
+    padding: 0.5rem;
+}
+
+.search-container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.search-input-container
+{
+    height: 60%;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--primary-color);
+    position: relative;
+
+}
+
+.search-container input
+{
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    padding: 1rem;
+    font-size: 0.8rem;
+}
+
+.search-container img
+{
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 35%;
+    width: auto;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}
+
+.profile
+{
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    width: auto;
+    height: 100%;
+}
+
+.notification-container, .profile-container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: auto;
+    margin-left: 1.5rem;
+}
+
+#profile-option-icon, #notification-image
+{
+    height: 55%;
+    width: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 4px;
+}
+
+.notification-container
+{
+    position: relative;
+}
+
+.notif-count
+{
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+}
+
+
+
+
+@media screen and (width > 1500px) 
+{
+    .search-input-container
+    {
+        width: 30%;
+    }
+    .search-container
+    {
+        justify-content: space-around;
+    }
+
+}
+
+@media screen and (1000px < width <= 1500px) 
+{
+    .search-input-container
+    {
+        width: 60%;
+    }
+    .search-container
+    {
+        justify-content: space-around;
+    }
+
+}
+
+@media screen and (600px < width <= 1000px) 
+{
+    .search-input-container
+    {
+        width: 80%;
+    }
+    .search-container
+    {
+        justify-content: center;
+    }
+
+}
+
+@media screen and (600px >= width) 
+{
+    .search-input-container
+    {
+        visibility: hidden;
+    }
+    .search-container
+    {
+        justify-content: center;
+    }
+
+    .branding span
+    {
+        font-size: 0.9rem;
+    }
+
+    #profile-option-icon, #notification-image
+    {
+        height:50%;
+    }
+   
+
+}
+
+@media screen and (400px >= width) 
+{
+    .notification-container
+    {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* .navigation 
 {
     width: 100%;
     height: var(--navigation-bar-height);
@@ -9,29 +222,30 @@
     z-index: 1;
     align-items: center;
     margin: auto;
-    padding: 0 10px;
+    padding: 0 1%;
 }
 .branding 
 {
     cursor: pointer;
-    padding-left: 30px;
+    padding-left: 3%;
 }
-.nav-list 
-{
-    
-}
+
 .profile 
 {
     display: flex;
     align-items: center;
     justify-content: end;
     position: relative;
-    margin-right: 10px;
+    height: 100%;
+    width: 30%;
+    background-color: rebeccapurple;
+    overflow: hidden;
 }
 .profile img 
 {
-    width: 32px;
-    height: 32px;
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
     cursor: pointer;
     margin-left: 18px;
     background-color: var(--primary-color);
@@ -123,7 +337,7 @@
 }
 
 
-@media screen and (width < 600px) 
+@media screen and (width < 600px) and (width > 400px) 
 {
     .branding
     {
@@ -131,13 +345,13 @@
     }
     .branding span 
     {
-        font-size: 0.75rem;
+        font-size: 0.55rem;
     }
     .navigation
     {
         grid-template-columns: 20% 55% 25%;
     }
-} 
+}
 
 
 @media screen and (width <= 400px) 
@@ -152,7 +366,11 @@
     }
     .navigation
     {
-        grid-template-columns: 20% 54% 26%;
+        grid-template-columns: 30% auto 30%;
+    }
+    .search-container
+    {
+        display: none;
     }
 }
 
@@ -170,4 +388,4 @@
     {
         grid-template-columns: 20% 25% 55%;
     }
-}
+}  */

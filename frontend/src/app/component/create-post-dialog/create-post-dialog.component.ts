@@ -33,11 +33,11 @@ export class CreatePostDialogComponent implements OnInit
     user.firstName = loggedUser.firstName;
     user.lastName = loggedUser.lastName;
     user.profileUrl = loggedUser.profileUrl;
-    this.post.User = user;
+    this.post.user = user;
   }
   imageClicked = (postImage: PostImage) =>
   {
-    
+
   }
   imageSelected = (event: any) =>
   {
@@ -56,7 +56,7 @@ export class CreatePostDialogComponent implements OnInit
     const imageUrl = URL.createObjectURL(file);
     const postImage = new PostImage();
     postImage.imageUrl = imageUrl;
-    this.post.PostImages.push(postImage);
+    this.post.postImages.push(postImage);
   }
   createPost = () =>
   {
@@ -65,9 +65,9 @@ export class CreatePostDialogComponent implements OnInit
     formData.append("description", this.post.description);
     for (let image of this.selectedImageList)
     {
-      formData.append("post-images", image);    
+      formData.append("postImages", image);
     }
-  
+
     this.postService.createPost(formData)
     .subscribe(() =>
     {

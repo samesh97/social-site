@@ -21,8 +21,8 @@ export class TimelineComponent implements OnInit
     private activatedRoute: ActivatedRoute
   )
   { }
-  
-  
+
+
 
   ngOnInit(): void
   {
@@ -36,12 +36,12 @@ export class TimelineComponent implements OnInit
   {
     this.journeyManager.loadProfileView(profileId);
   }
-  
+
   commented = (postId: string) =>
   {
     this.postService.loadComments(postId)
     .subscribe((data: Response) => {
-      this.posts.filter(post => post.id == postId)[0].Comments = data.data;
+      this.posts.filter(post => post.id == postId)[0].comments = data.data;
     });
   }
 }

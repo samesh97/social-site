@@ -1,12 +1,12 @@
 <div class="main-container flex-box-centered">
   <div class="profile-view-content">
     <div class="profile-details">
-      <img id="cover-image" class="shaped-container" src="assets/images/cover-image.jpg">
+      <img id="cover-image" class="shaped-container" src="{{user.coverUrl}}">
         <img id="profile-pic" src="{{user.profileUrl}}">
         <div class="profile-texts">
           <div class="name-container">
             <span id="first-name">{{user.firstName}} {{user.lastName}}</span>
-            <span id="mutual-friend-text">25 Mutual Friends</span>
+            <span id="mutual-friend-text">{{this.getFriendCount()}}</span>
             <!-- <span id="lives-in-text">Lives in Kandy</span> -->
             <!-- <span id="last-name"> {{user.lastName}}</span> -->
           </div>
@@ -45,14 +45,14 @@
       <div class="all-posts-container">
         <user-post *ngFor="let post of posts" class="user-post-container"
           [postId]="post.id"
-          [userId]="post.User.id"
-          [username]="post.User.firstName + ' ' + post.User.lastName"
+          [userId]="post.user.id"
+          [username]="post.user.firstName + ' ' + post.user.lastName"
           [date]="post.createdAt"
-          [profileImage]="post.User.profileUrl"
-          [images]="post.PostImages"
+          [profileImage]="post.user.profileUrl"
+          [images]="post.postImages"
           [description]="post.description"
-          [reactions]="post.Reactions"
-          [comments]="post.Comments"
+          [reactions]="post.reactions"
+          [comments]="post.comments"
           [isCommentable]="true"
         ></user-post>
       </div>

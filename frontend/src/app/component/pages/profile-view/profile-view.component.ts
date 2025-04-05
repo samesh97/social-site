@@ -23,19 +23,19 @@ export class ProfileViewComponent implements OnInit
     private userService: UserService,
     private authSerice: AuthService
   ){ }
-  
+
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       this.profileId = params['id'];
       this.loadProfile();
     });
 
-    
+
   }
-  loadProfile = () => 
+  loadProfile = () =>
   {
     this.userService.viewProfile(this.profileId).subscribe(data => {
-      this.posts = data.data.Posts;
+      this.posts = data.data.posts;
       this.user = data.data;
       this.setCurrentUser();
     });
@@ -54,20 +54,20 @@ export class ProfileViewComponent implements OnInit
   }
   setFriendBtnStatus = (): string =>
   {
-    const friend = this.user.Friends.filter(frd => frd.requestedUserId == this.currentUser.id || frd.acceptedUserId == this.currentUser.id)[0];
+    const friend = this.user.friends.filter(frd => frd.requestedUser.id == this.currentUser.id || frd.acceptedUser.id == this.currentUser.id)[0];
     if (!friend)
     {
         return 'Add friend';
     }
-    if (friend.isAccepted)
+    if (friend.accepted)
     {
         return 'Unfriend';
     }
-    if(friend.acceptedUserId == this.currentUser.id)
+    if(friend.acceptedUser.id == this.currentUser.id)
     {
         return 'Accept';
     }
-    if (friend.requestedUserId == this.currentUser.id)
+    if (friend.requestedUser.id == this.currentUser.id)
     {
         return 'Remove';
     }
@@ -76,5 +76,14 @@ export class ProfileViewComponent implements OnInit
   isOwnAccount = (): boolean => {
     const user = this.authSerice.getUserInfo();
     return !(this.authSerice.hasLoggedIn() && this.profileId === user.id)
+  }
+  getFriendCount = () =>
+  {
+    const friends = this.user.friends;
+    if (friends && friends.length > 0)
+    {
+      return "has " + friends.length + " friends";
+    }
+    return "has no friends yet.";
   }
 }

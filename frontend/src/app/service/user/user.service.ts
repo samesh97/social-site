@@ -19,25 +19,25 @@ export class UserService
   {
     return this.http.get<Response>(`${this.SEARCH_URL}?keyword=${keyword}`);
   }
-  viewProfile = (id: string) => 
+  viewProfile = (id: string) =>
   {
     return this.http.get<Response>(`${this.PROFILE_URL}/${id}`);
   }
-  register = (formData: FormData): Observable<Response> => 
+  register = (formData: FormData): Observable<Response> =>
   {
     return this.http.post<Response>(this.PROFILE_URL, formData);
   }
   addFriend = (userId: string) =>
   {
-    return this.http.post<Response>(this.FRIEND_URL, { user: userId });
+    return this.http.post<Response>(this.FRIEND_URL, { userId: userId });
   }
-  getFriendRequests = () => 
+  getFriendRequests = () =>
   {
-    return this.http.get<Response>(`${this.FRIEND_URL}/requests`);  
+    return this.http.get<Response>(`${this.FRIEND_URL}/requests`);
   }
   acceptOrDenyFriendRequest = (userId: string, isAccepted: boolean) =>
   {
-    return this.http.post<Response>(`${this.FRIEND_URL}/action`, { user: userId, isAccepted });
+    return this.http.post<Response>(`${this.FRIEND_URL}/action`, { userId: userId, accepted: isAccepted });
   }
   getSuggestions = () => {
     return this.http.get<Response>(this.SUGGESTION_URL);

@@ -19,12 +19,14 @@
         <ng-template #span>
             <p id="span-description">{{description}}</p>
         </ng-template>
+    </div>
+    <div class="grid-container" *ngIf="images.length > 0">
         <image-grid 
             [postImages]="images"
             (onImageClick)="imageClick($event)"
         ></image-grid>
     </div>
-    <user-post-interaction
+    <user-post-interaction class="container-interactions"
         [postId]="postId" 
         [comments]="comments"
         [reactions]="reactions"

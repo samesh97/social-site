@@ -35,15 +35,15 @@ export class FriendRequestComponent implements OnInit {
       }
     });
   }
-  
+
   private loadRequests = () =>
   {
     this.userService.getFriendRequests()
       .subscribe((data: Response) => {
         if (data.code == 200)
         {
-          this.requests = data.data;  
+          this.requests = data.data;
         }
       });
-  } 
+  }
 }
